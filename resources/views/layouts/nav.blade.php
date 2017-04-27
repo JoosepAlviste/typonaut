@@ -12,6 +12,10 @@
         <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
             <ul class="navbar-nav">
 
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('history') }}">History</a>
+                </li>
+
                 @if (\Auth::guest())
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('login') }}">Login</a>

@@ -5,11 +5,11 @@
     @component('layouts.components.center-card')
 
         @slot('header')
-            Lobby
+            Game history
         @endslot
 
         @slot('content')
-            People will be here
+            There will be history here!
         @endslot
 
     @endcomponent

@@ -2,19 +2,17 @@
 
 @section('content')
 
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="card">
-                    <div class="card-header">Dashboard</div>
+    @component('layouts.components.center-card')
 
-                    <div class="card-block">
-                        You are logged in!
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+        @slot('header')
+            Dashboard
+        @endslot
+
+        @slot('content')
+            You are logged in!
+        @endslot
+
+    @endcomponent
 
     <example></example>
 

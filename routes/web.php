@@ -20,3 +20,4 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('lobby', 'LobbyController@index')->middleware('auth')->name('lobby');
+Route::get('history', 'GameHistoryController@index')->name('history');
