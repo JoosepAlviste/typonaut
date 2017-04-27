@@ -8,7 +8,7 @@
                     </div>
 
                     <div class="card-block lobby-block">
-                        <user-list :users_in_lobby="usersInLobby"></user-list>
+                        <user-list :users_in_lobby="otherUsersList"></user-list>
                     </div>
                 </div>
             </div>
@@ -20,17 +20,33 @@
     export default {
         data() {
             return {
-                usersInLobby: [
-                    {
-                        id: 1,
-                        name: 'Brenda'
-                    },
-                    {
-                        id: 2,
-                        name: 'Joosep'
-                    },
-                ]
+                usersInLobby: [],
             }
-        }
+        },
+
+        computed: {
+            otherUsersList() {
+                return this.usersInLobby.filter((user) => user.id !== window.Laravel.user.id)
+            }
+        },
+
+        methods: {
+            joinLobby() {
+                Echo.join('lobby')
+                    .here((users) => {
+                        this.usersInLobby = users
+                    })
+                    .joining((user) => {
+                        this.usersInLobby.push(user)
+                    })
+                    .leaving((user) => {
+                        this.usersInLobby = this.usersInLobby.filter(u => u.id !== user.id)
+                    })
+            }
+        },
+
+        mounted() {
+            this.joinLobby()
+        },
     }
 </script>
