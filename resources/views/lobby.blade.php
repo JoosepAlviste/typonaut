@@ -9,8 +9,8 @@
 
                     <div class="card-header">Lobby</div>
 
-                    <div class="card-block">
-                        People will be here
+                    <div class="card-block lobby-block">
+                        <user-list :users_in_lobby="usersInLobby"></user-list>
                     </div>
 
                 </div>
