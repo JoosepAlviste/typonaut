@@ -786,9 +786,20 @@ window.Vue = __webpack_require__(37);
  */
 
 Vue.component('example', __webpack_require__(34));
+Vue.component('user-entry', __webpack_require__(49));
+Vue.component('user-list', __webpack_require__(50));
 
 var app = new Vue({
-  el: '#app'
+    el: '#app',
+    data: {
+        usersInLobby: [{
+            id: 1,
+            name: 'Brenda'
+        }, {
+            id: 2,
+            name: 'Joosep'
+        }]
+    }
 });
 
 /***/ }),
@@ -42926,6 +42937,173 @@ module.exports = function listToStyles (parentId, list) {
   return styles
 }
 
+
+/***/ }),
+/* 47 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    props: ['user'],
+
+    methods: {
+        sendChallenge: function sendChallenge() {
+            console.log(this.user.name);
+        }
+    }
+});
+
+/***/ }),
+/* 48 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    props: {
+        users_in_lobby: { required: true }
+    }
+});
+
+/***/ }),
+/* 49 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Component = __webpack_require__(35)(
+  /* script */
+  __webpack_require__(47),
+  /* template */
+  __webpack_require__(51),
+  /* scopeId */
+  null,
+  /* cssModules */
+  null
+)
+Component.options.__file = "/Users/joosep/Code/typonaut/resources/assets/js/components/UserEntry.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] UserEntry.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-7be8e72d", Component.options)
+  } else {
+    hotAPI.reload("data-v-7be8e72d", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 50 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Component = __webpack_require__(35)(
+  /* script */
+  __webpack_require__(48),
+  /* template */
+  __webpack_require__(52),
+  /* scopeId */
+  null,
+  /* cssModules */
+  null
+)
+Component.options.__file = "/Users/joosep/Code/typonaut/resources/assets/js/components/UserList.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] UserList.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-7f2b029a", Component.options)
+  } else {
+    hotAPI.reload("data-v-7f2b029a", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 51 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('li', {
+    staticClass: "user-entry list-group-item",
+    on: {
+      "click": _vm.sendChallenge
+    }
+  }, [_c('p', [_vm._v(_vm._s(_vm.user.name))])])
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-7be8e72d", module.exports)
+  }
+}
+
+/***/ }),
+/* 52 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "user-list"
+  }, [_c('ul', {
+    staticClass: "list-group list-group-flush"
+  }, [_vm._l((_vm.users_in_lobby), function(user, index) {
+    return _c('user-entry', {
+      key: index,
+      attrs: {
+        "user": user
+      }
+    })
+  }), _vm._v(" "), _c('li', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.users_in_lobby.length === 0),
+      expression: "users_in_lobby.length === 0"
+    }],
+    staticClass: "empty list-group-item"
+  }, [_vm._v("Nobody is here!")])], 2)])
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-7f2b029a", module.exports)
+  }
+}
 
 /***/ })
 /******/ ]);

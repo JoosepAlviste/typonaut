@@ -4,7 +4,7 @@
             <div class="card">
                 <div class="card-header">{{ $header }}</div>
 
-                <div class="card-block">{{ $content }}</div>
+                <div class="card-block {{ $cardBlockClass }}">{{ $content }}</div>
             </div>
         </div>
     </div>

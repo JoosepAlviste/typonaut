@@ -12,3 +12,19 @@
   margin-bottom: 22px;
   //background: #fff;
 }
+
+.lobby-block {
+  padding: 0;
+}
+
+.user-entry {
+  cursor: pointer;
+
+  p {
+    margin-bottom: 0;
+  }
+
+  &:hover {
+    background-color: #fafafa;
+  }
+}

@@ -8,8 +8,12 @@
             Lobby
         @endslot
 
+        @slot('cardBlockClass')
+            lobby-block
+        @endslot
+
         @slot('content')
-            People will be here
+            <user-list :users_in_lobby="usersInLobby"></user-list>
         @endslot
 
     @endcomponent
