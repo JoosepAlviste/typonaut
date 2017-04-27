@@ -10,9 +10,16 @@ Run these commands:
 $ composer install
 $ npm install
 $ cp .env.example .env
+$ php artisan key:generate
 ```
 
-Fill in the `.env` file variables including the Pusher parameters from `dashboard.pusher.com`.
+Create database and fill in the `.env` file variables including the Pusher parameters from `dashboard.pusher.com`.
+
+Run migrations:
+
+```
+$ php artisan migrate
+```
 
 # How to run
 
