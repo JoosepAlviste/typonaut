@@ -32,6 +32,11 @@ class TyponautController extends Controller
 
     public function startGame(Game $game)
     {
+        if ($game->start_time !== null) {
+            // Some normal response when already started?
+            return response('', 400);
+        }
+
         $game->start_time = Carbon::now();
         $game->save();
 
