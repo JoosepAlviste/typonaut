@@ -7,6 +7,5 @@
 <script>
     export default {
         props: [ 'game' ],
-
     }
 </script>

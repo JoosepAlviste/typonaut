@@ -11,7 +11,10 @@
         },
 
         mounted() {
-
+            axios.get('/games')
+                .then(({data}) => {
+                    this.gamesPlayed = data
+                })
         }
     }
 </script>
