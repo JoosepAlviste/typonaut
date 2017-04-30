@@ -43,27 +43,35 @@
                     .leaving((user) => {
                         this.usersInLobby = this.usersInLobby.filter(u => u.id !== user.id)
                     })
-                    .listen('UserWasChallenged', this.receiveChallenge)
+                    .listenForWhisper('challenge', this.receiveChallenge)
             },
 
             challengeUser(user) {
-                axios.post('/users/' + user.id + '/challenge')
-                    .then(data => {
-                        if (data.status == 200) {
-                            // Show waiting for reply notification/modal
-                        } else {
-                            // Show something went wrong notification
-                        }
+                Echo.join('lobby')
+                    .whisper('challenge', {
+                        challenger: window.Laravel.user,
+                        userChallenged: user,
                     })
+                // Show some waiting for response notification...
             },
 
-            receiveChallenge(data) {
-                if (data.userChallenged.id !== window.Laravel.user.id) {
+            receiveChallenge(event) {
+                if (event.userChallenged.id !== window.Laravel.user.id) {
                     return
                 }
 
-                console.log(data)
-            }
+                // Show modal or something to accept or decline challenge
+                console.log(event)
+            },
+
+            acceptChallenge(challenger) {
+                // TODO: Emit accept-challenge from modal
+                
+                axios.post('/api/games')
+                    .then(data => {
+                        window.location = "/game/" + data.id
+                    })
+            },
         },
 
         mounted() {
@@ -72,6 +80,7 @@
             Events.$on('challenge', user => {
                 this.challengeUser(user)
             })
+            Events.$on('accept-challenge', this.acceptChallenge)
         },
     }
 </script>

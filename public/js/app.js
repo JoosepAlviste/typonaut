@@ -1860,23 +1860,29 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 _this.usersInLobby = _this.usersInLobby.filter(function (u) {
                     return u.id !== user.id;
                 });
-            }).listen('UserWasChallenged', this.receiveChallenge);
+            }).listenForWhisper('challenge', this.receiveChallenge);
         },
         challengeUser: function challengeUser(user) {
-            axios.post('/users/' + user.id + '/challenge').then(function (data) {
-                if (data.status == 200) {
-                    // Show waiting for reply notification/modal
-                } else {
-                        // Show something went wrong notification
-                    }
+            Echo.join('lobby').whisper('challenge', {
+                challenger: window.Laravel.user,
+                userChallenged: user
             });
+            // Show some waiting for response notification...
         },
-        receiveChallenge: function receiveChallenge(data) {
-            if (data.userChallenged.id !== window.Laravel.user.id) {
+        receiveChallenge: function receiveChallenge(event) {
+            if (event.userChallenged.id !== window.Laravel.user.id) {
                 return;
             }
 
-            console.log(data);
+            // Show modal or something to accept or decline challenge
+            console.log(event);
+        },
+        acceptChallenge: function acceptChallenge(challenger) {
+            // TODO: Emit accept-challenge from modal
+
+            axios.post('/api/games').then(function (data) {
+                window.location = "/game/" + data.id;
+            });
         }
     },
 
@@ -1888,6 +1894,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         Events.$on('challenge', function (user) {
             _this2.challengeUser(user);
         });
+        Events.$on('accept-challenge', this.acceptChallenge);
     }
 });
 

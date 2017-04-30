@@ -22,8 +22,6 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::get('lobby', 'PagesController@lobby')->middleware('auth')->name('lobby');
 Route::get('history', 'PagesController@history')->name('history');
 
-Route::post('users/{user}/challenge', 'TyponautController@challenge');
-
 Route::group(['prefix' => 'api'], function () {
 
     Route::get('games', 'GamesController@index');
