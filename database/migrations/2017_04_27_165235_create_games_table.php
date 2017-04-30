@@ -18,6 +18,7 @@ class CreateGamesTable extends Migration
             $table->text('words');
             $table->decimal('time')->nullable();
             $table->unsignedInteger('winner_id')->nullable();
+            $table->dateTime('start_time')->nullable();
             $table->timestamps();
         });
     }

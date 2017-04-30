@@ -850,6 +850,7 @@ Vue.component('lobby', __webpack_require__(49));
 Vue.component('history', __webpack_require__(48));
 Vue.component('game-entry', __webpack_require__(46));
 Vue.component('game-list', __webpack_require__(47));
+Vue.component('game', __webpack_require__(68));
 
 var app = new Vue({
   el: '#app'
@@ -48425,6 +48426,273 @@ module.exports = function(module) {
 __webpack_require__(9);
 module.exports = __webpack_require__(10);
 
+
+/***/ }),
+/* 65 */,
+/* 66 */,
+/* 67 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+
+    props: ['game_id'],
+
+    data: function data() {
+        return {
+            opponent_here: false,
+            opponent_left: false,
+            opponent: null,
+            game: null,
+
+            game_started: false,
+            player_text: '',
+            opponent_text: ''
+        };
+    },
+
+
+    watch: {
+        opponent_here: function opponent_here() {
+            if (this.opponent_here === true) {
+                this.sendGameStart();
+            }
+        },
+        player_text: function player_text() {
+            Echo.join('game.' + this.game_id).whisper('typed', {
+                message: this.player_text
+            });
+        }
+    },
+
+    methods: {
+        connectToGame: function connectToGame() {
+            var _this = this;
+
+            Echo.join('game.' + this.game_id).here(function (users) {
+                if (users.length > 1) {
+                    _this.opponent_here = true;
+                    _this.opponent = users.filter(function (u) {
+                        return u.id != window.Laravel.user.id;
+                    })[0];
+                }
+            }).joining(function (user) {
+                _this.opponent_here = true;
+                _this.opponent = user;
+            }).leaving(function (user) {
+                _this.opponent_left = true;
+                _this.opponent_here = false;
+            }).listenForWhisper('typed', this.receiveTyping).listen('GameWasFinished', function (data) {
+                console.log(data);
+                if (data.game.winner_id === window.Laravel.user.id) {
+                    // You won!
+                    console.log('You won!');
+                } else {
+                    // You lost :(
+                    console.log('You lost :(');
+                }
+
+                // redirect to history?
+            });
+        },
+        receiveTyping: function receiveTyping(data) {
+            this.opponent_text = data.message;
+        },
+        getGame: function getGame() {
+            var _this2 = this;
+
+            axios.get('/api/games/' + this.game_id).then(function (data) {
+                _this2.game = data.data;
+            });
+        },
+        sendGameStart: function sendGameStart() {
+            var _this3 = this;
+
+            axios.post('/api/games/' + this.game_id + '/start').then(function (data) {
+                _this3.startGame();
+            });
+        },
+        startGame: function startGame() {
+            this.game_started = true;
+        },
+        handleSubmit: function handleSubmit() {
+            if (this.player_text === this.game.words) {
+                axios.post('/api/games/' + this.game_id + '/finish');
+            } else {
+                // Show red warning or something, wrong text entered
+            }
+        }
+    },
+
+    mounted: function mounted() {
+        this.getGame();
+        this.connectToGame();
+    }
+});
+
+/***/ }),
+/* 68 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Component = __webpack_require__(1)(
+  /* script */
+  __webpack_require__(67),
+  /* template */
+  __webpack_require__(69),
+  /* scopeId */
+  null,
+  /* cssModules */
+  null
+)
+Component.options.__file = "/Users/joosep/Code/typonaut/resources/assets/js/components/Game.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] Game.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-26c4d7c8", Component.options)
+  } else {
+    hotAPI.reload("data-v-26c4d7c8", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 69 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "game"
+  }, [(_vm.opponent_here) ? _c('div', [_vm._v("\n        Playing vs. " + _vm._s(_vm.opponent.name) + ".\n\n        "), (_vm.game_started) ? _c('div', [_c('div', {
+    staticClass: "sentence"
+  }, [_c('p', [_vm._v("Your sentence is:")]), _vm._v(" "), _c('h4', [_vm._v(_vm._s(_vm.game.words))])]), _vm._v(" "), _c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    attrs: {
+      "for": "player-message"
+    }
+  }, [_vm._v("Type here:")]), _vm._v(" "), _c('textarea', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.player_text),
+      expression: "player_text"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      "name": "player-message",
+      "id": "player-message",
+      "rows": "10"
+    },
+    domProps: {
+      "value": (_vm.player_text)
+    },
+    on: {
+      "keydown": function($event) {
+        if (!('button' in $event) && _vm._k($event.keyCode, "enter", 13)) { return null; }
+        _vm.handleSubmit($event)
+      },
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.player_text = $event.target.value
+      }
+    }
+  })]), _vm._v(" "), _c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    attrs: {
+      "for": "opponent-message"
+    }
+  }, [_vm._v("Opponent:")]), _vm._v(" "), _c('textarea', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.opponent_text),
+      expression: "opponent_text"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      "name": "opponent-message",
+      "id": "opponent-message",
+      "rows": "10",
+      "disabled": ""
+    },
+    domProps: {
+      "value": (_vm.opponent_text)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.opponent_text = $event.target.value
+      }
+    }
+  })])]) : _vm._e()]) : _c('div', [(_vm.opponent_left) ? _c('div', [_vm._v("\n            Opponent has left...\n        ")]) : _c('div', [_vm._v("\n            Opponent is not here yet.\n        ")])])])
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-26c4d7c8", module.exports)
+  }
+}
 
 /***/ })
 /******/ ]);

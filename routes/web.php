@@ -22,7 +22,14 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::get('lobby', 'PagesController@lobby')->middleware('auth')->name('lobby');
 Route::get('history', 'PagesController@history')->name('history');
 
+Route::get('game/{game}', 'TyponautController@index')->middleware('game.player');
+
 Route::group(['prefix' => 'api'], function () {
 
     Route::get('games', 'GamesController@index');
+    Route::get('games/{game}', 'GamesController@show');
+    Route::post('games/{game}/start', 'TyponautController@startGame');
+    Route::post('games/{game}/finish', 'TyponautController@finishGame');
 });
+
+Route::get('users/{user_id}/profile', 'ProfilesController@index');

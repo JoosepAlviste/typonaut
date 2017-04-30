@@ -23,6 +23,7 @@ Vue.component('lobby', require('./components/Lobby.vue'))
 Vue.component('history', require('./components/History.vue'))
 Vue.component('game-entry', require('./components/GameEntry.vue'))
 Vue.component('game-list', require('./components/GameList.vue'))
+Vue.component('game', require('./components/Game.vue'))
 
 const app = new Vue({
     el: '#app',

@@ -4,6 +4,7 @@ namespace App;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 
 /**
  * Class Game.
@@ -14,12 +15,17 @@ use Illuminate\Database\Eloquent\Model;
  * @property int winner_id
  * @property Carbon created_at
  * @property Carbon updated_at
+ * @property Collection players
+ * @property User winner
+ * @property Carbon start_time
  *
  * @package App
  */
 class Game extends Model
 {
-    protected $fillable = ['words', 'time', 'winner_id'];
+    protected $fillable = ['words', 'time', 'winner_id', 'start_time'];
+
+    public $timestamps = ['created_at', 'updated_at', 'start_time'];
 
     public function winner()
     {
