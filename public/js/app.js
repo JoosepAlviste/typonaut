@@ -1860,12 +1860,23 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 _this.usersInLobby = _this.usersInLobby.filter(function (u) {
                     return u.id !== user.id;
                 });
-            });
+            }).listen('UserWasChallenged', this.receiveChallenge);
         },
         challengeUser: function challengeUser(user) {
             axios.post('/users/' + user.id + '/challenge').then(function (data) {
-                console.log(data);
+                if (data.status == 200) {
+                    // Show waiting for reply notification/modal
+                } else {
+                        // Show something went wrong notification
+                    }
             });
+        },
+        receiveChallenge: function receiveChallenge(data) {
+            if (data.userChallenged.id !== window.Laravel.user.id) {
+                return;
+            }
+
+            console.log(data);
         }
     },
 

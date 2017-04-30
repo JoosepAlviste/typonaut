@@ -43,13 +43,26 @@
                     .leaving((user) => {
                         this.usersInLobby = this.usersInLobby.filter(u => u.id !== user.id)
                     })
+                    .listen('UserWasChallenged', this.receiveChallenge)
             },
 
             challengeUser(user) {
                 axios.post('/users/' + user.id + '/challenge')
                     .then(data => {
-                        console.log(data)
+                        if (data.status == 200) {
+                            // Show waiting for reply notification/modal
+                        } else {
+                            // Show something went wrong notification
+                        }
                     })
+            },
+
+            receiveChallenge(data) {
+                if (data.userChallenged.id !== window.Laravel.user.id) {
+                    return
+                }
+
+                console.log(data)
             }
         },
 
