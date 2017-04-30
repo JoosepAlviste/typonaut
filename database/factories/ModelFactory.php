@@ -22,3 +22,24 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
         'remember_token' => str_random(10),
     ];
 });
+
+$factory->define(App\Game::class, function (Faker\Generator $faker) {
+
+    return [
+        'words' => $faker->sentence,
+        'time' => $faker->randomFloat(2, 5, 100),
+        'winner_id' => null,
+    ];
+});
+
+$factory->define(App\GamePlayer::class, function (Faker\Generator $faker) {
+
+    return [
+        'user_id' => function () {
+            return factory('App\User')->create()->id;
+        },
+        'game_id' => function () {
+            return factory('App\Game')->create()->id;
+        },
+    ];
+});

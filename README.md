@@ -28,3 +28,11 @@ Use Laravel Valet OR run this command:
 ```
 $ php artisan serve
 ```
+
+# Generate random data
+
+Copy this into `php artisan tinker`. Create 5 random games and give them players.
+
+```
+factory('App\Game', 5)->create()->each(function ($g) { $users = factory('App\GamePlayer', 2)->create(['game_id' => $g->id]); $g->winner_id = $users->first()->id; $g->save(); });
+```

@@ -9,5 +9,9 @@
                 gamesPlayed: [],
             }
         },
+
+        mounted() {
+
+        }
     }
 </script>
