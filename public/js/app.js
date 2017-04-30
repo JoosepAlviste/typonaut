@@ -1849,6 +1849,21 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
 
     methods: {
+        receiveChallenge: function receiveChallenge(event) {
+            if (event.userChallenged.id !== window.Laravel.user.id) {
+                return;
+            }
+
+            // Show modal or something to accept or decline challenge
+            console.log(event);
+        },
+        acceptChallenge: function acceptChallenge(challenger) {
+            // TODO: Emit accept-challenge from modal
+
+            axios.post('/api/games').then(function (data) {
+                window.location = "/game/" + data.id;
+            });
+        },
         joinLobby: function joinLobby() {
             var _this = this;
 
@@ -1868,21 +1883,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 userChallenged: user
             });
             // Show some waiting for response notification...
-        },
-        receiveChallenge: function receiveChallenge(event) {
-            if (event.userChallenged.id !== window.Laravel.user.id) {
-                return;
-            }
-
-            // Show modal or something to accept or decline challenge
-            console.log(event);
-        },
-        acceptChallenge: function acceptChallenge(challenger) {
-            // TODO: Emit accept-challenge from modal
-
-            axios.post('/api/games').then(function (data) {
-                window.location = "/game/" + data.id;
-            });
         }
     },
 

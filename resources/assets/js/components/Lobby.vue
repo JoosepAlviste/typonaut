@@ -32,6 +32,24 @@
         },
 
         methods: {
+            receiveChallenge(event) {
+                if (event.userChallenged.id !== window.Laravel.user.id) {
+                    return
+                }
+
+                // Show modal or something to accept or decline challenge
+                console.log(event)
+            },
+
+            acceptChallenge(challenger) {
+                // TODO: Emit accept-challenge from modal
+
+                axios.post('/api/games')
+                    .then(data => {
+                        window.location = "/game/" + data.id
+                    })
+            },
+
             joinLobby() {
                 Echo.join('lobby')
                     .here((users) => {
@@ -53,24 +71,6 @@
                         userChallenged: user,
                     })
                 // Show some waiting for response notification...
-            },
-
-            receiveChallenge(event) {
-                if (event.userChallenged.id !== window.Laravel.user.id) {
-                    return
-                }
-
-                // Show modal or something to accept or decline challenge
-                console.log(event)
-            },
-
-            acceptChallenge(challenger) {
-                // TODO: Emit accept-challenge from modal
-                
-                axios.post('/api/games')
-                    .then(data => {
-                        window.location = "/game/" + data.id
-                    })
             },
         },
 
