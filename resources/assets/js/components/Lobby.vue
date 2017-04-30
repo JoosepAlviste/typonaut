@@ -43,11 +43,22 @@
                     .leaving((user) => {
                         this.usersInLobby = this.usersInLobby.filter(u => u.id !== user.id)
                     })
+            },
+
+            challengeUser(user) {
+                axios.post('/users/' + user.id + '/challenge')
+                    .then(data => {
+                        console.log(data)
+                    })
             }
         },
 
         mounted() {
             this.joinLobby()
+
+            Events.$on('challenge', user => {
+                this.challengeUser(user)
+            })
         },
     }
 </script>

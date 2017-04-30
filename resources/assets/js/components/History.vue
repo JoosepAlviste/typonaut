@@ -10,8 +10,14 @@
             }
         },
 
+        methods: {
+            handleChallenge(user) {
+                console.log(user)
+            },
+        },
+
         mounted() {
-            axios.get('/games')
+            axios.get('/api/games')
                 .then(({data}) => {
                     this.gamesPlayed = data
                 })

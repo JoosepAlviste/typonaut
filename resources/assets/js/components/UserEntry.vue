@@ -1,5 +1,5 @@
 <template>
-    <li class="user-entry list-group-item" @click="sendChallenge">
+    <li class="user-entry list-group-item" @click="handleChallenge">
         <p>{{ user.name }}</p>
     </li>
 </template>
@@ -9,8 +9,8 @@
         props: [ 'user' ],
 
         methods: {
-            sendChallenge() {
-                console.log(this.user.name);
+            handleChallenge() {
+                Events.$emit('challenge', this.user)
             }
         }
     }

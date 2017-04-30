@@ -835,6 +835,8 @@ __webpack_require__(36);
 
 window.Vue = __webpack_require__(62);
 
+window.Events = new Vue();
+
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -1785,10 +1787,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             gamesPlayed: []
         };
     },
+
+
+    methods: {
+        handleChallenge: function handleChallenge(user) {
+            console.log(user);
+        }
+    },
+
     mounted: function mounted() {
         var _this = this;
 
-        axios.get('/games').then(function (_ref) {
+        axios.get('/api/games').then(function (_ref) {
             var data = _ref.data;
 
             _this.gamesPlayed = data;
@@ -1851,11 +1861,22 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     return u.id !== user.id;
                 });
             });
+        },
+        challengeUser: function challengeUser(user) {
+            axios.post('/users/' + user.id + '/challenge').then(function (data) {
+                console.log(data);
+            });
         }
     },
 
     mounted: function mounted() {
+        var _this2 = this;
+
         this.joinLobby();
+
+        Events.$on('challenge', function (user) {
+            _this2.challengeUser(user);
+        });
     }
 });
 
@@ -1876,8 +1897,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     props: ['user'],
 
     methods: {
-        sendChallenge: function sendChallenge() {
-            console.log(this.user.name);
+        handleChallenge: function handleChallenge() {
+            Events.$emit('challenge', this.user);
         }
     }
 });
@@ -1888,6 +1909,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
 //
 //
 //
@@ -38395,7 +38419,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   return _c('li', {
     staticClass: "user-entry list-group-item",
     on: {
-      "click": _vm.sendChallenge
+      "click": _vm.handleChallenge
     }
   }, [_c('p', [_vm._v(_vm._s(_vm.user.name))])])
 },staticRenderFns: []}

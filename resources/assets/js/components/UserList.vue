@@ -1,7 +1,10 @@
 <template>
     <div class="user-list">
         <ul class="list-group list-group-flush">
-            <user-entry v-for="(user, index) in users_in_lobby" :user="user" :key="index"></user-entry>
+            <user-entry v-for="(user, index) in users_in_lobby"
+                        :key="index"
+                        :user="user">
+            </user-entry>
             <li class="empty list-group-item" v-show="users_in_lobby.length === 0">Nobody is here!</li>
         </ul>
     </div>
