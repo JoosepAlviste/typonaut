@@ -3,8 +3,9 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
-                    <div class="card-header">
+                    <div class="card-header with-badge">
                         Lobby
+                        <span class="badge badge-pill badge-info float-right">{{ usersInLobby.length }}</span>
                     </div>
 
                     <div class="card-block lobby-block">

@@ -9,7 +9,7 @@
         @endslot
 
         @slot('content')
-            There will be history here!
+            <history></history>
         @endslot
 
     @endcomponent
