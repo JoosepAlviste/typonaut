@@ -26,7 +26,7 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
 $factory->define(App\Game::class, function (Faker\Generator $faker) {
 
     return [
-        'words' => $faker->sentence,
+        'words' => $faker->realText(200, 1),
         'time' => $faker->randomFloat(2, 5, 100),
         'winner_id' => null,
     ];
