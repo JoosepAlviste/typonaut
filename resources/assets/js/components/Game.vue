@@ -100,7 +100,6 @@
                     })
                     .listenForWhisper('typed', this.receiveTyping)
                     .listen('GameWasFinished', data => {
-                        console.log(data)
                         if (data.game.winner_id === window.Laravel.user.id) {
                             // You won!
                             console.log('You won!')

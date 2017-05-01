@@ -9,8 +9,6 @@
         @endslot
 
         @slot('content')
-            content here
-
             <game game_id="{{ $game->id }}"></game>
         @endslot
 

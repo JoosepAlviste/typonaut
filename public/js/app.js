@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 64);
+/******/ 	return __webpack_require__(__webpack_require__.s = 67);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -528,7 +528,7 @@ utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
 
 module.exports = defaults;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(43)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(44)))
 
 /***/ }),
 /* 3 */
@@ -831,9 +831,9 @@ module.exports = g;
  * building robust, powerful web applications using Vue and Laravel.
  */
 
-__webpack_require__(36);
+__webpack_require__(37);
 
-window.Vue = __webpack_require__(62);
+window.Vue = __webpack_require__(65);
 
 window.Events = new Vue();
 
@@ -843,14 +843,14 @@ window.Events = new Vue();
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-Vue.component('example', __webpack_require__(45));
-Vue.component('user-entry', __webpack_require__(50));
-Vue.component('user-list', __webpack_require__(51));
-Vue.component('lobby', __webpack_require__(49));
-Vue.component('history', __webpack_require__(48));
-Vue.component('game-entry', __webpack_require__(46));
-Vue.component('game-list', __webpack_require__(47));
-Vue.component('game', __webpack_require__(68));
+Vue.component('example', __webpack_require__(46));
+Vue.component('user-entry', __webpack_require__(52));
+Vue.component('user-list', __webpack_require__(53));
+Vue.component('lobby', __webpack_require__(51));
+Vue.component('history', __webpack_require__(50));
+Vue.component('game-entry', __webpack_require__(48));
+Vue.component('game-list', __webpack_require__(49));
+Vue.component('game', __webpack_require__(47));
 
 var app = new Vue({
   el: '#app'
@@ -1744,13 +1744,163 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+
+    props: ['game_id'],
+
+    data: function data() {
+        return {
+            opponent_here: false,
+            opponent_left: false,
+            opponent: null,
+            game: null,
+
+            game_started: false,
+            player_text: '',
+            opponent_text: ''
+        };
+    },
+
+
+    watch: {
+        opponent_here: function opponent_here() {
+            if (this.opponent_here === true) {
+                this.sendGameStart();
+            }
+        },
+        player_text: function player_text() {
+            Echo.join('game.' + this.game_id).whisper('typed', {
+                message: this.player_text
+            });
+        }
+    },
+
+    methods: {
+        connectToGame: function connectToGame() {
+            var _this = this;
+
+            Echo.join('game.' + this.game_id).here(function (users) {
+                if (users.length > 1) {
+                    _this.opponent_here = true;
+                    _this.opponent = users.filter(function (u) {
+                        return u.id != window.Laravel.user.id;
+                    })[0];
+                }
+            }).joining(function (user) {
+                _this.opponent_here = true;
+                _this.opponent = user;
+            }).leaving(function (user) {
+                _this.opponent_left = true;
+                _this.opponent_here = false;
+            }).listenForWhisper('typed', this.receiveTyping).listen('GameWasFinished', function (data) {
+                if (data.game.winner_id === window.Laravel.user.id) {
+                    // You won!
+                    console.log('You won!');
+                } else {
+                    // You lost :(
+                    console.log('You lost :(');
+                }
+
+                // redirect to history?
+            });
+        },
+        receiveTyping: function receiveTyping(data) {
+            this.opponent_text = data.message;
+        },
+        getGame: function getGame() {
+            var _this2 = this;
+
+            axios.get('/api/games/' + this.game_id).then(function (data) {
+                _this2.game = data.data;
+            });
+        },
+        sendGameStart: function sendGameStart() {
+            var _this3 = this;
+
+            axios.post('/api/games/' + this.game_id + '/start').then(function (data) {
+                _this3.startGame();
+            });
+        },
+        startGame: function startGame() {
+            this.game_started = true;
+        },
+        handleSubmit: function handleSubmit() {
+            if (this.player_text === this.game.words) {
+                axios.post('/api/games/' + this.game_id + '/finish');
+            } else {
+                // Show red warning or something, wrong text entered
+            }
+        }
+    },
+
+    mounted: function mounted() {
+        this.getGame();
+        this.connectToGame();
+    }
+});
+
+/***/ }),
+/* 31 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: ['game']
 });
 
 /***/ }),
-/* 31 */
+/* 32 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1772,7 +1922,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 32 */
+/* 33 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1808,7 +1958,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 33 */
+/* 34 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1900,7 +2050,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 34 */
+/* 35 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1923,7 +2073,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 35 */
+/* 36 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1948,15 +2098,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 36 */
+/* 37 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_laravel_echo__ = __webpack_require__(41);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_laravel_echo__ = __webpack_require__(42);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_laravel_echo___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_laravel_echo__);
 
-window._ = __webpack_require__(42);
+window._ = __webpack_require__(43);
 
 /**
  * We'll load jQuery and the Bootstrap jQuery plugin which provides support
@@ -1965,9 +2115,9 @@ window._ = __webpack_require__(42);
  */
 
 try {
-  window.$ = window.jQuery = __webpack_require__(40);
+  window.$ = window.jQuery = __webpack_require__(41);
 
-  __webpack_require__(37);
+  __webpack_require__(38);
 } catch (e) {}
 
 /**
@@ -1989,7 +2139,7 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 
 
-window.Pusher = __webpack_require__(44);
+window.Pusher = __webpack_require__(45);
 
 window.Echo = new __WEBPACK_IMPORTED_MODULE_0_laravel_echo___default.a({
   broadcaster: 'pusher',
@@ -1998,7 +2148,7 @@ window.Echo = new __WEBPACK_IMPORTED_MODULE_0_laravel_echo___default.a({
 });
 
 /***/ }),
-/* 37 */
+/* 38 */
 /***/ (function(module, exports) {
 
 /*!
@@ -5539,14 +5689,14 @@ var Popover = function ($) {
 
 
 /***/ }),
-/* 38 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(39)();
+exports = module.exports = __webpack_require__(40)();
 exports.push([module.i, "\n.card[data-v-48e681a0] {\n  margin-top: 22px;\n}\n", ""]);
 
 /***/ }),
-/* 39 */
+/* 40 */
 /***/ (function(module, exports) {
 
 /*
@@ -5602,7 +5752,7 @@ module.exports = function() {
 
 
 /***/ }),
-/* 40 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -15862,7 +16012,7 @@ return jQuery;
 
 
 /***/ }),
-/* 41 */
+/* 42 */
 /***/ (function(module, exports) {
 
 var asyncGenerator = function () {
@@ -16635,7 +16785,7 @@ var Echo = function () {
 module.exports = Echo;
 
 /***/ }),
-/* 42 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, module) {var __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -33724,10 +33874,10 @@ module.exports = Echo;
   }
 }.call(this));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(8), __webpack_require__(63)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(8), __webpack_require__(66)(module)))
 
 /***/ }),
-/* 43 */
+/* 44 */
 /***/ (function(module, exports) {
 
 // shim for using process in browser
@@ -33917,7 +34067,7 @@ process.umask = function() { return 0; };
 
 
 /***/ }),
-/* 44 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*!
@@ -38055,18 +38205,18 @@ return /******/ (function(modules) { // webpackBootstrap
 ;
 
 /***/ }),
-/* 45 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
 /* styles */
-__webpack_require__(59)
+__webpack_require__(62)
 
 var Component = __webpack_require__(1)(
   /* script */
   __webpack_require__(29),
   /* template */
-  __webpack_require__(55),
+  __webpack_require__(58),
   /* scopeId */
   "data-v-48e681a0",
   /* cssModules */
@@ -38093,14 +38243,48 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 46 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(1)(
   /* script */
   __webpack_require__(30),
   /* template */
-  __webpack_require__(54),
+  __webpack_require__(57),
+  /* scopeId */
+  null,
+  /* cssModules */
+  null
+)
+Component.options.__file = "/Users/joosep/Code/typonaut/resources/assets/js/components/Game.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] Game.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-26c4d7c8", Component.options)
+  } else {
+    hotAPI.reload("data-v-26c4d7c8", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 48 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Component = __webpack_require__(1)(
+  /* script */
+  __webpack_require__(31),
+  /* template */
+  __webpack_require__(56),
   /* scopeId */
   null,
   /* cssModules */
@@ -38127,14 +38311,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 47 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(1)(
   /* script */
-  __webpack_require__(31),
+  __webpack_require__(32),
   /* template */
-  __webpack_require__(52),
+  __webpack_require__(54),
   /* scopeId */
   null,
   /* cssModules */
@@ -38161,14 +38345,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 48 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(1)(
   /* script */
-  __webpack_require__(32),
+  __webpack_require__(33),
   /* template */
-  __webpack_require__(56),
+  __webpack_require__(59),
   /* scopeId */
   null,
   /* cssModules */
@@ -38195,14 +38379,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 49 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(1)(
   /* script */
-  __webpack_require__(33),
+  __webpack_require__(34),
   /* template */
-  __webpack_require__(53),
+  __webpack_require__(55),
   /* scopeId */
   null,
   /* cssModules */
@@ -38229,14 +38413,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 50 */
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(1)(
   /* script */
-  __webpack_require__(34),
+  __webpack_require__(35),
   /* template */
-  __webpack_require__(57),
+  __webpack_require__(60),
   /* scopeId */
   null,
   /* cssModules */
@@ -38263,14 +38447,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 51 */
+/* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(1)(
   /* script */
-  __webpack_require__(35),
+  __webpack_require__(36),
   /* template */
-  __webpack_require__(58),
+  __webpack_require__(61),
   /* scopeId */
   null,
   /* cssModules */
@@ -38297,7 +38481,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 52 */
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -38331,7 +38515,7 @@ if (false) {
 }
 
 /***/ }),
-/* 53 */
+/* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -38364,7 +38548,7 @@ if (false) {
 }
 
 /***/ }),
-/* 54 */
+/* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -38383,7 +38567,87 @@ if (false) {
 }
 
 /***/ }),
-/* 55 */
+/* 57 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "game"
+  }, [(_vm.opponent_here) ? _c('div', [_vm._v("\n        Playing vs. " + _vm._s(_vm.opponent.name) + ".\n\n        "), (_vm.game_started) ? _c('div', [_c('div', {
+    staticClass: "sentence"
+  }, [_c('p', [_vm._v("Your sentence is:")]), _vm._v(" "), _c('h4', [_vm._v(_vm._s(_vm.game.words))])]), _vm._v(" "), _c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    attrs: {
+      "for": "player-message"
+    }
+  }, [_vm._v("Type here:")]), _vm._v(" "), _c('textarea', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.player_text),
+      expression: "player_text"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      "name": "player-message",
+      "id": "player-message",
+      "rows": "10"
+    },
+    domProps: {
+      "value": (_vm.player_text)
+    },
+    on: {
+      "keydown": function($event) {
+        if (!('button' in $event) && _vm._k($event.keyCode, "enter", 13)) { return null; }
+        _vm.handleSubmit($event)
+      },
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.player_text = $event.target.value
+      }
+    }
+  })]), _vm._v(" "), _c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    attrs: {
+      "for": "opponent-message"
+    }
+  }, [_vm._v("Opponent:")]), _vm._v(" "), _c('textarea', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.opponent_text),
+      expression: "opponent_text"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      "name": "opponent-message",
+      "id": "opponent-message",
+      "rows": "10",
+      "disabled": ""
+    },
+    domProps: {
+      "value": (_vm.opponent_text)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.opponent_text = $event.target.value
+      }
+    }
+  })])]) : _vm._e()]) : _c('div', [(_vm.opponent_left) ? _c('div', [_vm._v("\n            Opponent has left...\n        ")]) : _c('div', [_vm._v("\n            Opponent is not here yet.\n        ")])])])
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-26c4d7c8", module.exports)
+  }
+}
+
+/***/ }),
+/* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -38412,7 +38676,7 @@ if (false) {
 }
 
 /***/ }),
-/* 56 */
+/* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -38431,7 +38695,7 @@ if (false) {
 }
 
 /***/ }),
-/* 57 */
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -38451,7 +38715,7 @@ if (false) {
 }
 
 /***/ }),
-/* 58 */
+/* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -38485,17 +38749,17 @@ if (false) {
 }
 
 /***/ }),
-/* 59 */
+/* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(38);
+var content = __webpack_require__(39);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(60)("e798dbbe", content, false);
+var update = __webpack_require__(63)("e798dbbe", content, false);
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -38511,7 +38775,7 @@ if(false) {
 }
 
 /***/ }),
-/* 60 */
+/* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -38530,7 +38794,7 @@ if (typeof DEBUG !== 'undefined' && DEBUG) {
   ) }
 }
 
-var listToStyles = __webpack_require__(61)
+var listToStyles = __webpack_require__(64)
 
 /*
 type StyleObject = {
@@ -38732,7 +38996,7 @@ function applyToTag (styleElement, obj) {
 
 
 /***/ }),
-/* 61 */
+/* 64 */
 /***/ (function(module, exports) {
 
 /**
@@ -38765,7 +39029,7 @@ module.exports = function listToStyles (parentId, list) {
 
 
 /***/ }),
-/* 62 */
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -48392,7 +48656,7 @@ module.exports = Vue$3;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(8)))
 
 /***/ }),
-/* 63 */
+/* 66 */
 /***/ (function(module, exports) {
 
 module.exports = function(module) {
@@ -48420,279 +48684,12 @@ module.exports = function(module) {
 
 
 /***/ }),
-/* 64 */
+/* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(9);
 module.exports = __webpack_require__(10);
 
-
-/***/ }),
-/* 65 */,
-/* 66 */,
-/* 67 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-
-    props: ['game_id'],
-
-    data: function data() {
-        return {
-            opponent_here: false,
-            opponent_left: false,
-            opponent: null,
-            game: null,
-
-            game_started: false,
-            player_text: '',
-            opponent_text: ''
-        };
-    },
-
-
-    watch: {
-        opponent_here: function opponent_here() {
-            if (this.opponent_here === true) {
-                this.sendGameStart();
-            }
-        },
-        player_text: function player_text() {
-            Echo.join('game.' + this.game_id).whisper('typed', {
-                message: this.player_text
-            });
-        }
-    },
-
-    methods: {
-        connectToGame: function connectToGame() {
-            var _this = this;
-
-            Echo.join('game.' + this.game_id).here(function (users) {
-                if (users.length > 1) {
-                    _this.opponent_here = true;
-                    _this.opponent = users.filter(function (u) {
-                        return u.id != window.Laravel.user.id;
-                    })[0];
-                }
-            }).joining(function (user) {
-                _this.opponent_here = true;
-                _this.opponent = user;
-            }).leaving(function (user) {
-                _this.opponent_left = true;
-                _this.opponent_here = false;
-            }).listenForWhisper('typed', this.receiveTyping).listen('GameWasFinished', function (data) {
-                console.log(data);
-                if (data.game.winner_id === window.Laravel.user.id) {
-                    // You won!
-                    console.log('You won!');
-                } else {
-                    // You lost :(
-                    console.log('You lost :(');
-                }
-
-                // redirect to history?
-            });
-        },
-        receiveTyping: function receiveTyping(data) {
-            this.opponent_text = data.message;
-        },
-        getGame: function getGame() {
-            var _this2 = this;
-
-            axios.get('/api/games/' + this.game_id).then(function (data) {
-                _this2.game = data.data;
-            });
-        },
-        sendGameStart: function sendGameStart() {
-            var _this3 = this;
-
-            axios.post('/api/games/' + this.game_id + '/start').then(function (data) {
-                _this3.startGame();
-            });
-        },
-        startGame: function startGame() {
-            this.game_started = true;
-        },
-        handleSubmit: function handleSubmit() {
-            if (this.player_text === this.game.words) {
-                axios.post('/api/games/' + this.game_id + '/finish');
-            } else {
-                // Show red warning or something, wrong text entered
-            }
-        }
-    },
-
-    mounted: function mounted() {
-        this.getGame();
-        this.connectToGame();
-    }
-});
-
-/***/ }),
-/* 68 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var Component = __webpack_require__(1)(
-  /* script */
-  __webpack_require__(67),
-  /* template */
-  __webpack_require__(69),
-  /* scopeId */
-  null,
-  /* cssModules */
-  null
-)
-Component.options.__file = "/Users/joosep/Code/typonaut/resources/assets/js/components/Game.vue"
-if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
-if (Component.options.functional) {console.error("[vue-loader] Game.vue: functional components are not supported with templates, they should use render functions.")}
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-26c4d7c8", Component.options)
-  } else {
-    hotAPI.reload("data-v-26c4d7c8", Component.options)
-  }
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 69 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    staticClass: "game"
-  }, [(_vm.opponent_here) ? _c('div', [_vm._v("\n        Playing vs. " + _vm._s(_vm.opponent.name) + ".\n\n        "), (_vm.game_started) ? _c('div', [_c('div', {
-    staticClass: "sentence"
-  }, [_c('p', [_vm._v("Your sentence is:")]), _vm._v(" "), _c('h4', [_vm._v(_vm._s(_vm.game.words))])]), _vm._v(" "), _c('div', {
-    staticClass: "form-group"
-  }, [_c('label', {
-    attrs: {
-      "for": "player-message"
-    }
-  }, [_vm._v("Type here:")]), _vm._v(" "), _c('textarea', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.player_text),
-      expression: "player_text"
-    }],
-    staticClass: "form-control",
-    attrs: {
-      "name": "player-message",
-      "id": "player-message",
-      "rows": "10"
-    },
-    domProps: {
-      "value": (_vm.player_text)
-    },
-    on: {
-      "keydown": function($event) {
-        if (!('button' in $event) && _vm._k($event.keyCode, "enter", 13)) { return null; }
-        _vm.handleSubmit($event)
-      },
-      "input": function($event) {
-        if ($event.target.composing) { return; }
-        _vm.player_text = $event.target.value
-      }
-    }
-  })]), _vm._v(" "), _c('div', {
-    staticClass: "form-group"
-  }, [_c('label', {
-    attrs: {
-      "for": "opponent-message"
-    }
-  }, [_vm._v("Opponent:")]), _vm._v(" "), _c('textarea', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.opponent_text),
-      expression: "opponent_text"
-    }],
-    staticClass: "form-control",
-    attrs: {
-      "name": "opponent-message",
-      "id": "opponent-message",
-      "rows": "10",
-      "disabled": ""
-    },
-    domProps: {
-      "value": (_vm.opponent_text)
-    },
-    on: {
-      "input": function($event) {
-        if ($event.target.composing) { return; }
-        _vm.opponent_text = $event.target.value
-      }
-    }
-  })])]) : _vm._e()]) : _c('div', [(_vm.opponent_left) ? _c('div', [_vm._v("\n            Opponent has left...\n        ")]) : _c('div', [_vm._v("\n            Opponent is not here yet.\n        ")])])])
-},staticRenderFns: []}
-module.exports.render._withStripped = true
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-26c4d7c8", module.exports)
-  }
-}
 
 /***/ })
 /******/ ]);
