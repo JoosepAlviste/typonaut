@@ -56,8 +56,19 @@ const app = new Vue({
     },
 
     mounted() {
-        window.Events.$on('show-modal', (text) => {
+        window.Events.$on('show-modal', (text, primaryCallback, secondaryCallback) => {
             this.displayModal(text)
+
+            window.Events.$off('modal-primary-clicked')
+            window.Events.$off('modal-secondary-clicked')
+
+            if (typeof primaryCallback !== 'undefined') {
+                window.Events.$on('modal-primary-clicked', primaryCallback)
+            }
+
+            if (typeof secondaryCallback !== 'undefined') {
+                window.Events.$on('modal-secondary-clicked', secondaryCallback)
+            }
         })
 
         window.Events.$on('hide-modal', () => {

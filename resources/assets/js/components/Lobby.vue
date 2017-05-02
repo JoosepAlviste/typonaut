@@ -38,14 +38,23 @@
                 }
 
                 // Show modal or something to accept or decline challenge
-                window.Events.$emit('show-modal', 'You are challenged by ' + event.challenger.name + '! Do you accept?')
-                    .then(buttonClicked => {
-
-                })
+                window.Events.$emit(
+                    'show-modal',
+                    'You are challenged by ' + event.challenger.name + '! Do you accept?',
+                    () => this.acceptChallenge(event.challenger),
+                    () => {
+                        console.log('secondary clicked')
+                    }
+                )
             },
 
             acceptChallenge(challenger) {
                 // TODO: Emit accept-challenge from modal
+                Echo.join('lobby')
+                    .whisper('acceptChallenge', {
+                        challenger: challenger,
+                        userChallenged: window.Laravel.user,
+                    })
 
                 axios.post('/api/games')
                     .then(data => {
@@ -65,6 +74,17 @@
                         this.usersInLobby = this.usersInLobby.filter(u => u.id !== user.id)
                     })
                     .listenForWhisper('challenge', this.receiveChallenge)
+                    .listenForWhisper('acceptChallenge', (event) => {
+                        // The other user accepted my challenge
+                        // Redirect to the game!
+                        console.log('challenge accepted')
+                        console.log(event)
+                    })
+                    .listenForWhisper('declineChallenge', (event) => {
+                        // The other user declined my challenge
+                        console.log('challenge declined')
+                        console.log(event)
+                    })
             },
 
             challengeUser(user) {
@@ -73,6 +93,7 @@
                         challenger: window.Laravel.user,
                         userChallenged: user,
                     })
+
                 // Show some waiting for response notification...
             },
         },
