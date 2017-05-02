@@ -37,13 +37,16 @@
                     return
                 }
 
-                // Show modal or something to accept or decline challenge
                 window.Events.$emit(
                     'show-modal',
                     'You are challenged by ' + event.challenger.name + '! Do you accept?',
                     () => this.acceptChallenge(event.challenger),
                     () => {
-                        console.log('secondary clicked')
+                        Echo.join('lobby')
+                            .whisper('declineChallenge', {
+                                userChallenged: window.Laravel.user,
+                                challenger: event.challenger,
+                            })
                     }
                 )
             },
@@ -80,14 +83,14 @@
                     .listenForWhisper('acceptChallenge', (event) => {
                         // The other user accepted my challenge
                         // Redirect to the game!
-//                        console.log('challenge accepted')
-//                        console.log(event)
+                        window.Events.$emit('hide-spinner')
                         window.location = "/game/" + event.gameId
                     })
                     .listenForWhisper('declineChallenge', (event) => {
                         // The other user declined my challenge
                         console.log('challenge declined')
                         console.log(event)
+                        window.Events.$emit('hide-spinner')
                     })
             },
 
@@ -99,6 +102,7 @@
                     })
 
                 // Show some waiting for response notification...
+                window.Events.$emit('show-spinner', 'Waiting for response...')
             },
         },
 

@@ -25,6 +25,7 @@ Vue.component('game-entry', require('./components/GameEntry.vue'))
 Vue.component('game-list', require('./components/GameList.vue'))
 Vue.component('game', require('./components/Game.vue'))
 Vue.component('modal', require('./components/Modal.vue'))
+Vue.component('spinner', require('./components/Spinner.vue'))
 
 const app = new Vue({
     el: '#app',
@@ -32,6 +33,10 @@ const app = new Vue({
     data: {
         showModal: false,
         modalBody: "",
+        spinner: {
+            show: false,
+            text: '',
+        }
     },
 
     methods: {
@@ -73,6 +78,20 @@ const app = new Vue({
 
         window.Events.$on('hide-modal', () => {
             this.hideModal()
+        })
+
+        window.Events.$on('show-spinner', text => {
+            this.spinner = {
+                show: true,
+                text: text,
+            }
+        })
+
+        window.Events.$on('hide-spinner', () => {
+            this.spinner = {
+                show: false,
+                text: '',
+            }
         })
     }
 })

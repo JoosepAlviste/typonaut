@@ -1129,13 +1129,18 @@ Vue.component('game-entry', __webpack_require__(51));
 Vue.component('game-list', __webpack_require__(52));
 Vue.component('game', __webpack_require__(50));
 Vue.component('modal', __webpack_require__(55));
+Vue.component('spinner', __webpack_require__(76));
 
 var app = new Vue({
     el: '#app',
 
     data: {
         showModal: false,
-        modalBody: ""
+        modalBody: "",
+        spinner: {
+            show: false,
+            text: ''
+        }
     },
 
     methods: {
@@ -1176,6 +1181,20 @@ var app = new Vue({
 
         window.Events.$on('hide-modal', function () {
             _this.hideModal();
+        });
+
+        window.Events.$on('show-spinner', function (text) {
+            _this.spinner = {
+                show: true,
+                text: text
+            };
+        });
+
+        window.Events.$on('hide-spinner', function () {
+            _this.spinner = {
+                show: false,
+                text: ''
+            };
         });
     }
 });
@@ -2332,11 +2351,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 return;
             }
 
-            // Show modal or something to accept or decline challenge
             window.Events.$emit('show-modal', 'You are challenged by ' + event.challenger.name + '! Do you accept?', function () {
                 return _this.acceptChallenge(event.challenger);
             }, function () {
-                console.log('secondary clicked');
+                Echo.join('lobby').whisper('declineChallenge', {
+                    userChallenged: window.Laravel.user,
+                    challenger: event.challenger
+                });
             });
         },
         acceptChallenge: function acceptChallenge(challenger) {
@@ -2366,13 +2387,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }).listenForWhisper('challenge', this.receiveChallenge).listenForWhisper('acceptChallenge', function (event) {
                 // The other user accepted my challenge
                 // Redirect to the game!
-                //                        console.log('challenge accepted')
-                //                        console.log(event)
+                window.Events.$emit('hide-spinner');
                 window.location = "/game/" + event.gameId;
             }).listenForWhisper('declineChallenge', function (event) {
                 // The other user declined my challenge
                 console.log('challenge declined');
                 console.log(event);
+                window.Events.$emit('hide-spinner');
             });
         },
         challengeUser: function challengeUser(user) {
@@ -2382,6 +2403,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             });
 
             // Show some waiting for response notification...
+            window.Events.$emit('show-spinner', 'Waiting for response...');
         }
     },
 
@@ -48953,6 +48975,129 @@ module.exports = function(module) {
 __webpack_require__(11);
 module.exports = __webpack_require__(12);
 
+
+/***/ }),
+/* 73 */,
+/* 74 */,
+/* 75 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    props: ['text', 'show']
+});
+
+/***/ }),
+/* 76 */
+/***/ (function(module, exports, __webpack_require__) {
+
+
+/* styles */
+__webpack_require__(79)
+
+var Component = __webpack_require__(1)(
+  /* script */
+  __webpack_require__(75),
+  /* template */
+  __webpack_require__(77),
+  /* scopeId */
+  "data-v-1a7f1f42",
+  /* cssModules */
+  null
+)
+Component.options.__file = "/Users/joosep/Code/typonaut/resources/assets/js/components/Spinner.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] Spinner.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-1a7f1f42", Component.options)
+  } else {
+    hotAPI.reload("data-v-1a7f1f42", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 77 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return (_vm.show) ? _c('div', {
+    staticClass: "spinner"
+  }, [_c('div', {
+    staticClass: "spinner-content"
+  }, [_c('div', {
+    staticClass: "spinner-loader"
+  }), _vm._v(" "), _c('div', {
+    staticClass: "spinner-text"
+  }, [_vm._v("\n            " + _vm._s(_vm.text) + "\n        ")])])]) : _vm._e()
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-1a7f1f42", module.exports)
+  }
+}
+
+/***/ }),
+/* 78 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(8)();
+exports.push([module.i, "\n.spinner[data-v-1a7f1f42] {\n  position: fixed;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  left: 0;\n  z-index: 1050;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n  -webkit-box-pack: center;\n      -ms-flex-pack: center;\n          justify-content: center;\n  background-color: rgba(255, 255, 255, 0.5);\n}\n.spinner-content[data-v-1a7f1f42] {\n  color: #333333;\n}\n", ""]);
+
+/***/ }),
+/* 79 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(78);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(9)("34314a67", content, false);
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"id\":\"data-v-1a7f1f42\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/sass-loader/lib/loader.js!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Spinner.vue", function() {
+     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"id\":\"data-v-1a7f1f42\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/sass-loader/lib/loader.js!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Spinner.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
 
 /***/ })
 /******/ ]);

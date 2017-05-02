@@ -32,6 +32,10 @@
                v-on:secondary-clicked="handleSecondaryClick">
             <p>@{{ modalBody }}</p>
         </modal>
+
+        <spinner :show="spinner.show"
+                 :text="spinner.text">
+        </spinner>
     </div>
 
     <!-- Scripts -->
