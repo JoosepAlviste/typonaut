@@ -851,9 +851,45 @@ Vue.component('history', __webpack_require__(50));
 Vue.component('game-entry', __webpack_require__(48));
 Vue.component('game-list', __webpack_require__(49));
 Vue.component('game', __webpack_require__(47));
+Vue.component('modal', __webpack_require__(70));
 
 var app = new Vue({
-  el: '#app'
+    el: '#app',
+
+    data: {
+        showModal: true,
+        modalBody: ""
+    },
+
+    methods: {
+        displayModal: function displayModal(text) {
+            this.showModal = true;
+            this.modalBody = text;
+        },
+        hideModal: function hideModal() {
+            this.showModal = false;
+        },
+        handlePrimaryClick: function handlePrimaryClick() {
+            window.Events.$emit('modal-primary-clicked');
+            this.hideModal();
+        },
+        handleSecondaryClick: function handleSecondaryClick() {
+            window.Events.$emit('modal-secondary-clicked');
+            this.hideModal();
+        }
+    },
+
+    mounted: function mounted() {
+        var _this = this;
+
+        window.Events.$on('show-modal', function (text) {
+            _this.displayModal(text);
+        });
+
+        window.Events.$on('hide-modal', function () {
+            _this.hideModal();
+        });
+    }
 });
 
 /***/ }),
@@ -2006,7 +2042,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }
 
             // Show modal or something to accept or decline challenge
-            console.log(event);
+            window.Events.$emit('show-modal', 'You are challenged by ' + event.challenger.name + '! Do you accept?').then(function (buttonClicked) {});
         },
         acceptChallenge: function acceptChallenge(challenger) {
             // TODO: Emit accept-challenge from modal
@@ -38222,7 +38258,7 @@ var Component = __webpack_require__(1)(
   /* cssModules */
   null
 )
-Component.options.__file = "/Users/joosep/Code/typonaut/resources/assets/js/components/Example.vue"
+Component.options.__file = "/Users/brenda/Sites/typonaut/resources/assets/js/components/Example.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Example.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -38256,7 +38292,7 @@ var Component = __webpack_require__(1)(
   /* cssModules */
   null
 )
-Component.options.__file = "/Users/joosep/Code/typonaut/resources/assets/js/components/Game.vue"
+Component.options.__file = "/Users/brenda/Sites/typonaut/resources/assets/js/components/Game.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Game.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -38290,7 +38326,7 @@ var Component = __webpack_require__(1)(
   /* cssModules */
   null
 )
-Component.options.__file = "/Users/joosep/Code/typonaut/resources/assets/js/components/GameEntry.vue"
+Component.options.__file = "/Users/brenda/Sites/typonaut/resources/assets/js/components/GameEntry.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] GameEntry.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -38324,7 +38360,7 @@ var Component = __webpack_require__(1)(
   /* cssModules */
   null
 )
-Component.options.__file = "/Users/joosep/Code/typonaut/resources/assets/js/components/GameList.vue"
+Component.options.__file = "/Users/brenda/Sites/typonaut/resources/assets/js/components/GameList.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] GameList.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -38358,7 +38394,7 @@ var Component = __webpack_require__(1)(
   /* cssModules */
   null
 )
-Component.options.__file = "/Users/joosep/Code/typonaut/resources/assets/js/components/History.vue"
+Component.options.__file = "/Users/brenda/Sites/typonaut/resources/assets/js/components/History.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] History.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -38392,7 +38428,7 @@ var Component = __webpack_require__(1)(
   /* cssModules */
   null
 )
-Component.options.__file = "/Users/joosep/Code/typonaut/resources/assets/js/components/Lobby.vue"
+Component.options.__file = "/Users/brenda/Sites/typonaut/resources/assets/js/components/Lobby.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Lobby.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -38426,7 +38462,7 @@ var Component = __webpack_require__(1)(
   /* cssModules */
   null
 )
-Component.options.__file = "/Users/joosep/Code/typonaut/resources/assets/js/components/UserEntry.vue"
+Component.options.__file = "/Users/brenda/Sites/typonaut/resources/assets/js/components/UserEntry.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] UserEntry.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -38460,7 +38496,7 @@ var Component = __webpack_require__(1)(
   /* cssModules */
   null
 )
-Component.options.__file = "/Users/joosep/Code/typonaut/resources/assets/js/components/UserList.vue"
+Component.options.__file = "/Users/brenda/Sites/typonaut/resources/assets/js/components/UserList.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] UserList.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -48690,6 +48726,200 @@ module.exports = function(module) {
 __webpack_require__(9);
 module.exports = __webpack_require__(10);
 
+
+/***/ }),
+/* 68 */,
+/* 69 */,
+/* 70 */
+/***/ (function(module, exports, __webpack_require__) {
+
+
+/* styles */
+__webpack_require__(73)
+
+var Component = __webpack_require__(1)(
+  /* script */
+  __webpack_require__(74),
+  /* template */
+  __webpack_require__(71),
+  /* scopeId */
+  "data-v-2144fb1a",
+  /* cssModules */
+  null
+)
+Component.options.__file = "/Users/brenda/Sites/typonaut/resources/assets/js/components/Modal.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] Modal.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-2144fb1a", Component.options)
+  } else {
+    hotAPI.reload("data-v-2144fb1a", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 71 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "modal fade",
+    class: {
+      show: _vm.show
+    },
+    on: {
+      "click": _vm.hide
+    }
+  }, [_c('div', {
+    staticClass: "modal-dialog",
+    attrs: {
+      "role": "document"
+    },
+    on: {
+      "click": function($event) {
+        $event.preventDefault();
+        _vm.stop($event)
+      }
+    }
+  }, [_c('div', {
+    staticClass: "modal-content"
+  }, [_c('div', {
+    staticClass: "modal-header"
+  }, [_c('h5', {
+    staticClass: "modal-title"
+  }, [_vm._v("Modal title")]), _vm._v(" "), _c('button', {
+    staticClass: "close",
+    attrs: {
+      "type": "button",
+      "aria-label": "Close"
+    },
+    on: {
+      "click": _vm.hide
+    }
+  }, [_c('span', {
+    attrs: {
+      "aria-hidden": "true"
+    }
+  }, [_vm._v("×")])])]), _vm._v(" "), _c('div', {
+    staticClass: "modal-body"
+  }, [_vm._t("default")], 2), _vm._v(" "), _c('div', {
+    staticClass: "modal-footer"
+  }, [_c('button', {
+    staticClass: "btn btn-primary",
+    attrs: {
+      "type": "button"
+    },
+    on: {
+      "click": function($event) {
+        _vm.$emit('primary-clicked')
+      }
+    }
+  }, [_vm._v("Save changes")]), _vm._v(" "), _c('button', {
+    staticClass: "btn btn-secondary",
+    attrs: {
+      "type": "button"
+    },
+    on: {
+      "click": function($event) {
+        _vm.$emit('secondary-clicked')
+      }
+    }
+  }, [_vm._v("Close")])])])])])
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-2144fb1a", module.exports)
+  }
+}
+
+/***/ }),
+/* 72 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(40)();
+exports.push([module.i, "\n.fade.show[data-v-2144fb1a] {\n  background-color: rgba(0, 0, 0, 0.5);\n}\n.show[data-v-2144fb1a] {\n  display: block;\n}\n", ""]);
+
+/***/ }),
+/* 73 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(72);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(63)("2707196c", content, false);
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"id\":\"data-v-2144fb1a\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/sass-loader/lib/loader.js!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Modal.vue", function() {
+     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"id\":\"data-v-2144fb1a\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/sass-loader/lib/loader.js!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Modal.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 74 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+
+    props: ['show'],
+
+    methods: {
+        hide: function hide() {
+            window.Events.$emit('hide-modal');
+        },
+        stop: function stop(e) {
+            e.stopPropagation();
+        }
+    }
+});
 
 /***/ })
 /******/ ]);

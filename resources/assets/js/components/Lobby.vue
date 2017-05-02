@@ -38,7 +38,10 @@
                 }
 
                 // Show modal or something to accept or decline challenge
-                console.log(event)
+                window.Events.$emit('show-modal', 'You are challenged by ' + event.challenger.name + '! Do you accept?')
+                    .then(buttonClicked => {
+
+                })
             },
 
             acceptChallenge(challenger) {

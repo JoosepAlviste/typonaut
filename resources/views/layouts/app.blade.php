@@ -26,6 +26,12 @@
         @include('layouts.nav')
 
         @yield('content')
+
+        <modal :show="showModal"
+               v-on:primary-clicked="handlePrimaryClick"
+               v-on:secondary-clicked="handleSecondaryClick">
+            <p>@{{ modalBody }}</p>
+        </modal>
     </div>
 
     <!-- Scripts -->
