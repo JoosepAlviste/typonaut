@@ -1134,7 +1134,7 @@ var app = new Vue({
     el: '#app',
 
     data: {
-        showModal: true,
+        showModal: false,
         modalBody: ""
     },
 
@@ -2169,6 +2169,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 }
 
                 // redirect to history?
+                window.location = "/history";
             });
         },
         receiveTyping: function receiveTyping(data) {
@@ -2339,14 +2340,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             });
         },
         acceptChallenge: function acceptChallenge(challenger) {
-            // TODO: Emit accept-challenge from modal
-            Echo.join('lobby').whisper('acceptChallenge', {
-                challenger: challenger,
-                userChallenged: window.Laravel.user
-            });
+            axios.post('/api/games', {
+                challenger_id: challenger.id
+            }).then(function (data) {
+                Echo.join('lobby').whisper('acceptChallenge', {
+                    challenger: challenger,
+                    userChallenged: window.Laravel.user,
+                    gameId: data.data.id
+                });
 
-            axios.post('/api/games').then(function (data) {
-                window.location = "/game/" + data.id;
+                window.location = "/game/" + data.data.id;
             });
         },
         joinLobby: function joinLobby() {
@@ -2363,8 +2366,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }).listenForWhisper('challenge', this.receiveChallenge).listenForWhisper('acceptChallenge', function (event) {
                 // The other user accepted my challenge
                 // Redirect to the game!
-                console.log('challenge accepted');
-                console.log(event);
+                //                        console.log('challenge accepted')
+                //                        console.log(event)
+                window.location = "/game/" + event.gameId;
             }).listenForWhisper('declineChallenge', function (event) {
                 // The other user declined my challenge
                 console.log('challenge declined');

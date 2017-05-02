@@ -49,17 +49,20 @@
             },
 
             acceptChallenge(challenger) {
-                // TODO: Emit accept-challenge from modal
-                Echo.join('lobby')
-                    .whisper('acceptChallenge', {
-                        challenger: challenger,
-                        userChallenged: window.Laravel.user,
+                axios.post('/api/games', {
+                    challenger_id: challenger.id,
+                })
+                    .then(data => {
+                        Echo.join('lobby')
+                            .whisper('acceptChallenge', {
+                                challenger: challenger,
+                                userChallenged: window.Laravel.user,
+                                gameId: data.data.id,
+                            })
+
+                        window.location = "/game/" + data.data.id
                     })
 
-                axios.post('/api/games')
-                    .then(data => {
-                        window.location = "/game/" + data.id
-                    })
             },
 
             joinLobby() {
@@ -77,8 +80,9 @@
                     .listenForWhisper('acceptChallenge', (event) => {
                         // The other user accepted my challenge
                         // Redirect to the game!
-                        console.log('challenge accepted')
-                        console.log(event)
+//                        console.log('challenge accepted')
+//                        console.log(event)
+                        window.location = "/game/" + event.gameId
                     })
                     .listenForWhisper('declineChallenge', (event) => {
                         // The other user declined my challenge

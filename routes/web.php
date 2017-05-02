@@ -27,6 +27,7 @@ Route::get('game/{game}', 'TyponautController@index')->middleware('game.player')
 Route::group(['prefix' => 'api'], function () {
 
     Route::get('games', 'GamesController@index');
+    Route::post('games', 'GamesController@store');
     Route::get('games/{game}', 'GamesController@show');
     Route::post('games/{game}/start', 'TyponautController@startGame');
     Route::post('games/{game}/finish', 'TyponautController@finishGame');

@@ -109,6 +109,7 @@
                         }
 
                         // redirect to history?
+                        window.location = "/history"
                     })
             },
 

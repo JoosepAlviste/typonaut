@@ -30,7 +30,7 @@ const app = new Vue({
     el: '#app',
 
     data: {
-        showModal: true,
+        showModal: false,
         modalBody: "",
     },
 
