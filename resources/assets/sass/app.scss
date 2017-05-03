@@ -6,4 +6,32 @@
 @import "variables";
 
 // Bootstrap
-@import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
+@import "node_modules/bootstrap/scss/bootstrap.scss";
+
+.navbar {
+  margin-bottom: 22px;
+  //background: #fff;
+}
+
+.lobby-block {
+  padding: 0;
+}
+
+.user-entry {
+  cursor: pointer;
+
+  p {
+    margin-bottom: 0;
+  }
+
+  &:hover {
+    background-color: #fafafa;
+  }
+}
+
+.with-badge {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
