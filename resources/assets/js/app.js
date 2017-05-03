@@ -20,9 +20,84 @@ window.Events = new Vue();
 Vue.component('example', require('./components/Example.vue'));
 
 import Lobby from './components/Lobby.vue'
+import Modal from './components/Modal.vue'
+import Spinner from './components/Spinner.vue'
 
 const app = new Vue({
     el: '#app',
 
-    components: { Lobby },
+    data: {
+        spinner: {
+            show: false,
+            text: '',
+        },
+        modal: {
+            show: false,
+            title: '',
+            bodyText: '',
+            primaryBtnText: '',
+            secondaryBtnText: '',
+        }
+    },
+
+    methods: {
+        displayModal(modalTexts) {
+            this.modal.show = true
+            this.modal.bodyText= modalTexts.bodyText
+            this.modal.title = modalTexts.title
+            this.modal.primaryBtnText = modalTexts.primaryBtnText
+            this.modal.secondaryBtnText = modalTexts.secondaryBtnText
+        },
+
+        hideModal() {
+            this.modal.show = false
+        },
+
+        handlePrimaryClick() {
+            window.Events.$emit('modal-primary-clicked')
+            this.hideModal()
+        },
+
+        handleSecondaryClick() {
+            window.Events.$emit('modal-secondary-clicked')
+            this.hideModal()
+        },
+    },
+
+    mounted() {
+        window.Events.$on('show-modal', (modalTexts, primaryCallback, secondaryCallback) => {
+            this.displayModal(modalTexts)
+
+            window.Events.$off('modal-primary-clicked')
+            window.Events.$off('modal-secondary-clicked')
+
+            if (typeof primaryCallback !== 'undefined') {
+                window.Events.$on('modal-primary-clicked', primaryCallback)
+            }
+
+            if (typeof secondaryCallback !== 'undefined') {
+                window.Events.$on('modal-secondary-clicked', secondaryCallback)
+            }
+        })
+
+        window.Events.$on('hide-modal', () => {
+            this.hideModal()
+        })
+
+        window.Events.$on('show-spinner', text => {
+            this.spinner = {
+                show: true,
+                text: text,
+            }
+        })
+
+        window.Events.$on('hide-spinner', () => {
+            this.spinner = {
+                show: false,
+                text: '',
+            }
+        })
+    },
+
+    components: { Lobby, Modal, Spinner },
 });

@@ -26,6 +26,19 @@
         @include('layouts.nav')
 
         @yield('content')
+
+        <modal :show="modal.show"
+               :title="modal.title"
+               :body_text="modal.bodyText"
+               :primary_btn_text="modal.primaryBtnText"
+               :secondary_btn_text="modal.secondaryBtnText"
+               v-on:primary-clicked="handlePrimaryClick"
+               v-on:secondary-clicked="handleSecondaryClick">
+        </modal>
+
+        <spinner :show="spinner.show"
+                 :text="spinner.text">
+        </spinner>
     </div>
 
     <!-- Scripts -->
