@@ -27,10 +27,13 @@
 
         @yield('content')
 
-        <modal :show="showModal"
+        <modal :show="modal.show"
+               :title="modal.title"
+               :body_text="modal.bodyText"
+               :primary_btn_text="modal.primaryBtnText"
+               :secondary_btn_text="modal.secondaryBtnText"
                v-on:primary-clicked="handlePrimaryClick"
                v-on:secondary-clicked="handleSecondaryClick">
-            <p>@{{ modalBody }}</p>
         </modal>
 
         <spinner :show="spinner.show"

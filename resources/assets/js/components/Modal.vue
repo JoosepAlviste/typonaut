@@ -3,17 +3,17 @@
         <div class="modal-dialog" role="document" @click.prevent="stop">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Modal title</h5>
+                    <h5 class="modal-title">{{ title }}</h5>
                     <button type="button" class="close" aria-label="Close" @click="hide">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <slot></slot>
+                    {{ body_text }}
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" @click="$emit('primary-clicked')">Save changes</button>
-                    <button type="button" class="btn btn-secondary" @click="$emit('secondary-clicked')">Close</button>
+                    <button type="button" class="btn btn-primary" @click="$emit('primary-clicked')">{{ primary_btn_text }}</button>
+                    <button type="button" class="btn btn-secondary" @click="$emit('secondary-clicked')">{{ secondary_btn_text }}</button>
                 </div>
             </div>
         </div>
@@ -24,7 +24,7 @@
 
     export default {
 
-        props: [ 'show' ],
+        props: [ 'show', 'title', 'body_text', 'primary_btn_text', 'secondary_btn_text' ],
 
         methods: {
             hide() {
@@ -46,5 +46,9 @@
 
     .show {
         display: block;
+    }
+
+    .modal-footer .btn {
+        cursor: pointer;
     }
 </style>

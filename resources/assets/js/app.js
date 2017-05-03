@@ -31,22 +31,30 @@ const app = new Vue({
     el: '#app',
 
     data: {
-        showModal: false,
-        modalBody: "",
         spinner: {
             show: false,
             text: '',
+        },
+        modal: {
+            show: false,
+            title: '',
+            bodyText: '',
+            primaryBtnText: '',
+            secondaryBtnText: '',
         }
     },
 
     methods: {
-        displayModal(text) {
-            this.showModal = true
-            this.modalBody = text
+        displayModal(modalTexts) {
+            this.modal.show = true
+            this.modal.bodyText= modalTexts.bodyText
+            this.modal.title = modalTexts.title
+            this.modal.primaryBtnText = modalTexts.primaryBtnText
+            this.modal.secondaryBtnText = modalTexts.secondaryBtnText
         },
 
         hideModal() {
-            this.showModal = false
+            this.modal.show = false
         },
 
         handlePrimaryClick() {
@@ -61,8 +69,8 @@ const app = new Vue({
     },
 
     mounted() {
-        window.Events.$on('show-modal', (text, primaryCallback, secondaryCallback) => {
-            this.displayModal(text)
+        window.Events.$on('show-modal', (modalTexts, primaryCallback, secondaryCallback) => {
+            this.displayModal(modalTexts)
 
             window.Events.$off('modal-primary-clicked')
             window.Events.$off('modal-secondary-clicked')

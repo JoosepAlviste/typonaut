@@ -1135,21 +1135,29 @@ var app = new Vue({
     el: '#app',
 
     data: {
-        showModal: false,
-        modalBody: "",
         spinner: {
             show: false,
             text: ''
+        },
+        modal: {
+            show: false,
+            title: '',
+            bodyText: '',
+            primaryBtnText: '',
+            secondaryBtnText: ''
         }
     },
 
     methods: {
-        displayModal: function displayModal(text) {
-            this.showModal = true;
-            this.modalBody = text;
+        displayModal: function displayModal(modalTexts) {
+            this.modal.show = true;
+            this.modal.bodyText = modalTexts.bodyText;
+            this.modal.title = modalTexts.title;
+            this.modal.primaryBtnText = modalTexts.primaryBtnText;
+            this.modal.secondaryBtnText = modalTexts.secondaryBtnText;
         },
         hideModal: function hideModal() {
-            this.showModal = false;
+            this.modal.show = false;
         },
         handlePrimaryClick: function handlePrimaryClick() {
             window.Events.$emit('modal-primary-clicked');
@@ -1164,8 +1172,8 @@ var app = new Vue({
     mounted: function mounted() {
         var _this = this;
 
-        window.Events.$on('show-modal', function (text, primaryCallback, secondaryCallback) {
-            _this.displayModal(text);
+        window.Events.$on('show-modal', function (modalTexts, primaryCallback, secondaryCallback) {
+            _this.displayModal(modalTexts);
 
             window.Events.$off('modal-primary-clicked');
             window.Events.$off('modal-secondary-clicked');
@@ -2351,7 +2359,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 return;
             }
 
-            window.Events.$emit('show-modal', 'You are challenged by ' + event.challenger.name + '! Do you accept?', function () {
+            var modalTexts = {
+                title: 'New challenge',
+                bodyText: 'You are challenged by ' + event.challenger.name + '! Do you accept?',
+                primaryBtnText: 'Accept',
+                secondaryBtnText: 'Decline'
+            };
+
+            window.Events.$emit('show-modal', modalTexts, function () {
                 return _this.acceptChallenge(event.challenger);
             }, function () {
                 Echo.join('lobby').whisper('declineChallenge', {
@@ -2451,7 +2466,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /* harmony default export */ __webpack_exports__["default"] = ({
 
-    props: ['show'],
+    props: ['show', 'title', 'body_text', 'primary_btn_text', 'secondary_btn_text'],
 
     methods: {
         hide: function hide() {
@@ -6146,7 +6161,7 @@ exports.push([module.i, "\n.spinner-container[data-v-1a7f1f42] {\n  position: fi
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(3)();
-exports.push([module.i, "\n.fade.show[data-v-2144fb1a] {\n  background-color: rgba(0, 0, 0, 0.5);\n}\n.show[data-v-2144fb1a] {\n  display: block;\n}\n", ""]);
+exports.push([module.i, "\n.fade.show[data-v-2144fb1a] {\n  background-color: rgba(0, 0, 0, 0.5);\n}\n.show[data-v-2144fb1a] {\n  display: block;\n}\n.modal-footer .btn[data-v-2144fb1a] {\n  cursor: pointer;\n}\n", ""]);
 
 /***/ }),
 /* 45 */
@@ -39090,7 +39105,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "modal-header"
   }, [_c('h5', {
     staticClass: "modal-title"
-  }, [_vm._v("Modal title")]), _vm._v(" "), _c('button', {
+  }, [_vm._v(_vm._s(_vm.title))]), _vm._v(" "), _c('button', {
     staticClass: "close",
     attrs: {
       "type": "button",
@@ -39105,7 +39120,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }, [_vm._v("×")])])]), _vm._v(" "), _c('div', {
     staticClass: "modal-body"
-  }, [_vm._t("default")], 2), _vm._v(" "), _c('div', {
+  }, [_vm._v("\n                " + _vm._s(_vm.body_text) + "\n            ")]), _vm._v(" "), _c('div', {
     staticClass: "modal-footer"
   }, [_c('button', {
     staticClass: "btn btn-primary",
@@ -39117,7 +39132,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.$emit('primary-clicked')
       }
     }
-  }, [_vm._v("Save changes")]), _vm._v(" "), _c('button', {
+  }, [_vm._v(_vm._s(_vm.primary_btn_text))]), _vm._v(" "), _c('button', {
     staticClass: "btn btn-secondary",
     attrs: {
       "type": "button"
@@ -39127,7 +39142,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.$emit('secondary-clicked')
       }
     }
-  }, [_vm._v("Close")])])])])])
+  }, [_vm._v(_vm._s(_vm.secondary_btn_text))])])])])])
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {

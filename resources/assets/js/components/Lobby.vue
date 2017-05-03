@@ -37,9 +37,16 @@
                     return
                 }
 
+                let modalTexts = {
+                    title: 'New challenge',
+                    bodyText: 'You are challenged by ' + event.challenger.name + '! Do you accept?',
+                    primaryBtnText: 'Accept',
+                    secondaryBtnText: 'Decline',
+                }
+
                 window.Events.$emit(
                     'show-modal',
-                    'You are challenged by ' + event.challenger.name + '! Do you accept?',
+                    modalTexts,
                     () => this.acceptChallenge(event.challenger),
                     () => {
                         Echo.join('lobby')
