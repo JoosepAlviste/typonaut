@@ -25,9 +25,9 @@
                     </li>
                 @else
 
-                    {{--<li class="nav-item">--}}
-                        {{--<a class="nav-link" href="{{ route('lobby') }}">Lobby</a>--}}
-                    {{--</li>--}}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('lobby') }}">Lobby</a>
+                    </li>
 
                     <li class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

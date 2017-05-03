@@ -19,6 +19,10 @@ window.Events = new Vue();
 
 Vue.component('example', require('./components/Example.vue'));
 
+import Lobby from './components/Lobby.vue'
+
 const app = new Vue({
-    el: '#app'
+    el: '#app',
+
+    components: { Lobby },
 });
