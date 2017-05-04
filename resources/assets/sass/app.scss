@@ -9,8 +9,15 @@
 @import "node_modules/bootstrap/scss/bootstrap.scss";
 
 .navbar {
-  margin-bottom: 22px;
-  //background: #fff;
+  background-color: $nav-bg-color;
+
+  a {
+    color: $nav-color;
+
+    &:hover {
+      color: #EEEEEE;
+    }
+  }
 }
 
 .lobby-block {

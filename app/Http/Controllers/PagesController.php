@@ -10,4 +10,9 @@ class PagesController extends Controller
     {
         return view('lobby');
     }
+
+    public function game()
+    {
+        return view('game');
+    }
 }

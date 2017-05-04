@@ -22,6 +22,7 @@ Vue.component('example', require('./components/Example.vue'));
 import Lobby from './components/Lobby.vue'
 import Modal from './components/Modal.vue'
 import Spinner from './components/Spinner.vue'
+import Game from './components/Game.vue'
 
 const app = new Vue({
     el: '#app',
@@ -99,5 +100,5 @@ const app = new Vue({
         })
     },
 
-    components: { Lobby, Modal, Spinner },
+    components: { Lobby, Modal, Spinner, Game },
 });
