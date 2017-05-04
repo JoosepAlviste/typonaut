@@ -1,8 +1,10 @@
-<nav class="navbar navbar-toggleable-md bg-faded">
+<nav class="navbar navbar-toggleable-xs bg-faded fixed-top">
     <div class="container">
 
         <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
         </button>
 
         <a href="{{ url('/') }}" class="navbar-brand">
@@ -10,7 +12,7 @@
         </a>
 
         <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
-            <ul class="navbar-nav">
+            <ul class="navbar-nav text-right">
 
                 {{--<li class="nav-item">--}}
                     {{--<a class="nav-link" href="{{ route('history') }}">History</a>--}}
