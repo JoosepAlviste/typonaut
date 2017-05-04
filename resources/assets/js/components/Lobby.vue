@@ -65,6 +65,7 @@
             acceptChallenge(challenger) {
                 axios.post('/api/games', {
                     challenger_id: challenger.id,
+                    challenged_player_id: window.Laravel.user.id,
                 })
                     .then(data => {
                         Echo.join('lobby')
