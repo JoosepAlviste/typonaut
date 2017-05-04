@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Game;
 use Illuminate\Http\Request;
 
 class PagesController extends Controller
@@ -11,8 +12,12 @@ class PagesController extends Controller
         return view('lobby');
     }
 
-    public function game()
+    public function game(Game $game)
     {
-        return view('game');
+        $game->load('rounds');
+
+        return view('game', [
+            'game' => $game,
+        ]);
     }
 }

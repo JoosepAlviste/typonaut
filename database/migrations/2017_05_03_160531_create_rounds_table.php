@@ -17,9 +17,8 @@ class CreateRoundsTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('game_id')->index();
             $table->text('word');
-            $table->decimal('player_one_time');
-            $table->decimal('player_two_time');
-            $table->string('start_time', 30);
+            $table->decimal('player_one_time')->nullable();
+            $table->decimal('player_two_time')->nullable();
             $table->timestamps();
         });
     }
