@@ -25,6 +25,7 @@ import Spinner from './components/Spinner.vue'
 import Game from './components/Game.vue'
 import Page from './components/Page.vue'
 import NestedNavItem from './components/NestedNavItem.vue'
+import Countdown from './components/Countdown.vue'
 
 const app = new Vue({
     el: '#app',
@@ -102,5 +103,5 @@ const app = new Vue({
         })
     },
 
-    components: { Lobby, Modal, Spinner, Game, Page, NestedNavItem },
+    components: { Lobby, Modal, Spinner, Game, Page, NestedNavItem, Countdown },
 });

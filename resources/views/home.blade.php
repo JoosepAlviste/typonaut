@@ -13,5 +13,6 @@
         @endslot
 
     @endcomponent
+    <countdown></countdown>
 
 @endsection
