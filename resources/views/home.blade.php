@@ -14,6 +14,4 @@
 
     @endcomponent
 
-    <example></example>
-
 @endsection

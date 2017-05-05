@@ -62,3 +62,28 @@
 .navbar-toggler {
   cursor: pointer;
 }
+
+.dark-card {
+  background-color: #181818;
+  color: #fdfcfc;
+  border-color: #181818;
+  font-family: "Noto Sans", sans-serif;
+
+  .card-block {
+    background-color: transparent;
+  }
+
+  .card-header {
+    background-color: transparent;
+    border-bottom-color: #0F0F0F;
+  }
+
+  .list-group-item {
+    background-color: transparent;
+  }
+
+  .badge {
+    background-color: #fdfcfc;
+    color: #0a0a0a;
+  }
+}
