@@ -3,7 +3,20 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 
+/**
+ * Class Game.
+ *
+ * @property int id
+ * @property int player_one_id
+ * @property int player_two_id
+ * @property User playerOne
+ * @property User playerTwo
+ * @property Collection rounds
+ *
+ * @package App
+ */
 class Game extends Model
 {
     protected $fillable = [ 'player_one_id', 'player_two_id' ];

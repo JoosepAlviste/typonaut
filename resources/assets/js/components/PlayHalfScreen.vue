@@ -1,12 +1,15 @@
 <template>
     <div class="half-screen pt-5" :class="[ side ]">
+
         <h1>{{ round.word }}</h1>
+
         <input type="text"
                class="form-control form-control-lg word-input"
                name="word-input"
                v-model="typed"
                :disabled="side === 'opponent'"
                @keydown.enter="onEnterPressed">
+
     </div>
 </template>
 
