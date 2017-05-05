@@ -6373,7 +6373,7 @@ exports.push([module.i, "\n.countdown-container[data-v-3e43f4f7] {\n  position: 
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(2)();
-exports.push([module.i, "\n.play-container[data-v-489db159] {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: horizontal;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: row;\n          flex-direction: row;\n  -webkit-box-pack: justify;\n      -ms-flex-pack: justify;\n          justify-content: space-between;\n  -ms-flex-line-pack: stretch;\n      align-content: stretch;\n  font-family: 'Noto Serif', serif;\n}\n.time-container[data-v-489db159] {\n  -ms-flex-item-align: center;\n      -ms-grid-row-align: center;\n      align-self: center;\n  height: 100px;\n  width: 100px;\n  border-radius: 50%;\n  background-color: #22313F;\n  position: absolute;\n  top: calc(50% - 50px);\n  left: calc(50% - 50px);\n  line-height: 95px;\n  text-align: center;\n  border: 5px solid #fffcff;\n  color: #fffcff;\n  border-right-color: #303036;\n  border-bottom-color: #303036;\n  -webkit-transform: rotate(-45deg);\n          transform: rotate(-45deg);\n}\n.time-container p[data-v-489db159] {\n    -webkit-transform: rotate(45deg);\n            transform: rotate(45deg);\n    font-size: 1.4rem;\n    font-family: 'Noto Sans', sans-serif;\n}\n", ""]);
+exports.push([module.i, "\n.play-container[data-v-489db159] {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: horizontal;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: row;\n          flex-direction: row;\n  -webkit-box-pack: justify;\n      -ms-flex-pack: justify;\n          justify-content: space-between;\n  -ms-flex-line-pack: stretch;\n      align-content: stretch;\n  font-family: 'Noto Serif', serif;\n  position: relative;\n}\n.time-container[data-v-489db159] {\n  height: 100px;\n  width: 100px;\n  border-radius: 50%;\n  background-color: #22313F;\n  position: absolute;\n  top: calc(50% - 50px);\n  left: calc(50% - 50px);\n  line-height: 95px;\n  text-align: center;\n  border: 5px solid #fffcff;\n  color: #fffcff;\n  border-right-color: #303036;\n  border-bottom-color: #303036;\n  -webkit-transform: rotate(-45deg);\n          transform: rotate(-45deg);\n}\n.time-container p[data-v-489db159] {\n    -webkit-transform: rotate(45deg);\n            transform: rotate(45deg);\n    font-size: 1.4rem;\n    font-family: 'Noto Sans', sans-serif;\n}\n", ""]);
 
 /***/ }),
 /* 52 */
@@ -6387,7 +6387,7 @@ exports.push([module.i, "\n.card[data-v-48e681a0] {\n  margin-top: 22px;\n}\n", 
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(2)();
-exports.push([module.i, "\n.menu[data-v-ed69d78e] {\n  position: fixed;\n  top: 0;\n  left: -300px;\n  width: 300px;\n  height: 100%;\n  padding: 50px 30px;\n  box-sizing: border-box;\n  transition: all 0.3s ease-in;\n  text-align: center;\n  background-color: #fffcff;\n}\n.menu .brand[data-v-ed69d78e] {\n    height: 46px;\n    font-size: 53px;\n    font-weight: 900;\n    line-height: .6;\n    color: #303036;\n}\n.menu ul[data-v-ed69d78e] {\n    padding: 0;\n    margin-top: 30px;\n    list-style: none;\n}\n.menu ul li a[data-v-ed69d78e] {\n      display: block;\n      font-weight: 900;\n      line-height: 50px;\n      transition: all 0.3s ease;\n      text-decoration: none;\n      text-transform: uppercase;\n      color: #303036;\n      border-top: 1px solid #e4e4e7;\n}\n.menu ul li a[data-v-ed69d78e]:hover {\n        letter-spacing: 1px;\n}\n.menu ul li[data-v-ed69d78e]:last-child {\n      border-bottom: 1px solid #e4e4e7;\n}\n.page-container.open .menu[data-v-ed69d78e] {\n  left: 0;\n}\n.page-container.open .page-wrap[data-v-ed69d78e] {\n  margin-left: 300px;\n}\n.page-container.open .menu-toggle-btn[data-v-ed69d78e]:before,\n.page-container.open .menu-toggle-btn[data-v-ed69d78e]:after {\n  -webkit-transform: rotate(45deg);\n  transform: rotate(45deg);\n}\n.page-wrap[data-v-ed69d78e] {\n  padding: 50px;\n  box-sizing: border-box;\n  transition: all 0.3s ease-in;\n}\n.menu-toggle-btn[data-v-ed69d78e] {\n  position: relative;\n  width: 51px;\n  height: 51px;\n  cursor: pointer;\n  border: none;\n  border-radius: 50px;\n  background: #fffcff;\n  transition: -webkit-transform 0.3s ease-out;\n  transition: transform 0.3s ease-out;\n  transition: transform 0.3s ease-out, -webkit-transform 0.3s ease-out;\n}\n.menu-toggle-btn[data-v-ed69d78e]:hover {\n    -webkit-transform: scale(1.1);\n    transform: scale(1.1);\n}\n.menu-toggle-btn[data-v-ed69d78e]:focus {\n    outline: none;\n}\n.menu-toggle-btn[data-v-ed69d78e]:before, .menu-toggle-btn[data-v-ed69d78e]:after {\n    position: absolute;\n    content: \"\";\n    transition: all 0.5s ease;\n    background-color: #303036;\n}\n.menu-toggle-btn[data-v-ed69d78e]:before {\n    top: 12px;\n    left: 25px;\n    width: 1px;\n    height: 27px;\n}\n.menu-toggle-btn[data-v-ed69d78e]:after {\n    top: 25px;\n    left: 12px;\n    width: 27px;\n    height: 1px;\n}\n", ""]);
+exports.push([module.i, "\n.menu[data-v-ed69d78e] {\n  position: fixed;\n  top: 0;\n  left: -300px;\n  width: 300px;\n  height: 100%;\n  padding: 50px 30px;\n  box-sizing: border-box;\n  transition: all 0.3s ease-in;\n  text-align: center;\n  background-color: #fffcff;\n}\n.menu .brand[data-v-ed69d78e] {\n    height: 46px;\n    font-size: 53px;\n    font-weight: 900;\n    line-height: .6;\n    color: #303036;\n}\n.menu ul[data-v-ed69d78e] {\n    padding: 0;\n    margin-top: 30px;\n    list-style: none;\n}\n.menu ul li a[data-v-ed69d78e] {\n      display: block;\n      font-weight: 900;\n      line-height: 50px;\n      transition: all 0.3s ease;\n      text-decoration: none;\n      text-transform: uppercase;\n      color: #303036;\n      border-top: 1px solid #e4e4e7;\n}\n.menu ul li a[data-v-ed69d78e]:hover {\n        letter-spacing: 1px;\n}\n.menu ul li[data-v-ed69d78e]:last-child {\n      border-bottom: 1px solid #e4e4e7;\n}\n.page-container.open .menu[data-v-ed69d78e] {\n  left: 0;\n}\n.page-container.open .page-wrap[data-v-ed69d78e] {\n  margin-left: 300px;\n}\n.page-container.open .menu-toggle-btn[data-v-ed69d78e]:before,\n.page-container.open .menu-toggle-btn[data-v-ed69d78e]:after {\n  -webkit-transform: rotate(45deg);\n  transform: rotate(45deg);\n}\n.page-wrap[data-v-ed69d78e] {\n  box-sizing: border-box;\n  transition: all 0.3s ease-in;\n}\n.menu-toggle-btn[data-v-ed69d78e] {\n  position: absolute;\n  width: 51px;\n  height: 51px;\n  margin: 50px;\n  z-index: 2;\n  cursor: pointer;\n  border: none;\n  border-radius: 50px;\n  background: #fffcff;\n  transition: -webkit-transform 0.3s ease-out;\n  transition: transform 0.3s ease-out;\n  transition: transform 0.3s ease-out, -webkit-transform 0.3s ease-out;\n}\n.menu-toggle-btn[data-v-ed69d78e]:hover {\n    -webkit-transform: scale(1.1);\n    transform: scale(1.1);\n}\n.menu-toggle-btn[data-v-ed69d78e]:focus {\n    outline: none;\n}\n.menu-toggle-btn[data-v-ed69d78e]:before, .menu-toggle-btn[data-v-ed69d78e]:after {\n    position: absolute;\n    content: \"\";\n    transition: all 0.5s ease;\n    background-color: #303036;\n}\n.menu-toggle-btn[data-v-ed69d78e]:before {\n    top: 12px;\n    left: 25px;\n    width: 1px;\n    height: 27px;\n}\n.menu-toggle-btn[data-v-ed69d78e]:after {\n    top: 25px;\n    left: 12px;\n    width: 27px;\n    height: 1px;\n}\n", ""]);
 
 /***/ }),
 /* 54 */
@@ -38860,7 +38860,7 @@ var Component = __webpack_require__(1)(
   /* cssModules */
   null
 )
-Component.options.__file = "/Users/brenda/Sites/typonaut/resources/assets/js/components/Countdown.vue"
+Component.options.__file = "/Users/joosep/Code/typonaut/resources/assets/js/components/Countdown.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Countdown.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -38898,7 +38898,7 @@ var Component = __webpack_require__(1)(
   /* cssModules */
   null
 )
-Component.options.__file = "/Users/brenda/Sites/typonaut/resources/assets/js/components/Example.vue"
+Component.options.__file = "/Users/joosep/Code/typonaut/resources/assets/js/components/Example.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Example.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -38936,7 +38936,7 @@ var Component = __webpack_require__(1)(
   /* cssModules */
   null
 )
-Component.options.__file = "/Users/brenda/Sites/typonaut/resources/assets/js/components/Game.vue"
+Component.options.__file = "/Users/joosep/Code/typonaut/resources/assets/js/components/Game.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Game.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -38970,7 +38970,7 @@ var Component = __webpack_require__(1)(
   /* cssModules */
   null
 )
-Component.options.__file = "/Users/brenda/Sites/typonaut/resources/assets/js/components/Lobby.vue"
+Component.options.__file = "/Users/joosep/Code/typonaut/resources/assets/js/components/Lobby.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Lobby.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -39008,7 +39008,7 @@ var Component = __webpack_require__(1)(
   /* cssModules */
   null
 )
-Component.options.__file = "/Users/brenda/Sites/typonaut/resources/assets/js/components/Modal.vue"
+Component.options.__file = "/Users/joosep/Code/typonaut/resources/assets/js/components/Modal.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Modal.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -39046,7 +39046,7 @@ var Component = __webpack_require__(1)(
   /* cssModules */
   null
 )
-Component.options.__file = "/Users/brenda/Sites/typonaut/resources/assets/js/components/NestedNavItem.vue"
+Component.options.__file = "/Users/joosep/Code/typonaut/resources/assets/js/components/NestedNavItem.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] NestedNavItem.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -39084,7 +39084,7 @@ var Component = __webpack_require__(1)(
   /* cssModules */
   null
 )
-Component.options.__file = "/Users/brenda/Sites/typonaut/resources/assets/js/components/Page.vue"
+Component.options.__file = "/Users/joosep/Code/typonaut/resources/assets/js/components/Page.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Page.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -39122,7 +39122,7 @@ var Component = __webpack_require__(1)(
   /* cssModules */
   null
 )
-Component.options.__file = "/Users/brenda/Sites/typonaut/resources/assets/js/components/PlayFullScreen.vue"
+Component.options.__file = "/Users/joosep/Code/typonaut/resources/assets/js/components/PlayFullScreen.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] PlayFullScreen.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -39160,7 +39160,7 @@ var Component = __webpack_require__(1)(
   /* cssModules */
   null
 )
-Component.options.__file = "/Users/brenda/Sites/typonaut/resources/assets/js/components/PlayHalfScreen.vue"
+Component.options.__file = "/Users/joosep/Code/typonaut/resources/assets/js/components/PlayHalfScreen.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] PlayHalfScreen.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -39198,7 +39198,7 @@ var Component = __webpack_require__(1)(
   /* cssModules */
   null
 )
-Component.options.__file = "/Users/brenda/Sites/typonaut/resources/assets/js/components/Spinner.vue"
+Component.options.__file = "/Users/joosep/Code/typonaut/resources/assets/js/components/Spinner.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Spinner.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -39232,7 +39232,7 @@ var Component = __webpack_require__(1)(
   /* cssModules */
   null
 )
-Component.options.__file = "/Users/brenda/Sites/typonaut/resources/assets/js/components/UserEntry.vue"
+Component.options.__file = "/Users/joosep/Code/typonaut/resources/assets/js/components/UserEntry.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] UserEntry.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -39266,7 +39266,7 @@ var Component = __webpack_require__(1)(
   /* cssModules */
   null
 )
-Component.options.__file = "/Users/brenda/Sites/typonaut/resources/assets/js/components/UserList.vue"
+Component.options.__file = "/Users/joosep/Code/typonaut/resources/assets/js/components/UserList.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] UserList.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -39339,13 +39339,13 @@ if (false) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
-    staticClass: "container mt-5"
+    staticClass: "container"
   }, [_c('div', {
     staticClass: "row justify-content-center"
   }, [_c('div', {
     staticClass: "col-md-8"
   }, [_c('div', {
-    staticClass: "card mt-5 dark-card"
+    staticClass: "card mt-7 dark-card"
   }, [_c('div', {
     staticClass: "card-header with-badge"
   }, [_vm._v("\n                    Lobby\n                    "), _c('span', {
@@ -39987,7 +39987,7 @@ module.exports = function listToStyles (parentId, list) {
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(global) {/*!
- * Vue.js v2.3.0
+ * Vue.js v2.3.2
  * (c) 2014-2017 Evan You
  * Released under the MIT License.
  */
@@ -40025,24 +40025,24 @@ function isObject (obj) {
   return obj !== null && typeof obj === 'object'
 }
 
-var toString = Object.prototype.toString;
+var _toString = Object.prototype.toString;
 
 /**
  * Strict object type check. Only returns true
  * for plain JavaScript objects.
  */
 function isPlainObject (obj) {
-  return toString.call(obj) === '[object Object]'
+  return _toString.call(obj) === '[object Object]'
 }
 
 function isRegExp (v) {
-  return toString.call(v) === '[object RegExp]'
+  return _toString.call(v) === '[object RegExp]'
 }
 
 /**
  * Convert a value to a string that is actually rendered.
  */
-function _toString (val) {
+function toString (val) {
   return val == null
     ? ''
     : typeof val === 'object'
@@ -40403,9 +40403,11 @@ function parsePath (path) {
   }
 }
 
+/*  */
+
 var warn = noop;
 var tip = noop;
-var formatComponentName;
+var formatComponentName = (null); // work around flow check
 
 if (true) {
   var hasConsole = typeof console !== 'undefined';
@@ -40493,6 +40495,8 @@ if (true) {
     }
   };
 }
+
+/*  */
 
 function handleError (err, vm, info) {
   if (config.errorHandler) {
@@ -41506,6 +41510,8 @@ function isType (type, fn) {
   return false
 }
 
+/*  */
+
 var mark;
 var measure;
 
@@ -41902,7 +41908,7 @@ function normalizeArrayChildren (children, nestedIndex) {
       res.push.apply(res, normalizeArrayChildren(c, ((nestedIndex || '') + "_" + i)));
     } else if (isPrimitive(c)) {
       if (isDef(last) && isDef(last.text)) {
-        (last).text += String(c);
+        last.text += String(c);
       } else if (c !== '') {
         // convert primitive to vnode
         res.push(createTextVNode(c));
@@ -41913,7 +41919,7 @@ function normalizeArrayChildren (children, nestedIndex) {
       } else {
         // default key for nested array children (likely generated by v-for)
         if (isDef(c.tag) && isUndef(c.key) && isDef(nestedIndex)) {
-          c.key = "__vlist" + ((nestedIndex)) + "_" + i + "__";
+          c.key = "__vlist" + nestedIndex + "_" + i + "__";
         }
         res.push(c);
       }
@@ -43263,7 +43269,7 @@ function createFunctionalComponent (
   var propOptions = Ctor.options.props;
   if (isDef(propOptions)) {
     for (var key in propOptions) {
-      props[key] = validateProp(key, propOptions, propsData);
+      props[key] = validateProp(key, propOptions, propsData || {});
     }
   } else {
     if (isDef(data.attrs)) { mergeProps(props, data.attrs); }
@@ -43284,6 +43290,7 @@ function createFunctionalComponent (
   });
   if (vnode instanceof VNode) {
     vnode.functionalContext = context;
+    vnode.functionalOptions = Ctor.options;
     if (data.slot) {
       (vnode.data || (vnode.data = {})).slot = data.slot;
     }
@@ -43592,7 +43599,7 @@ function _createElement (
     // direct component options / constructor
     vnode = createComponent(tag, data, context, children);
   }
-  if (vnode !== undefined) {
+  if (isDef(vnode)) {
     if (ns) { applyNS(vnode, ns); }
     return vnode
   } else {
@@ -43606,7 +43613,7 @@ function applyNS (vnode, ns) {
     // use default namespace inside foreignObject
     return
   }
-  if (Array.isArray(vnode.children)) {
+  if (isDef(vnode.children)) {
     for (var i = 0, l = vnode.children.length; i < l; i++) {
       var child = vnode.children[i];
       if (isDef(child.tag) && isUndef(child.ns)) {
@@ -43890,7 +43897,7 @@ function renderMixin (Vue) {
   // code size.
   Vue.prototype._o = markOnce;
   Vue.prototype._n = toNumber;
-  Vue.prototype._s = _toString;
+  Vue.prototype._s = toString;
   Vue.prototype._l = renderList;
   Vue.prototype._t = renderSlot;
   Vue.prototype._q = looseEqual;
@@ -44372,7 +44379,13 @@ Object.defineProperty(Vue$3.prototype, '$isServer', {
   get: isServerRendering
 });
 
-Vue$3.version = '2.3.0';
+Object.defineProperty(Vue$3.prototype, '$ssrContext', {
+  get: function get () {
+    return this.$vnode.ssrContext
+  }
+});
+
+Vue$3.version = '2.3.2';
 
 /*  */
 
@@ -46175,7 +46188,7 @@ function updateDOMProps (oldVnode, vnode) {
       // non-string values will be stringified
       elm._value = cur;
       // avoid resetting cursor position when value is the same
-      var strCur = cur == null ? '' : String(cur);
+      var strCur = isUndef(cur) ? '' : String(cur);
       if (shouldUpdateValue(elm, vnode, strCur)) {
         elm.value = strCur;
       }
@@ -46627,24 +46640,23 @@ function enter (vnode, toggleDisplay) {
     return
   }
 
-  var ref = (data);
-  var css = ref.css;
-  var type = ref.type;
-  var enterClass = ref.enterClass;
-  var enterToClass = ref.enterToClass;
-  var enterActiveClass = ref.enterActiveClass;
-  var appearClass = ref.appearClass;
-  var appearToClass = ref.appearToClass;
-  var appearActiveClass = ref.appearActiveClass;
-  var beforeEnter = ref.beforeEnter;
-  var enter = ref.enter;
-  var afterEnter = ref.afterEnter;
-  var enterCancelled = ref.enterCancelled;
-  var beforeAppear = ref.beforeAppear;
-  var appear = ref.appear;
-  var afterAppear = ref.afterAppear;
-  var appearCancelled = ref.appearCancelled;
-  var duration = ref.duration;
+  var css = data.css;
+  var type = data.type;
+  var enterClass = data.enterClass;
+  var enterToClass = data.enterToClass;
+  var enterActiveClass = data.enterActiveClass;
+  var appearClass = data.appearClass;
+  var appearToClass = data.appearToClass;
+  var appearActiveClass = data.appearActiveClass;
+  var beforeEnter = data.beforeEnter;
+  var enter = data.enter;
+  var afterEnter = data.afterEnter;
+  var enterCancelled = data.enterCancelled;
+  var beforeAppear = data.beforeAppear;
+  var appear = data.appear;
+  var afterAppear = data.afterAppear;
+  var appearCancelled = data.appearCancelled;
+  var duration = data.duration;
 
   // activeInstance will always be the <transition> component managing this
   // transition. One edge case to check is when the <transition> is placed
@@ -46776,18 +46788,17 @@ function leave (vnode, rm) {
     return
   }
 
-  var ref = (data);
-  var css = ref.css;
-  var type = ref.type;
-  var leaveClass = ref.leaveClass;
-  var leaveToClass = ref.leaveToClass;
-  var leaveActiveClass = ref.leaveActiveClass;
-  var beforeLeave = ref.beforeLeave;
-  var leave = ref.leave;
-  var afterLeave = ref.afterLeave;
-  var leaveCancelled = ref.leaveCancelled;
-  var delayLeave = ref.delayLeave;
-  var duration = ref.duration;
+  var css = data.css;
+  var type = data.type;
+  var leaveClass = data.leaveClass;
+  var leaveToClass = data.leaveToClass;
+  var leaveActiveClass = data.leaveActiveClass;
+  var beforeLeave = data.beforeLeave;
+  var leave = data.leave;
+  var afterLeave = data.afterLeave;
+  var leaveCancelled = data.leaveCancelled;
+  var delayLeave = data.delayLeave;
+  var duration = data.duration;
 
   var expectsCSS = css !== false && !isIE9;
   var userWantsControl = getHookArgumentsLength(leave);
@@ -46798,7 +46809,7 @@ function leave (vnode, rm) {
       : duration
   );
 
-  if ("development" !== 'production' && explicitLeaveDuration != null) {
+  if ("development" !== 'production' && isDef(explicitLeaveDuration)) {
     checkDuration(explicitLeaveDuration, 'leave', vnode);
   }
 
@@ -46835,7 +46846,7 @@ function leave (vnode, rm) {
     }
     // record leaving element
     if (!vnode.data.show) {
-      (el.parentNode._pending || (el.parentNode._pending = {}))[vnode.key] = vnode;
+      (el.parentNode._pending || (el.parentNode._pending = {}))[(vnode.key)] = vnode;
     }
     beforeLeave && beforeLeave(el);
     if (expectsCSS) {

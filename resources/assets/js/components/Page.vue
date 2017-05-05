@@ -116,17 +116,18 @@
     }
 
     .page-wrap {
-        padding: 50px;
         @include box-sizing(border-box);
 
         @include transition(all .3s ease-in);
     }
 
     .menu-toggle-btn {
-        position: relative;
+        position: absolute;
 
         width: 51px;
         height: 51px;
+        margin: 50px;
+        z-index: 2;
 
         cursor: pointer;
 

@@ -60,10 +60,10 @@
         justify-content: space-between;
         align-content: stretch;
         font-family: 'Noto Serif', serif;
+        position: relative;
     }
 
     .time-container {
-        align-self: center;
         height: 100px;
         width: 100px;
         border-radius: 50%;
