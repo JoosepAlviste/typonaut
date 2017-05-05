@@ -64,9 +64,9 @@
 }
 
 .dark-card {
-  background-color: transparent;
-  color: #fffcff;
-  border-color: #fffcff;
+  background-color: #181818;
+  color: #fdfcfc;
+  border-color: #181818;
   font-family: "Noto Sans", sans-serif;
 
   .card-block {
@@ -75,7 +75,7 @@
 
   .card-header {
     background-color: transparent;
-    border-bottom-color: #fffcff;
+    border-bottom-color: #0F0F0F;
   }
 
   .list-group-item {
@@ -83,7 +83,7 @@
   }
 
   .badge {
-    background-color: #fffcff;
-    color: #303036;
+    background-color: #fdfcfc;
+    color: #0a0a0a;
   }
 }
