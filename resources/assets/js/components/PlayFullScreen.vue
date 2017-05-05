@@ -1,10 +1,10 @@
 <template>
     <div class="play-container">
-        <play-half-screen side="player" :time="time"></play-half-screen>
+        <play-half-screen side="player" :time="time" :round="round" @answer-was-submitted="onAnswerSubmitted"></play-half-screen>
         <div class="time-container">
             <p>{{ time | formatTime }}</p>
         </div>
-        <play-half-screen side="opponent" :time="time"></play-half-screen>
+        <play-half-screen side="opponent" :time="time" :round="round"></play-half-screen>
     </div>
 </template>
 
@@ -14,7 +14,8 @@
     export default {
 
         props: {
-            time: { required: true }
+            time: { required: true },
+            round: { required: true },
         },
 
         filters: {
@@ -23,7 +24,13 @@
             }
         },
 
-        components: { PlayHalfScreen }
+        methods: {
+            onAnswerSubmitted(word) {
+                this.$emit('answer-was-submitted', word)
+            }
+        },
+
+        components: { PlayHalfScreen },
     }
 </script>
 

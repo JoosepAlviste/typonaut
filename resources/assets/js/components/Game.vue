@@ -1,6 +1,9 @@
 <template>
 
-    <play-full-screen :time="timeSeconds"></play-full-screen>
+    <play-full-screen :time="timeSeconds"
+                      :round="currentRound"
+                      @answer-was-submitted="handleAnswerSubmitted">
+    </play-full-screen>
 
 </template>
 
@@ -16,8 +19,15 @@
 
         data() {
             return {
-                timeSeconds: 0.000,
+                timeSeconds: 0.0,
                 timer: null,
+                currentRoundNr: 0,
+            }
+        },
+
+        computed: {
+            currentRound() {
+                return this.game.rounds[this.currentRoundNr]
             }
         },
 
@@ -39,8 +49,26 @@
 
             resetTimer() {
                 this.timer = null
-                this.timeSeconds = 0.000
-            }
+                this.timeSeconds = 0.0
+            },
+
+            nextRound() {
+                if (this.currentRoundNr + 1 === this.game.rounds.length) {
+                    return
+                }
+
+                this.currentRoundNr++
+            },
+
+            handleAnswerSubmitted(word) {
+                if (word !== this.currentRound.word) {
+                    // Wrong!
+                    return
+                }
+
+                // Submit request to server to save result
+                let time = this.timeSeconds
+            },
         },
 
         components: { PlayFullScreen }

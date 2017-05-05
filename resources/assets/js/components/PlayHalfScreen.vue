@@ -1,7 +1,12 @@
 <template>
     <div class="half-screen pt-5" :class="[ side ]">
-        <h1>Maakera</h1>
-        <input type="text" class="form-control form-control-lg word-input" name="word-input">
+        <h1>{{ round.word }}</h1>
+        <input type="text"
+               class="form-control form-control-lg word-input"
+               name="word-input"
+               v-model="typed"
+               :disabled="side === 'opponent'"
+               @keydown.enter="onEnterPressed">
     </div>
 </template>
 
@@ -9,7 +14,25 @@
     export default {
         props: {
             side: { required: true },
+            round: { required: true },
         },
+
+        data() {
+            return {
+                typed: '',
+            }
+        },
+
+        methods: {
+            onEnterPressed(e) {
+                if (this.round.word !== this.typed) {
+                    // Incorrect word
+                    return
+                }
+
+                this.$emit('answer-was-submitted', this.typed)
+            }
+        }
     }
 </script>
 
