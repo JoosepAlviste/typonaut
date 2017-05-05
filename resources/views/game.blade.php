@@ -2,6 +2,6 @@
 
 @section ('content')
 
-    <game></game>
+    <game :game="{{ $game->toJson() }}"></game>
 
 @endsection

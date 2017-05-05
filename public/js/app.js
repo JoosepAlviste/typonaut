@@ -2108,8 +2108,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    data: function data() {
 
+    props: {
+        game: { required: true }
+    },
+
+    data: function data() {
         return {
             timeSeconds: 0.000,
             timer: null

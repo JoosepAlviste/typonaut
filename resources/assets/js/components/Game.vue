@@ -10,8 +10,11 @@
 
     export default {
 
-        data() {
+        props: {
+            game: { required: true },
+        },
 
+        data() {
             return {
                 timeSeconds: 0.000,
                 timer: null,

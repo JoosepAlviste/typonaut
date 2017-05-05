@@ -14,7 +14,8 @@ class PagesController extends Controller
 
     public function game(Game $game)
     {
-        $game->load('rounds');
+        $game->load(['rounds', 'playerOne', 'playerTwo']);
+        $game->setHidden(['player_one_id', 'player_two_id', 'game_id']);
 
         return view('game', [
             'game' => $game,
