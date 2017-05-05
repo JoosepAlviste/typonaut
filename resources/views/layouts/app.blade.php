@@ -8,6 +8,8 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
+    <link rel="icon" href="{{ asset('favicon.ico') }}">
+
     <title>{{ config('app.name', 'Typonaut') }}</title>
 
     <!-- Styles -->
