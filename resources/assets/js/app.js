@@ -23,6 +23,7 @@ import Lobby from './components/Lobby.vue'
 import Modal from './components/Modal.vue'
 import Spinner from './components/Spinner.vue'
 import Game from './components/Game.vue'
+import Countdown from './components/Countdown.vue'
 
 const app = new Vue({
     el: '#app',
@@ -100,5 +101,5 @@ const app = new Vue({
         })
     },
 
-    components: { Lobby, Modal, Spinner, Game },
+    components: { Lobby, Modal, Spinner, Game, Countdown },
 });
