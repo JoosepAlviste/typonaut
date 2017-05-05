@@ -68,14 +68,17 @@
   color: #fdfcfc;
   border-color: #181818;
   font-family: "Noto Sans", sans-serif;
+  border-radius: 0;
 
   .card-block {
     background-color: transparent;
+    border-radius: 0;
   }
 
   .card-header {
     background-color: transparent;
     border-bottom-color: #0F0F0F;
+    border-radius: 0;
   }
 
   .list-group-item {
@@ -89,5 +92,9 @@
 }
 
 .hidden {
-  display: none;
+  display: none !important;
+}
+
+.menu {
+  font-family: 'Noto Serif', serif;
 }

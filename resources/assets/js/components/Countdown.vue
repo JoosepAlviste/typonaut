@@ -1,7 +1,7 @@
 <template>
 
-    <div class="countdown-container">
-        <h1 class="pulsate" :class="{ hidden: !timerOn }">{{ timeSeconds }}</h1>
+    <div class="countdown-container" :class="{ hidden: !timerOn }">
+        <h1 class="pulsate">{{ timeSeconds }}</h1>
     </div>
 
 </template>
