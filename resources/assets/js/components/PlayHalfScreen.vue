@@ -1,11 +1,7 @@
 <template>
-    <div class="half-screen" :class="[ side ]">
+    <div class="half-screen pt-5" :class="[ side ]">
         <h1>Maakera</h1>
         <input type="text" class="form-control form-control-lg word-input" name="word-input">
-        <div class="time-container">
-            <h4>{{ timeText }}</h4>
-            <h4 class="time-span">{{ time | formatTime }}</h4>
-        </div>
     </div>
 </template>
 
@@ -13,54 +9,45 @@
     export default {
         props: {
             side: { required: true },
-            time: { required: true },
         },
-
-        computed: {
-            timeText() {
-                if (this.side == 'player') {
-                    return 'Your time:'
-                } else {
-                    return 'Opponent time:'
-                }
-            }
-        },
-
-        filters: {
-            formatTime(time) {
-                return Math.round(time*10)/10
-            }
-        }
     }
 </script>
 
 <style lang="scss" scoped>
 
     .half-screen {
-        height: 90vh;
+        height: 100vh;
         width: 100%;
         display: flex;
         flex-direction: column;
         align-items: center;
-        justify-content: space-around;
-        color: #ffffff;
+        justify-content: center;
 
         &.player {
-            background-color: #44e5e7;
+            background-color: #303036;
+            color: #fffcff;
         }
 
         &.opponent {
-            background-color: #5c7aff;
+            background-color: #fffcff;
+            color: #303036;
+        }
+
+        h1 {
+            flex: 0.35;
         }
     }
 
     .word-input {
-        width: 75%
+        width: 75%;
+
+        &:focus {
+            border-color: #48d1cc;
+        }
     }
 
     .time-container {
         text-align: center;
     }
-
 
 </style>
