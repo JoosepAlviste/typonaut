@@ -2,10 +2,10 @@
     <div class="container mt-5">
         <div class="row justify-content-center">
             <div class="col-md-8">
-                <div class="card">
+                <div class="card mt-5 dark-card">
                     <div class="card-header with-badge">
                         Lobby
-                        <span class="badge badge-pill badge-info float-right">{{ usersInLobby.length }}</span>
+                        <span class="badge badge-pill float-right">{{ usersInLobby.length }}</span>
                     </div>
 
                     <div class="card-block lobby-block">
