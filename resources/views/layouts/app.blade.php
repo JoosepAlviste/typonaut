@@ -23,9 +23,16 @@
 </head>
 <body>
     <div id="app">
-        @include('layouts.nav')
 
-        @yield('content')
+        <page>
+
+            <template slot="navigation">
+                @include('layouts.nav_side')
+            </template>
+
+            @yield('content')
+
+        </page>
 
         <modal :show="modal.show"
                :title="modal.title"
@@ -35,7 +42,6 @@
                v-on:primary-clicked="handlePrimaryClick"
                v-on:secondary-clicked="handleSecondaryClick">
         </modal>
-
         <spinner :show="spinner.show"
                  :text="spinner.text">
         </spinner>

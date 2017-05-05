@@ -1112,6 +1112,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_Spinner_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__components_Spinner_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_Game_vue__ = __webpack_require__(54);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_Game_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__components_Game_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_Page_vue__ = __webpack_require__(84);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_Page_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__components_Page_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_NestedNavItem_vue__ = __webpack_require__(89);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_NestedNavItem_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__components_NestedNavItem_vue__);
 
 /**
  * First we will load all of this project's JavaScript dependencies which
@@ -1132,6 +1136,8 @@ window.Events = new Vue();
  */
 
 Vue.component('example', __webpack_require__(53));
+
+
 
 
 
@@ -1214,7 +1220,7 @@ var app = new Vue({
     },
 
 
-    components: { Lobby: __WEBPACK_IMPORTED_MODULE_0__components_Lobby_vue___default.a, Modal: __WEBPACK_IMPORTED_MODULE_1__components_Modal_vue___default.a, Spinner: __WEBPACK_IMPORTED_MODULE_2__components_Spinner_vue___default.a, Game: __WEBPACK_IMPORTED_MODULE_3__components_Game_vue___default.a }
+    components: { Lobby: __WEBPACK_IMPORTED_MODULE_0__components_Lobby_vue___default.a, Modal: __WEBPACK_IMPORTED_MODULE_1__components_Modal_vue___default.a, Spinner: __WEBPACK_IMPORTED_MODULE_2__components_Spinner_vue___default.a, Game: __WEBPACK_IMPORTED_MODULE_3__components_Game_vue___default.a, Page: __WEBPACK_IMPORTED_MODULE_4__components_Page_vue___default.a, NestedNavItem: __WEBPACK_IMPORTED_MODULE_5__components_NestedNavItem_vue___default.a }
 });
 
 /***/ }),
@@ -49191,6 +49197,309 @@ module.exports = function(module) {
 __webpack_require__(11);
 module.exports = __webpack_require__(12);
 
+
+/***/ }),
+/* 81 */,
+/* 82 */,
+/* 83 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    data: function data() {
+        return {
+            is_menu_open: false
+        };
+    },
+
+
+    computed: {
+        pageContainerClass: function pageContainerClass() {
+            return this.is_menu_open ? 'open' : '';
+        }
+    },
+
+    methods: {
+        handleMenuToggleClicked: function handleMenuToggleClicked() {
+            this.is_menu_open = !this.is_menu_open;
+        }
+    }
+});
+
+/***/ }),
+/* 84 */
+/***/ (function(module, exports, __webpack_require__) {
+
+
+/* styles */
+__webpack_require__(87)
+
+var Component = __webpack_require__(1)(
+  /* script */
+  __webpack_require__(83),
+  /* template */
+  __webpack_require__(85),
+  /* scopeId */
+  "data-v-ed69d78e",
+  /* cssModules */
+  null
+)
+Component.options.__file = "/Users/joosep/Code/typonaut/resources/assets/js/components/Page.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] Page.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-ed69d78e", Component.options)
+  } else {
+    hotAPI.reload("data-v-ed69d78e", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 85 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "page-container",
+    class: [_vm.pageContainerClass]
+  }, [_vm._t("navigation"), _vm._v(" "), _c('div', {
+    staticClass: "page-wrap"
+  }, [_c('button', {
+    staticClass: "menu-toggle-btn",
+    on: {
+      "click": _vm.handleMenuToggleClicked
+    }
+  }), _vm._v(" "), _c('div', {
+    staticClass: "page-content-container"
+  }, [_vm._t("default")], 2)])], 2)
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-ed69d78e", module.exports)
+  }
+}
+
+/***/ }),
+/* 86 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(2)();
+exports.push([module.i, "\n.menu[data-v-ed69d78e] {\n  position: fixed;\n  top: 0;\n  left: -300px;\n  width: 300px;\n  height: 100%;\n  padding: 50px 30px;\n  box-sizing: border-box;\n  transition: all 0.3s ease-in;\n  text-align: center;\n  background-color: #fffcff;\n}\n.menu .brand[data-v-ed69d78e] {\n    height: 46px;\n    font-size: 53px;\n    font-weight: 900;\n    line-height: .6;\n    color: #303036;\n}\n.menu ul[data-v-ed69d78e] {\n    padding: 0;\n    margin-top: 30px;\n    list-style: none;\n}\n.menu ul li a[data-v-ed69d78e] {\n      display: block;\n      font-weight: 900;\n      line-height: 50px;\n      transition: all 0.3s ease;\n      text-decoration: none;\n      text-transform: uppercase;\n      color: #303036;\n      border-top: 1px solid #e4e4e7;\n}\n.menu ul li a[data-v-ed69d78e]:hover {\n        letter-spacing: 1px;\n}\n.menu ul li[data-v-ed69d78e]:last-child {\n      border-bottom: 1px solid #e4e4e7;\n}\n.page-container.open .menu[data-v-ed69d78e] {\n  left: 0;\n}\n.page-container.open .page-wrap[data-v-ed69d78e] {\n  margin-left: 300px;\n}\n.page-container.open .menu-toggle-btn[data-v-ed69d78e]:before,\n.page-container.open .menu-toggle-btn[data-v-ed69d78e]:after {\n  -webkit-transform: rotate(45deg);\n  transform: rotate(45deg);\n}\n.page-wrap[data-v-ed69d78e] {\n  padding: 50px;\n  box-sizing: border-box;\n  transition: all 0.3s ease-in;\n}\n.menu-toggle-btn[data-v-ed69d78e] {\n  position: relative;\n  width: 51px;\n  height: 51px;\n  cursor: pointer;\n  border: none;\n  border-radius: 50px;\n  background: #fffcff;\n  transition: -webkit-transform 0.3s ease-out;\n  transition: transform 0.3s ease-out;\n  transition: transform 0.3s ease-out, -webkit-transform 0.3s ease-out;\n}\n.menu-toggle-btn[data-v-ed69d78e]:hover {\n    -webkit-transform: scale(1.1);\n    transform: scale(1.1);\n}\n.menu-toggle-btn[data-v-ed69d78e]:focus {\n    outline: none;\n}\n.menu-toggle-btn[data-v-ed69d78e]:before, .menu-toggle-btn[data-v-ed69d78e]:after {\n    position: absolute;\n    content: \"\";\n    transition: all 0.5s ease;\n    background-color: #303036;\n}\n.menu-toggle-btn[data-v-ed69d78e]:before {\n    top: 12px;\n    left: 25px;\n    width: 1px;\n    height: 27px;\n}\n.menu-toggle-btn[data-v-ed69d78e]:after {\n    top: 25px;\n    left: 12px;\n    width: 27px;\n    height: 1px;\n}\n", ""]);
+
+/***/ }),
+/* 87 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(86);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(3)("825d3e56", content, false);
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"id\":\"data-v-ed69d78e\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/sass-loader/lib/loader.js!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Page.vue", function() {
+     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"id\":\"data-v-ed69d78e\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/sass-loader/lib/loader.js!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Page.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 88 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    data: function data() {
+        return {
+            is_open: false
+        };
+    }
+});
+
+/***/ }),
+/* 89 */
+/***/ (function(module, exports, __webpack_require__) {
+
+
+/* styles */
+__webpack_require__(92)
+
+var Component = __webpack_require__(1)(
+  /* script */
+  __webpack_require__(88),
+  /* template */
+  __webpack_require__(90),
+  /* scopeId */
+  "data-v-08b0e2a5",
+  /* cssModules */
+  null
+)
+Component.options.__file = "/Users/joosep/Code/typonaut/resources/assets/js/components/NestedNavItem.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] NestedNavItem.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-08b0e2a5", Component.options)
+  } else {
+    hotAPI.reload("data-v-08b0e2a5", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 90 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('li', {
+    staticClass: "nested-menu-item"
+  }, [_c('span', {
+    staticClass: "nested-nav-title",
+    on: {
+      "click": function($event) {
+        _vm.is_open = !_vm.is_open
+      }
+    }
+  }, [_c('span', {
+    staticClass: "title-container"
+  }, [_vm._t("title")], 2), _vm._v(" "), _c('span', {
+    staticClass: "nested-nav-arrow-container"
+  }, [_c('svg', {
+    staticClass: "nested-nav-arrow",
+    staticStyle: {
+      "enable-background": "new 0 0 444.819 444.819"
+    },
+    attrs: {
+      "width": "444.819px",
+      "height": "444.819px",
+      "viewBox": "0 0 444.819 444.819",
+      "xmlns": "http://www.w3.org/2000/svg",
+      "x": "0px",
+      "y": "0px"
+    }
+  }, [_c('g', [_c('path', {
+    attrs: {
+      "d": "M433.968,278.657L248.387,92.79c-7.419-7.044-16.08-10.566-25.977-10.566c-10.088,0-18.652,3.521-25.697,10.566\n                        L10.848,278.657C3.615,285.887,0,294.549,0,304.637c0,10.28,3.619,18.843,10.848,25.693l21.411,21.413\n                        c6.854,7.23,15.42,10.852,25.697,10.852c10.278,0,18.842-3.621,25.697-10.852L222.41,213.271L361.168,351.74\n                        c6.848,7.228,15.413,10.852,25.7,10.852c10.082,0,18.747-3.624,25.975-10.852l21.409-21.412\n                        c7.043-7.043,10.567-15.608,10.567-25.693C444.819,294.545,441.205,285.884,433.968,278.657z"
+    }
+  })])])])]), _vm._v(" "), _c('ul', {
+    staticClass: "submenu"
+  }, [_vm._t("default")], 2)])
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-08b0e2a5", module.exports)
+  }
+}
+
+/***/ }),
+/* 91 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(2)();
+exports.push([module.i, "\n.nested-nav-title[data-v-08b0e2a5] {\n  display: block;\n  font-weight: 900;\n  line-height: 50px;\n  text-decoration: none;\n  text-transform: uppercase;\n  color: #303036;\n  border-top: 1px solid #e4e4e7;\n  cursor: pointer;\n}\n.submenu[data-v-08b0e2a5] {\n  overflow: hidden;\n  max-height: 0;\n  transition: all 0.5s ease-out;\n  list-style: none;\n  padding-left: 0;\n  padding-bottom: 0;\n}\n.submenu li a[data-v-08b0e2a5] {\n    display: block;\n    font-weight: 500;\n    line-height: 40px;\n    transition: all 0.3s ease;\n    text-decoration: none;\n    text-transform: uppercase;\n    color: #303036;\n}\n.submenu li a[data-v-08b0e2a5]:hover {\n      letter-spacing: 1px;\n}\n.nested-menu-item:hover .submenu[data-v-08b0e2a5] {\n  display: block;\n  max-height: 200px;\n  padding-bottom: 10px;\n}\n.nested-menu-item:hover .nested-nav-arrow[data-v-08b0e2a5] {\n  -webkit-transform: rotate(0deg);\n  transform: rotate(0deg);\n}\n.nested-nav-arrow-container[data-v-08b0e2a5] {\n  margin-left: 8px;\n}\n.nested-nav-arrow-container .nested-nav-arrow[data-v-08b0e2a5] {\n    width: 15px;\n    height: 12px;\n    -webkit-transform: rotate(180deg);\n    transform: rotate(180deg);\n    transition: -webkit-transform 0.3s ease-out;\n    transition: transform 0.3s ease-out;\n    transition: transform 0.3s ease-out, -webkit-transform 0.3s ease-out;\n}\n", ""]);
+
+/***/ }),
+/* 92 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(91);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(3)("0976d926", content, false);
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"id\":\"data-v-08b0e2a5\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/sass-loader/lib/loader.js!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./NestedNavItem.vue", function() {
+     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"id\":\"data-v-08b0e2a5\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/sass-loader/lib/loader.js!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./NestedNavItem.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
 
 /***/ })
 /******/ ]);
