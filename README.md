@@ -31,8 +31,13 @@ $ php artisan serve
 
 # Generate random data
 
-Copy this into `php artisan tinker`. Create 5 random games and give them players.
+```bash
+# Create users and games
+php artisan db:seed
 
-```
-factory('App\Game', 5)->create()->each(function ($g) { $users = factory('App\GamePlayer', 2)->create(['game_id' => $g->id]); $g->winner_id = $users->first()->id; $g->save(); });
+# Create users
+php artisan db:seed --class=UsersSeeder
+
+# Create games
+php artisan db:seed --class=GamesTableSeeder
 ```
