@@ -1,10 +1,23 @@
 <template>
     <div class="play-container">
-        <play-half-screen side="player" :time="time" :round="round" @answer-was-submitted="onAnswerSubmitted"></play-half-screen>
+
+        <play-half-screen side="player"
+                          :time="time"
+                          :round="round"
+                          @answer-was-submitted="onAnswerSubmitted"
+                          @typed="handleTyped">
+        </play-half-screen>
+
         <div class="time-container">
             <p>{{ time | formatTime }}</p>
         </div>
-        <play-half-screen side="opponent" :time="time" :round="round"></play-half-screen>
+
+        <play-half-screen side="opponent"
+                          :time="time"
+                          :round="round"
+                          :typed_word="opponent_typed">
+        </play-half-screen>
+
     </div>
 </template>
 
@@ -16,6 +29,7 @@
         props: {
             time: { required: true },
             round: { required: true },
+            opponent_typed: { required: true },
         },
 
         filters: {
@@ -27,6 +41,10 @@
         methods: {
             onAnswerSubmitted(word) {
                 this.$emit('answer-was-submitted', word)
+            },
+
+            handleTyped(word) {
+                this.$emit('typed', word)
             }
         },
 

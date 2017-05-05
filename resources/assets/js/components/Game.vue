@@ -2,7 +2,9 @@
 
     <play-full-screen :time="timeSeconds"
                       :round="currentRound"
-                      @answer-was-submitted="handleAnswerSubmitted">
+                      :opponent_typed="opponent_typed"
+                      @answer-was-submitted="handleAnswerSubmitted"
+                      @typed="handleTyped">
     </play-full-screen>
 
 </template>
@@ -22,6 +24,7 @@
                 timeSeconds: 0.0,
                 timer: null,
                 currentRoundNr: 0,
+                opponent_typed: '',
             }
         },
 
@@ -69,6 +72,33 @@
                 // Submit request to server to save result
                 let time = this.timeSeconds
             },
+
+            joinChannel() {
+                Echo.join('game.' + this.game.id)
+                    .here( (users) => {
+
+                    })
+                    .joining( (user) => {
+
+                    })
+                    .leaving( (user) => {
+
+                    })
+                    .listenForWhisper('typed', message => {
+                        this.opponent_typed = message.typed
+                    })
+            },
+
+            handleTyped(word) {
+                Echo.join('game.' + this.game.id)
+                    .whisper('typed', {
+                        typed: word
+                    })
+            }
+        },
+
+        mounted() {
+            this.joinChannel()
         },
 
         components: { PlayFullScreen }

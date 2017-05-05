@@ -2106,6 +2106,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 
 
@@ -2120,7 +2122,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         return {
             timeSeconds: 0.0,
             timer: null,
-            currentRoundNr: 0
+            currentRoundNr: 0,
+            opponent_typed: ''
         };
     },
 
@@ -2165,8 +2168,25 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             // Submit request to server to save result
             var time = this.timeSeconds;
+        },
+        joinChannel: function joinChannel() {
+            var _this2 = this;
+
+            Echo.join('game.' + this.game.id).here(function (users) {}).joining(function (user) {}).leaving(function (user) {}).listenForWhisper('typed', function (message) {
+                _this2.opponent_typed = message.typed;
+            });
+        },
+        handleTyped: function handleTyped(word) {
+            Echo.join('game.' + this.game.id).whisper('typed', {
+                typed: word
+            });
         }
     },
+
+    mounted: function mounted() {
+        this.joinChannel();
+    },
+
 
     components: { PlayFullScreen: __WEBPACK_IMPORTED_MODULE_0__PlayFullScreen_vue___default.a }
 });
@@ -2367,6 +2387,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -2374,7 +2407,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
     props: {
         time: { required: true },
-        round: { required: true }
+        round: { required: true },
+        opponent_typed: { required: true }
     },
 
     filters: {
@@ -2386,6 +2420,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     methods: {
         onAnswerSubmitted: function onAnswerSubmitted(word) {
             this.$emit('answer-was-submitted', word);
+        },
+        handleTyped: function handleTyped(word) {
+            this.$emit('typed', word);
         }
     },
 
@@ -2413,11 +2450,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
+
     props: {
         side: { required: true },
-        round: { required: true }
+        round: { required: true },
+        typed_word: { required: false, default: '' }
     },
 
     data: function data() {
@@ -2427,6 +2467,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
 
 
+    watch: {
+        typed_word: function typed_word() {
+            this.typed = this.typed_word;
+        }
+    },
+
     methods: {
         onEnterPressed: function onEnterPressed(e) {
             if (this.round.word !== this.typed) {
@@ -2435,6 +2481,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }
 
             this.$emit('answer-was-submitted', this.typed);
+        },
+        handleTyped: function handleTyped(e) {
+            this.$emit('typed', this.typed);
+        }
+    },
+
+    mounted: function mounted() {
+        if (this.typed_word.length > 0) {
+            this.typed = this.typed_word;
         }
     }
 });
@@ -39110,6 +39165,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "value": (_vm.typed)
     },
     on: {
+      "keyup": _vm.handleTyped,
       "keydown": function($event) {
         if (!('button' in $event) && _vm._k($event.keyCode, "enter", 13)) { return null; }
         _vm.onEnterPressed($event)
@@ -39137,10 +39193,12 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   return _c('play-full-screen', {
     attrs: {
       "time": _vm.timeSeconds,
-      "round": _vm.currentRound
+      "round": _vm.currentRound,
+      "opponent_typed": _vm.opponent_typed
     },
     on: {
-      "answer-was-submitted": _vm.handleAnswerSubmitted
+      "answer-was-submitted": _vm.handleAnswerSubmitted,
+      "typed": _vm.handleTyped
     }
   })
 },staticRenderFns: []}
@@ -39166,7 +39224,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "round": _vm.round
     },
     on: {
-      "answer-was-submitted": _vm.onAnswerSubmitted
+      "answer-was-submitted": _vm.onAnswerSubmitted,
+      "typed": _vm.handleTyped
     }
   }), _vm._v(" "), _c('div', {
     staticClass: "time-container"
@@ -39174,7 +39233,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "side": "opponent",
       "time": _vm.time,
-      "round": _vm.round
+      "round": _vm.round,
+      "typed_word": _vm.opponent_typed
     }
   })], 1)
 },staticRenderFns: []}

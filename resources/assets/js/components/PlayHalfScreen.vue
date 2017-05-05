@@ -8,6 +8,7 @@
                name="word-input"
                v-model="typed"
                :disabled="side === 'opponent'"
+               @keyup="handleTyped"
                @keydown.enter="onEnterPressed">
 
     </div>
@@ -15,14 +16,22 @@
 
 <script>
     export default {
+
         props: {
             side: { required: true },
             round: { required: true },
+            typed_word: { required: false, default: '' },
         },
 
         data() {
             return {
                 typed: '',
+            }
+        },
+
+        watch: {
+            typed_word() {
+                this.typed = this.typed_word
             }
         },
 
@@ -34,8 +43,18 @@
                 }
 
                 this.$emit('answer-was-submitted', this.typed)
+            },
+
+            handleTyped(e) {
+                this.$emit('typed', this.typed)
             }
-        }
+        },
+
+        mounted() {
+            if (this.typed_word.length > 0) {
+                this.typed = this.typed_word
+            }
+        },
     }
 </script>
 

@@ -23,11 +23,9 @@ Broadcast::channel('lobby', function ($user) {
 
 Broadcast::channel('game.{game_id}', function ($user, $game_id) {
 
-    $game = Game::with('players')->find($game_id);
-    foreach ($game->players as $player) {
-        if ($player->id === $user->id) {
-            return $user;
-        }
+    $game = Game::find($game_id);
+    if ($user->id === $game->player_one_id || $user->id === $game->player_two_id) {
+        return $user;
     }
 
     return false;
