@@ -1,4 +1,5 @@
 <nav class="menu" role="navigation">
+
     <div class="brand">
         <a href="/">
             <svg width="200px" height="50px" viewBox="0 0 200 50" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
@@ -10,8 +11,9 @@
             </svg>
         </a>
     </div>
+
     <ul>
-        {{--        <li><a href="{{ route('history') }}">History</a></li>--}}
+        <li><a href="{{ route('history') }}">History</a></li>
 
         @if (\Auth::guest())
 
