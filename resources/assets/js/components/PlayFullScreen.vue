@@ -67,7 +67,7 @@
         height: 100px;
         width: 100px;
         border-radius: 50%;
-        background-color: #22313F;
+        background-color: #303636;
         position: absolute;
         top:calc(50% - 50px);
         left:calc(50% - 50px);
@@ -75,8 +75,8 @@
         text-align: center;
         border: 5px solid #fffcff;
         color: #fffcff;
-        border-right-color: #303036;
-        border-bottom-color: #303036;
+        border-right-color: #0a0a0a;
+        border-bottom-color: #0a0a0a;
         transform: rotate(-45deg);
 
         p {

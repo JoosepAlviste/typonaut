@@ -1,17 +1,20 @@
 <template>
-
-    <play-full-screen :time="timeSeconds"
-                      :round="currentRound"
-                      :opponent_typed="opponent_typed"
-                      @answer-was-submitted="handleAnswerSubmitted"
-                      @typed="handleTyped">
-    </play-full-screen>
+    <div>
+        <play-full-screen :time="timeSeconds"
+                          :round="currentRound"
+                          :opponent_typed="opponent_typed"
+                          @answer-was-submitted="handleAnswerSubmitted"
+                          @typed="handleTyped">
+        </play-full-screen>
+        <game-score v-show="showResults" :completed_rounds="completed_rounds" :game="game"></game-score>
+    </div>
 
 </template>
 
 <script>
 
     import PlayFullScreen from './PlayFullScreen.vue'
+    import GameScore from './GameScore.vue'
 
     export default {
 
@@ -25,6 +28,8 @@
                 timer: null,
                 currentRoundNr: 0,
                 opponent_typed: '',
+                completed_rounds: [],
+                showResults: false, //change this somewhere
             }
         },
 
@@ -59,7 +64,7 @@
                 if (this.currentRoundNr + 1 === this.game.rounds.length) {
                     return
                 }
-
+                this.completed_rounds.push(this.game.rounds[this.currentRoundNr])
                 this.currentRoundNr++
             },
 
@@ -101,7 +106,7 @@
             this.joinChannel()
         },
 
-        components: { PlayFullScreen }
+        components: { PlayFullScreen, GameScore }
     }
 </script>
 

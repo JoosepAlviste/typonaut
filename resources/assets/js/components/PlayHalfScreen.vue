@@ -69,13 +69,13 @@
         justify-content: center;
 
         &.player {
-            background-color: #303036;
-            color: #fffcff;
+            background-color: #0a0a0a;
+            color: #fdfcfc;
         }
 
         &.opponent {
-            background-color: #fffcff;
-            color: #303036;
+            background-color: #fdfcfc;
+            color: #0a0a0a;
         }
 
         h1 {

@@ -2166,6 +2166,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__PlayFullScreen_vue__ = __webpack_require__(66);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__PlayFullScreen_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__PlayFullScreen_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__GameScore_vue__ = __webpack_require__(100);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__GameScore_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__GameScore_vue__);
 //
 //
 //
@@ -2177,6 +2179,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+
 
 
 
@@ -2192,8 +2197,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             timeSeconds: 0.0,
             timer: null,
             currentRoundNr: 0,
-            opponent_typed: ''
-        };
+            opponent_typed: '',
+            completed_rounds: [],
+            showResults: false };
     },
 
 
@@ -2226,7 +2232,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             if (this.currentRoundNr + 1 === this.game.rounds.length) {
                 return;
             }
-
+            this.completed_rounds.push(this.game.rounds[this.currentRoundNr]);
             this.currentRoundNr++;
         },
         handleAnswerSubmitted: function handleAnswerSubmitted(word) {
@@ -2257,7 +2263,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
 
 
-    components: { PlayFullScreen: __WEBPACK_IMPORTED_MODULE_0__PlayFullScreen_vue___default.a }
+    components: { PlayFullScreen: __WEBPACK_IMPORTED_MODULE_0__PlayFullScreen_vue___default.a, GameScore: __WEBPACK_IMPORTED_MODULE_1__GameScore_vue___default.a }
 });
 
 /***/ }),
@@ -2654,7 +2660,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
 //
 //
 //
@@ -6338,7 +6343,7 @@ exports.push([module.i, "\n.nested-nav-title[data-v-08b0e2a5] {\n  display: bloc
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(2)();
-exports.push([module.i, "\n.spinner-container[data-v-1a7f1f42] {\n  position: fixed;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  left: 0;\n  z-index: 1050;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n  -webkit-box-pack: center;\n      -ms-flex-pack: center;\n          justify-content: center;\n  background-color: rgba(255, 255, 255, 0.6);\n}\n.spinner-text[data-v-1a7f1f42] {\n  font-size: 1.5rem;\n}\n.spinner-content[data-v-1a7f1f42] {\n  color: #333333;\n}\n.spinner[data-v-1a7f1f42] {\n  margin: 0 auto 10%;\n  width: 70px;\n  text-align: center;\n}\n.spinner > div[data-v-1a7f1f42] {\n  width: 18px;\n  height: 18px;\n  background-color: #333;\n  border-radius: 100%;\n  display: inline-block;\n  -webkit-animation: sk-bouncedelay 1.4s infinite ease-in-out both;\n  animation: sk-bouncedelay 1.4s infinite ease-in-out both;\n}\n.spinner .bounce1[data-v-1a7f1f42] {\n  -webkit-animation-delay: -0.32s;\n  animation-delay: -0.32s;\n}\n.spinner .bounce2[data-v-1a7f1f42] {\n  -webkit-animation-delay: -0.16s;\n  animation-delay: -0.16s;\n}\n@-webkit-keyframes sk-bouncedelay {\n0%, 80%, 100% {\n    -webkit-transform: scale(0);\n}\n40% {\n    -webkit-transform: scale(1);\n}\n}\n@keyframes sk-bouncedelay {\n0%, 80%, 100% {\n    -webkit-transform: scale(0);\n    transform: scale(0);\n}\n40% {\n    -webkit-transform: scale(1);\n    transform: scale(1);\n}\n}\n", ""]);
+exports.push([module.i, "\n.spinner-container[data-v-1a7f1f42] {\n  position: fixed;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  left: 0;\n  z-index: 1050;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n  -webkit-box-pack: center;\n      -ms-flex-pack: center;\n          justify-content: center;\n  background-color: rgba(0, 0, 0, 0.7);\n}\n.spinner-text[data-v-1a7f1f42] {\n  font-size: 1.5rem;\n}\n.spinner-content[data-v-1a7f1f42] {\n  color: #fdfcfc;\n}\n.spinner[data-v-1a7f1f42] {\n  margin: 0 auto 10%;\n  width: 70px;\n  text-align: center;\n}\n.spinner > div[data-v-1a7f1f42] {\n  width: 18px;\n  height: 18px;\n  background-color: #fdfcfc;\n  border-radius: 100%;\n  display: inline-block;\n  -webkit-animation: sk-bouncedelay 1.4s infinite ease-in-out both;\n  animation: sk-bouncedelay 1.4s infinite ease-in-out both;\n}\n.spinner .bounce1[data-v-1a7f1f42] {\n  -webkit-animation-delay: -0.32s;\n  animation-delay: -0.32s;\n}\n.spinner .bounce2[data-v-1a7f1f42] {\n  -webkit-animation-delay: -0.16s;\n  animation-delay: -0.16s;\n}\n@-webkit-keyframes sk-bouncedelay {\n0%, 80%, 100% {\n    -webkit-transform: scale(0);\n}\n40% {\n    -webkit-transform: scale(1);\n}\n}\n@keyframes sk-bouncedelay {\n0%, 80%, 100% {\n    -webkit-transform: scale(0);\n    transform: scale(0);\n}\n40% {\n    -webkit-transform: scale(1);\n    transform: scale(1);\n}\n}\n", ""]);
 
 /***/ }),
 /* 47 */
@@ -6352,7 +6357,7 @@ exports.push([module.i, "\n.fade.show[data-v-2144fb1a] {\n  background-color: rg
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(2)();
-exports.push([module.i, "\n.half-screen[data-v-267edc06] {\n  height: 100vh;\n  width: 100%;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: column;\n          flex-direction: column;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n  -webkit-box-pack: center;\n      -ms-flex-pack: center;\n          justify-content: center;\n}\n.half-screen.player[data-v-267edc06] {\n    background-color: #303036;\n    color: #fffcff;\n}\n.half-screen.opponent[data-v-267edc06] {\n    background-color: #fffcff;\n    color: #303036;\n}\n.half-screen h1[data-v-267edc06] {\n    -webkit-box-flex: 0.35;\n        -ms-flex: 0.35;\n            flex: 0.35;\n}\n.word-input[data-v-267edc06] {\n  width: 75%;\n}\n.word-input[data-v-267edc06]:focus {\n    border-color: #48d1cc;\n}\n.time-container[data-v-267edc06] {\n  text-align: center;\n}\n", ""]);
+exports.push([module.i, "\n.half-screen[data-v-267edc06] {\n  height: 100vh;\n  width: 100%;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: column;\n          flex-direction: column;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n  -webkit-box-pack: center;\n      -ms-flex-pack: center;\n          justify-content: center;\n}\n.half-screen.player[data-v-267edc06] {\n    background-color: #0a0a0a;\n    color: #fdfcfc;\n}\n.half-screen.opponent[data-v-267edc06] {\n    background-color: #fdfcfc;\n    color: #0a0a0a;\n}\n.half-screen h1[data-v-267edc06] {\n    -webkit-box-flex: 0.35;\n        -ms-flex: 0.35;\n            flex: 0.35;\n}\n.word-input[data-v-267edc06] {\n  width: 75%;\n}\n.word-input[data-v-267edc06]:focus {\n    border-color: #48d1cc;\n}\n.time-container[data-v-267edc06] {\n  text-align: center;\n}\n", ""]);
 
 /***/ }),
 /* 49 */
@@ -6373,7 +6378,7 @@ exports.push([module.i, "\n.countdown-container[data-v-3e43f4f7] {\n  position: 
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(2)();
-exports.push([module.i, "\n.play-container[data-v-489db159] {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: horizontal;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: row;\n          flex-direction: row;\n  -webkit-box-pack: justify;\n      -ms-flex-pack: justify;\n          justify-content: space-between;\n  -ms-flex-line-pack: stretch;\n      align-content: stretch;\n  font-family: 'Noto Serif', serif;\n  position: relative;\n}\n.time-container[data-v-489db159] {\n  height: 100px;\n  width: 100px;\n  border-radius: 50%;\n  background-color: #22313F;\n  position: absolute;\n  top: calc(50% - 50px);\n  left: calc(50% - 50px);\n  line-height: 95px;\n  text-align: center;\n  border: 5px solid #fffcff;\n  color: #fffcff;\n  border-right-color: #303036;\n  border-bottom-color: #303036;\n  -webkit-transform: rotate(-45deg);\n          transform: rotate(-45deg);\n}\n.time-container p[data-v-489db159] {\n    -webkit-transform: rotate(45deg);\n            transform: rotate(45deg);\n    font-size: 1.4rem;\n    font-family: 'Noto Sans', sans-serif;\n}\n", ""]);
+exports.push([module.i, "\n.play-container[data-v-489db159] {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: horizontal;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: row;\n          flex-direction: row;\n  -webkit-box-pack: justify;\n      -ms-flex-pack: justify;\n          justify-content: space-between;\n  -ms-flex-line-pack: stretch;\n      align-content: stretch;\n  font-family: 'Noto Serif', serif;\n  position: relative;\n}\n.time-container[data-v-489db159] {\n  height: 100px;\n  width: 100px;\n  border-radius: 50%;\n  background-color: #303636;\n  position: absolute;\n  top: calc(50% - 50px);\n  left: calc(50% - 50px);\n  line-height: 95px;\n  text-align: center;\n  border: 5px solid #fffcff;\n  color: #fffcff;\n  border-right-color: #0a0a0a;\n  border-bottom-color: #0a0a0a;\n  -webkit-transform: rotate(-45deg);\n          transform: rotate(-45deg);\n}\n.time-container p[data-v-489db159] {\n    -webkit-transform: rotate(45deg);\n            transform: rotate(45deg);\n    font-size: 1.4rem;\n    font-family: 'Noto Sans', sans-serif;\n}\n", ""]);
 
 /***/ }),
 /* 52 */
@@ -38860,7 +38865,7 @@ var Component = __webpack_require__(1)(
   /* cssModules */
   null
 )
-Component.options.__file = "/Users/joosep/Code/typonaut/resources/assets/js/components/Countdown.vue"
+Component.options.__file = "/Users/brenda/Sites/typonaut/resources/assets/js/components/Countdown.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Countdown.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -38898,7 +38903,7 @@ var Component = __webpack_require__(1)(
   /* cssModules */
   null
 )
-Component.options.__file = "/Users/joosep/Code/typonaut/resources/assets/js/components/Example.vue"
+Component.options.__file = "/Users/brenda/Sites/typonaut/resources/assets/js/components/Example.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Example.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -38936,7 +38941,7 @@ var Component = __webpack_require__(1)(
   /* cssModules */
   null
 )
-Component.options.__file = "/Users/joosep/Code/typonaut/resources/assets/js/components/Game.vue"
+Component.options.__file = "/Users/brenda/Sites/typonaut/resources/assets/js/components/Game.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Game.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -38970,7 +38975,7 @@ var Component = __webpack_require__(1)(
   /* cssModules */
   null
 )
-Component.options.__file = "/Users/joosep/Code/typonaut/resources/assets/js/components/Lobby.vue"
+Component.options.__file = "/Users/brenda/Sites/typonaut/resources/assets/js/components/Lobby.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Lobby.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -39008,7 +39013,7 @@ var Component = __webpack_require__(1)(
   /* cssModules */
   null
 )
-Component.options.__file = "/Users/joosep/Code/typonaut/resources/assets/js/components/Modal.vue"
+Component.options.__file = "/Users/brenda/Sites/typonaut/resources/assets/js/components/Modal.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Modal.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -39046,7 +39051,7 @@ var Component = __webpack_require__(1)(
   /* cssModules */
   null
 )
-Component.options.__file = "/Users/joosep/Code/typonaut/resources/assets/js/components/NestedNavItem.vue"
+Component.options.__file = "/Users/brenda/Sites/typonaut/resources/assets/js/components/NestedNavItem.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] NestedNavItem.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -39084,7 +39089,7 @@ var Component = __webpack_require__(1)(
   /* cssModules */
   null
 )
-Component.options.__file = "/Users/joosep/Code/typonaut/resources/assets/js/components/Page.vue"
+Component.options.__file = "/Users/brenda/Sites/typonaut/resources/assets/js/components/Page.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Page.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -39122,7 +39127,7 @@ var Component = __webpack_require__(1)(
   /* cssModules */
   null
 )
-Component.options.__file = "/Users/joosep/Code/typonaut/resources/assets/js/components/PlayFullScreen.vue"
+Component.options.__file = "/Users/brenda/Sites/typonaut/resources/assets/js/components/PlayFullScreen.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] PlayFullScreen.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -39160,7 +39165,7 @@ var Component = __webpack_require__(1)(
   /* cssModules */
   null
 )
-Component.options.__file = "/Users/joosep/Code/typonaut/resources/assets/js/components/PlayHalfScreen.vue"
+Component.options.__file = "/Users/brenda/Sites/typonaut/resources/assets/js/components/PlayHalfScreen.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] PlayHalfScreen.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -39198,7 +39203,7 @@ var Component = __webpack_require__(1)(
   /* cssModules */
   null
 )
-Component.options.__file = "/Users/joosep/Code/typonaut/resources/assets/js/components/Spinner.vue"
+Component.options.__file = "/Users/brenda/Sites/typonaut/resources/assets/js/components/Spinner.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Spinner.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -39232,7 +39237,7 @@ var Component = __webpack_require__(1)(
   /* cssModules */
   null
 )
-Component.options.__file = "/Users/joosep/Code/typonaut/resources/assets/js/components/UserEntry.vue"
+Component.options.__file = "/Users/brenda/Sites/typonaut/resources/assets/js/components/UserEntry.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] UserEntry.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -39266,7 +39271,7 @@ var Component = __webpack_require__(1)(
   /* cssModules */
   null
 )
-Component.options.__file = "/Users/joosep/Code/typonaut/resources/assets/js/components/UserList.vue"
+Component.options.__file = "/Users/brenda/Sites/typonaut/resources/assets/js/components/UserList.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] UserList.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -39410,7 +39415,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       show: _vm.show
     },
     on: {
-      "click": _vm.hide
+      "click": function($event) {
+        _vm.$emit('secondary-clicked')
+      }
     }
   }, [_c('div', {
     staticClass: "modal-dialog",
@@ -39436,7 +39443,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "aria-label": "Close"
     },
     on: {
-      "click": _vm.hide
+      "click": function($event) {
+        _vm.$emit('secondary-clicked')
+      }
     }
   }, [_c('span', {
     attrs: {
@@ -39447,7 +39456,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_vm._v("\n                " + _vm._s(_vm.body_text) + "\n            ")]), _vm._v(" "), _c('div', {
     staticClass: "modal-footer"
   }, [_c('button', {
-    staticClass: "btn btn-primary",
+    staticClass: "btn btn-secondary",
     attrs: {
       "type": "button"
     },
@@ -39457,7 +39466,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }
     }
   }, [_vm._v(_vm._s(_vm.primary_btn_text))]), _vm._v(" "), _c('button', {
-    staticClass: "btn btn-secondary",
+    staticClass: "btn btn-primary",
     attrs: {
       "type": "button"
     },
@@ -39526,7 +39535,7 @@ if (false) {
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('play-full-screen', {
+  return _c('div', [_c('play-full-screen', {
     attrs: {
       "time": _vm.timeSeconds,
       "round": _vm.currentRound,
@@ -39536,7 +39545,18 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "answer-was-submitted": _vm.handleAnswerSubmitted,
       "typed": _vm.handleTyped
     }
-  })
+  }), _vm._v(" "), _c('game-score', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.showResults),
+      expression: "showResults"
+    }],
+    attrs: {
+      "completed_rounds": _vm.completed_rounds,
+      "game": _vm.game
+    }
+  })], 1)
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
@@ -39987,7 +40007,7 @@ module.exports = function listToStyles (parentId, list) {
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(global) {/*!
- * Vue.js v2.3.2
+ * Vue.js v2.3.0
  * (c) 2014-2017 Evan You
  * Released under the MIT License.
  */
@@ -40025,24 +40045,24 @@ function isObject (obj) {
   return obj !== null && typeof obj === 'object'
 }
 
-var _toString = Object.prototype.toString;
+var toString = Object.prototype.toString;
 
 /**
  * Strict object type check. Only returns true
  * for plain JavaScript objects.
  */
 function isPlainObject (obj) {
-  return _toString.call(obj) === '[object Object]'
+  return toString.call(obj) === '[object Object]'
 }
 
 function isRegExp (v) {
-  return _toString.call(v) === '[object RegExp]'
+  return toString.call(v) === '[object RegExp]'
 }
 
 /**
  * Convert a value to a string that is actually rendered.
  */
-function toString (val) {
+function _toString (val) {
   return val == null
     ? ''
     : typeof val === 'object'
@@ -40403,11 +40423,9 @@ function parsePath (path) {
   }
 }
 
-/*  */
-
 var warn = noop;
 var tip = noop;
-var formatComponentName = (null); // work around flow check
+var formatComponentName;
 
 if (true) {
   var hasConsole = typeof console !== 'undefined';
@@ -40495,8 +40513,6 @@ if (true) {
     }
   };
 }
-
-/*  */
 
 function handleError (err, vm, info) {
   if (config.errorHandler) {
@@ -41510,8 +41526,6 @@ function isType (type, fn) {
   return false
 }
 
-/*  */
-
 var mark;
 var measure;
 
@@ -41908,7 +41922,7 @@ function normalizeArrayChildren (children, nestedIndex) {
       res.push.apply(res, normalizeArrayChildren(c, ((nestedIndex || '') + "_" + i)));
     } else if (isPrimitive(c)) {
       if (isDef(last) && isDef(last.text)) {
-        last.text += String(c);
+        (last).text += String(c);
       } else if (c !== '') {
         // convert primitive to vnode
         res.push(createTextVNode(c));
@@ -41919,7 +41933,7 @@ function normalizeArrayChildren (children, nestedIndex) {
       } else {
         // default key for nested array children (likely generated by v-for)
         if (isDef(c.tag) && isUndef(c.key) && isDef(nestedIndex)) {
-          c.key = "__vlist" + nestedIndex + "_" + i + "__";
+          c.key = "__vlist" + ((nestedIndex)) + "_" + i + "__";
         }
         res.push(c);
       }
@@ -43269,7 +43283,7 @@ function createFunctionalComponent (
   var propOptions = Ctor.options.props;
   if (isDef(propOptions)) {
     for (var key in propOptions) {
-      props[key] = validateProp(key, propOptions, propsData || {});
+      props[key] = validateProp(key, propOptions, propsData);
     }
   } else {
     if (isDef(data.attrs)) { mergeProps(props, data.attrs); }
@@ -43290,7 +43304,6 @@ function createFunctionalComponent (
   });
   if (vnode instanceof VNode) {
     vnode.functionalContext = context;
-    vnode.functionalOptions = Ctor.options;
     if (data.slot) {
       (vnode.data || (vnode.data = {})).slot = data.slot;
     }
@@ -43599,7 +43612,7 @@ function _createElement (
     // direct component options / constructor
     vnode = createComponent(tag, data, context, children);
   }
-  if (isDef(vnode)) {
+  if (vnode !== undefined) {
     if (ns) { applyNS(vnode, ns); }
     return vnode
   } else {
@@ -43613,7 +43626,7 @@ function applyNS (vnode, ns) {
     // use default namespace inside foreignObject
     return
   }
-  if (isDef(vnode.children)) {
+  if (Array.isArray(vnode.children)) {
     for (var i = 0, l = vnode.children.length; i < l; i++) {
       var child = vnode.children[i];
       if (isDef(child.tag) && isUndef(child.ns)) {
@@ -43897,7 +43910,7 @@ function renderMixin (Vue) {
   // code size.
   Vue.prototype._o = markOnce;
   Vue.prototype._n = toNumber;
-  Vue.prototype._s = toString;
+  Vue.prototype._s = _toString;
   Vue.prototype._l = renderList;
   Vue.prototype._t = renderSlot;
   Vue.prototype._q = looseEqual;
@@ -44379,13 +44392,7 @@ Object.defineProperty(Vue$3.prototype, '$isServer', {
   get: isServerRendering
 });
 
-Object.defineProperty(Vue$3.prototype, '$ssrContext', {
-  get: function get () {
-    return this.$vnode.ssrContext
-  }
-});
-
-Vue$3.version = '2.3.2';
+Vue$3.version = '2.3.0';
 
 /*  */
 
@@ -46188,7 +46195,7 @@ function updateDOMProps (oldVnode, vnode) {
       // non-string values will be stringified
       elm._value = cur;
       // avoid resetting cursor position when value is the same
-      var strCur = isUndef(cur) ? '' : String(cur);
+      var strCur = cur == null ? '' : String(cur);
       if (shouldUpdateValue(elm, vnode, strCur)) {
         elm.value = strCur;
       }
@@ -46640,23 +46647,24 @@ function enter (vnode, toggleDisplay) {
     return
   }
 
-  var css = data.css;
-  var type = data.type;
-  var enterClass = data.enterClass;
-  var enterToClass = data.enterToClass;
-  var enterActiveClass = data.enterActiveClass;
-  var appearClass = data.appearClass;
-  var appearToClass = data.appearToClass;
-  var appearActiveClass = data.appearActiveClass;
-  var beforeEnter = data.beforeEnter;
-  var enter = data.enter;
-  var afterEnter = data.afterEnter;
-  var enterCancelled = data.enterCancelled;
-  var beforeAppear = data.beforeAppear;
-  var appear = data.appear;
-  var afterAppear = data.afterAppear;
-  var appearCancelled = data.appearCancelled;
-  var duration = data.duration;
+  var ref = (data);
+  var css = ref.css;
+  var type = ref.type;
+  var enterClass = ref.enterClass;
+  var enterToClass = ref.enterToClass;
+  var enterActiveClass = ref.enterActiveClass;
+  var appearClass = ref.appearClass;
+  var appearToClass = ref.appearToClass;
+  var appearActiveClass = ref.appearActiveClass;
+  var beforeEnter = ref.beforeEnter;
+  var enter = ref.enter;
+  var afterEnter = ref.afterEnter;
+  var enterCancelled = ref.enterCancelled;
+  var beforeAppear = ref.beforeAppear;
+  var appear = ref.appear;
+  var afterAppear = ref.afterAppear;
+  var appearCancelled = ref.appearCancelled;
+  var duration = ref.duration;
 
   // activeInstance will always be the <transition> component managing this
   // transition. One edge case to check is when the <transition> is placed
@@ -46788,17 +46796,18 @@ function leave (vnode, rm) {
     return
   }
 
-  var css = data.css;
-  var type = data.type;
-  var leaveClass = data.leaveClass;
-  var leaveToClass = data.leaveToClass;
-  var leaveActiveClass = data.leaveActiveClass;
-  var beforeLeave = data.beforeLeave;
-  var leave = data.leave;
-  var afterLeave = data.afterLeave;
-  var leaveCancelled = data.leaveCancelled;
-  var delayLeave = data.delayLeave;
-  var duration = data.duration;
+  var ref = (data);
+  var css = ref.css;
+  var type = ref.type;
+  var leaveClass = ref.leaveClass;
+  var leaveToClass = ref.leaveToClass;
+  var leaveActiveClass = ref.leaveActiveClass;
+  var beforeLeave = ref.beforeLeave;
+  var leave = ref.leave;
+  var afterLeave = ref.afterLeave;
+  var leaveCancelled = ref.leaveCancelled;
+  var delayLeave = ref.delayLeave;
+  var duration = ref.duration;
 
   var expectsCSS = css !== false && !isIE9;
   var userWantsControl = getHookArgumentsLength(leave);
@@ -46809,7 +46818,7 @@ function leave (vnode, rm) {
       : duration
   );
 
-  if ("development" !== 'production' && isDef(explicitLeaveDuration)) {
+  if ("development" !== 'production' && explicitLeaveDuration != null) {
     checkDuration(explicitLeaveDuration, 'leave', vnode);
   }
 
@@ -46846,7 +46855,7 @@ function leave (vnode, rm) {
     }
     // record leaving element
     if (!vnode.data.show) {
-      (el.parentNode._pending || (el.parentNode._pending = {}))[(vnode.key)] = vnode;
+      (el.parentNode._pending || (el.parentNode._pending = {}))[vnode.key] = vnode;
     }
     beforeLeave && beforeLeave(el);
     if (expectsCSS) {
@@ -49654,6 +49663,206 @@ module.exports = function(module) {
 __webpack_require__(11);
 module.exports = __webpack_require__(12);
 
+
+/***/ }),
+/* 96 */,
+/* 97 */,
+/* 98 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    props: {
+        completed_rounds: { required: true },
+        game: { required: true }
+    },
+
+    data: function data() {
+        return {};
+    },
+
+
+    computed: {
+        score: function score() {
+            var scoreOne = 0;
+            var scoreTwo = 0;
+            this.completed_rounds.forEach(function (round) {
+                if (round.player_one_time < round.player_two_time) {
+                    scoreOne++;
+                } else {
+                    scoreTwo++;
+                }
+            });
+            return scoreOne + " - " + scoreTwo;
+        },
+        winner: function winner() {
+            var lastRound = this.completed_rounds[this.completed_rounds.length - 1];
+            var playerOne = this.game.player_one_id;
+            var playerTwo = this.game.player_two_id;
+            var winner = lastRound.player_one_time < lastRound.player_two_time ? playerOne : playerTwo;
+            return window.Laravel.user.id == winner ? 'You won!' : 'You lost!';
+        }
+    }
+});
+
+/***/ }),
+/* 99 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(2)();
+exports.push([module.i, "\n.game-score-container[data-v-7db82df4] {\n  position: fixed;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  left: 0;\n  z-index: 1050;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n  -webkit-box-pack: center;\n      -ms-flex-pack: center;\n          justify-content: center;\n  background-color: rgba(0, 0, 0, 0.7);\n}\n.game-score-container hr[data-v-7db82df4] {\n    border-top: 1px solid #fdfcfc;\n}\n.overview-container[data-v-7db82df4] {\n  text-align: center;\n}\n.overview-container .scores[data-v-7db82df4] {\n    font-size: 60px;\n}\n.overview-container .winner-text[data-v-7db82df4] {\n    font-size: 50px;\n}\n.game-score-container .dark-card[data-v-7db82df4] {\n  border: 2px solid #fdfcfc;\n  font-family: 'Noto Serif', serif;\n}\n.game-score-container .dark-card .card-block[data-v-7db82df4] {\n    padding: 1.5rem;\n}\n.rounds-table[data-v-7db82df4] {\n  padding: 0;\n  font-size: 1.1rem;\n}\n.rounds-table .header td[data-v-7db82df4] {\n    padding-bottom: 10px;\n}\n.rounds-table td[data-v-7db82df4] {\n    padding: 0px 10px;\n    text-align: center;\n}\n", ""]);
+
+/***/ }),
+/* 100 */
+/***/ (function(module, exports, __webpack_require__) {
+
+
+/* styles */
+__webpack_require__(102)
+
+var Component = __webpack_require__(1)(
+  /* script */
+  __webpack_require__(98),
+  /* template */
+  __webpack_require__(101),
+  /* scopeId */
+  "data-v-7db82df4",
+  /* cssModules */
+  null
+)
+Component.options.__file = "/Users/brenda/Sites/typonaut/resources/assets/js/components/GameScore.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] GameScore.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-7db82df4", Component.options)
+  } else {
+    hotAPI.reload("data-v-7db82df4", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 101 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "game-score-container"
+  }, [_c('div', {
+    staticClass: "card dark-card"
+  }, [_c('div', {
+    staticClass: "card-block"
+  }, [_c('div', {
+    staticClass: "overview-container"
+  }, [_c('div', {
+    staticClass: "scores"
+  }, [_vm._v(_vm._s(_vm.score))]), _vm._v(" "), _c('div', {
+    staticClass: "winner-text"
+  }, [_vm._v(_vm._s(_vm.winner))])]), _vm._v(" "), _c('hr'), _vm._v(" "), _c('table', {
+    staticClass: "rounds-table"
+  }, [_vm._m(0), _vm._v(" "), _c('tbody', _vm._l((_vm.completed_rounds), function(round) {
+    return _c('tr', [_c('td', {
+      staticClass: "word"
+    }, [_vm._v(_vm._s(round.word))]), _vm._v(" "), _c('td', {
+      staticClass: "player-time"
+    }, [_vm._v(_vm._s(round.player_one_time))]), _vm._v(" "), _c('td', {
+      staticClass: "player-time"
+    }, [_vm._v(_vm._s(round.player_two_time))]), _vm._v(" "), _c('td', {
+      staticClass: "winner"
+    }, [_vm._v(_vm._s(_vm.winner))])])
+  }))])])])])
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('thead', [_c('tr', {
+    staticClass: "header"
+  }, [_c('td', {
+    staticClass: "word"
+  }, [_vm._v("Word")]), _vm._v(" "), _c('td', {
+    staticClass: "player-time"
+  }, [_vm._v("Player 1 time")]), _vm._v(" "), _c('td', {
+    staticClass: "player-time"
+  }, [_vm._v("Player 2 time")]), _vm._v(" "), _c('td', {
+    staticClass: "winner"
+  }, [_vm._v("Result")])])])
+}]}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-7db82df4", module.exports)
+  }
+}
+
+/***/ }),
+/* 102 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(99);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(3)("52718a11", content, false);
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"id\":\"data-v-7db82df4\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/sass-loader/lib/loader.js!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./GameScore.vue", function() {
+     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"id\":\"data-v-7db82df4\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/sass-loader/lib/loader.js!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./GameScore.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
 
 /***/ })
 /******/ ]);
