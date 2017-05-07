@@ -31,6 +31,8 @@ $factory->define(App\Game::class, function (Faker\Generator $faker) {
         'player_two_id' => function () {
             return factory('App\User')->create()->id;
         },
+        'player_one_score' => $faker->randomNumber(),
+        'player_two_score' => $faker->randomNumber(),
     ];
 });
 
