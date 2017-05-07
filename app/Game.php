@@ -11,6 +11,8 @@ use Illuminate\Support\Collection;
  * @property int id
  * @property int player_one_id
  * @property int player_two_id
+ * @property int player_one_score
+ * @property int player_two_score
  * @property User playerOne
  * @property User playerTwo
  * @property Collection rounds
