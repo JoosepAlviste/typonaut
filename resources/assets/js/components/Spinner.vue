@@ -3,7 +3,6 @@
         <div class="spinner-content">
 
             <div class="spinner-loader">
-                <!-- TODO: Loader here -->
                 <div class="spinner">
                     <div class="bounce1"></div>
                     <div class="bounce2"></div>
@@ -38,7 +37,7 @@
         align-items: center;
         justify-content: center;
 
-        background-color: rgba(255, 255, 255, 0.6);
+        background-color: rgba(0, 0, 0, 0.7);
     }
 
     .spinner-text {
@@ -46,7 +45,7 @@
     }
 
     .spinner-content {
-        color: #333333;
+        color: #fdfcfc;
     }
 
     .spinner {
@@ -58,7 +57,7 @@
     .spinner > div {
         width: 18px;
         height: 18px;
-        background-color: #333;
+        background-color: #fdfcfc;
 
         border-radius: 100%;
         display: inline-block;

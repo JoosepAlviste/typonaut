@@ -4,10 +4,11 @@
         <h1>{{ round.word }}</h1>
 
         <input type="text"
-               class="form-control form-control-lg word-input"
+               class="form-control form-control-lg word-input animated"
                name="word-input"
                v-model="typed"
                :disabled="side === 'opponent'"
+               :class="{ shake: wrongWord }"
                @keyup="handleTyped"
                @keydown.enter="onEnterPressed">
 
@@ -26,6 +27,7 @@
         data() {
             return {
                 typed: '',
+                wrongWord: false,
             }
         },
 
@@ -39,6 +41,10 @@
             onEnterPressed(e) {
                 if (this.round.word !== this.typed) {
                     // Incorrect word
+                    this.wrongWord = true
+                    setTimeout( () => {
+                        this.wrongWord = false
+                    }, 1000)
                     return
                 }
 
@@ -69,13 +75,13 @@
         justify-content: center;
 
         &.player {
-            background-color: #303036;
-            color: #fffcff;
+            background-color: #0a0a0a;
+            color: #fdfcfc;
         }
 
         &.opponent {
-            background-color: #fffcff;
-            color: #303036;
+            background-color: #fdfcfc;
+            color: #0a0a0a;
         }
 
         h1 {
@@ -93,6 +99,33 @@
 
     .time-container {
         text-align: center;
+    }
+
+    .animated {
+        animation-duration: 1s;
+        animation-fill-mode: both;
+    }
+
+    @keyframes shake {
+        from, to {
+            transform: translate3d(0, 0, 0);
+        }
+
+        10%, 30%, 50%, 70%, 90% {
+            transform: translate3d(-7px, 0, 0);
+        }
+
+        20%, 40%, 60%, 80% {
+            transform: translate3d(7px, 0, 0);
+        }
+    }
+
+    .shake {
+        animation-name: shake;
+    }
+
+    .word-input.shake:focus {
+        border-color: #d9534f;
     }
 
 </style>

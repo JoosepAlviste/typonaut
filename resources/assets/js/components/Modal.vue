@@ -1,10 +1,10 @@
 <template>
-    <div class="modal fade" :class="{show:show}" @click="hide">
+    <div class="modal fade" :class="{show:show}" @click="$emit('secondary-clicked')">
         <div class="modal-dialog" role="document" @click.prevent="stop">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">{{ title }}</h5>
-                    <button type="button" class="close" aria-label="Close" @click="hide">
+                    <button type="button" class="close" aria-label="Close" @click="$emit('secondary-clicked')">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -12,8 +12,8 @@
                     {{ body_text }}
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" @click="$emit('primary-clicked')">{{ primary_btn_text }}</button>
-                    <button type="button" class="btn btn-secondary" @click="$emit('secondary-clicked')">{{ secondary_btn_text }}</button>
+                    <button type="button" class="btn btn-secondary" @click="$emit('primary-clicked')">{{ primary_btn_text }}</button>
+                    <button type="button" class="btn btn-primary" @click="$emit('secondary-clicked')">{{ secondary_btn_text }}</button>
                 </div>
             </div>
         </div>
