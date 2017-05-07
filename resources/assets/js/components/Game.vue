@@ -85,6 +85,8 @@
                 }
 
                 let time = this.timeSeconds
+                // Remove this if want to see opponent time
+                this.stopTimer()
 
                 axios.post('/api/games/' + this.game.id + '/rounds/' + this.currentRound.id, {
                     user_id: window.Laravel.user.id,
@@ -96,6 +98,9 @@
                             .whisper('finished', {})
                         this.playerFinished = true
                         this.checkRoundEnd()
+                    })
+                    .catch(error => {
+                        // Do something with error?
                     })
             },
 

@@ -2259,6 +2259,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }
 
             var time = this.timeSeconds;
+            // Remove this if want to see opponent time
+            this.stopTimer();
 
             axios.post('/api/games/' + this.game.id + '/rounds/' + this.currentRound.id, {
                 user_id: window.Laravel.user.id,
@@ -2268,6 +2270,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 Echo.join('game.' + _this2.game.id).whisper('finished', {});
                 _this2.playerFinished = true;
                 _this2.checkRoundEnd();
+            }).catch(function (error) {
+                // Do something with error?
             });
         },
         joinChannel: function joinChannel() {
