@@ -31,8 +31,10 @@ $factory->define(App\Game::class, function (Faker\Generator $faker) {
         'player_two_id' => function () {
             return factory('App\User')->create()->id;
         },
-        'player_one_score' => $faker->randomNumber(),
-        'player_two_score' => $faker->randomNumber(),
+        'player_one_score' => intval($faker->randomFloat(0, 0, 10)),
+        'player_two_score' => function (array $game) {
+            return 10 - $game['player_one_score'];
+        },
     ];
 });
 
