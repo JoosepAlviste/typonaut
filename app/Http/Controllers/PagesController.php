@@ -24,8 +24,6 @@ class PagesController extends Controller
 
     public function history()
     {
-        return view('pages.history', [
-            'games' => Game::latest()->get(),
-        ]);
+        return view('pages.history');
     }
 }

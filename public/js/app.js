@@ -2429,21 +2429,21 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
+    data: function data() {
+        return {
+            games: []
+        };
+    },
+    mounted: function mounted() {
+        var _this = this;
 
-    props: {
-        games: { required: true }
+        axios.get('/api/games').then(function (_ref) {
+            var data = _ref.data;
+
+            _this.games = data;
+        });
     }
 });
 
@@ -39938,7 +39938,11 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "history-container"
   }, [_c('ul', {
     staticClass: "list-group list-group-flush"
-  }, [_vm._m(0), _vm._v(" "), _vm._m(1), _vm._v(" "), _c('li', {
+  }, [_vm._l((_vm.games), function(game) {
+    return _c('li', {
+      staticClass: "list-group-item"
+    }, [_c('span', [_vm._v(_vm._s(game.player_one.name))]), _vm._v(" "), _c('span', [_vm._v(_vm._s(game.player_one_score) + " - " + _vm._s(game.player_two_score))]), _vm._v(" "), _c('span', [_vm._v(_vm._s(game.player_two.name))])])
+  }), _vm._v(" "), _c('li', {
     directives: [{
       name: "show",
       rawName: "v-show",
@@ -39946,16 +39950,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       expression: "games.length === 0"
     }],
     staticClass: "empty list-group-item"
-  }, [_vm._v("No games have been played yet!")])])])
-},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('li', {
-    staticClass: "list-group-item"
-  }, [_c('span', [_vm._v("Player1")]), _vm._v(" "), _c('span', [_vm._v("5 - 2")]), _vm._v(" "), _c('span', [_vm._v("Player2")])])
-},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('li', {
-    staticClass: "list-group-item"
-  }, [_c('span', [_vm._v("Player1")]), _vm._v(" "), _c('span', [_vm._v("5 - 2")]), _vm._v(" "), _c('span', [_vm._v("Player2")])])
-}]}
+  }, [_vm._v("No games have been played yet!")])], 2)])
+},staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()

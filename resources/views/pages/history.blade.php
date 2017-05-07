@@ -9,7 +9,7 @@
         @endslot
 
         @slot('content')
-            <history :games="games"></history>
+            <history></history>
         @endslot
 
     @endcomponent

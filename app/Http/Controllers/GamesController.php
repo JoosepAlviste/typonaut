@@ -10,6 +10,11 @@ use Illuminate\Support\Collection;
 
 class GamesController extends Controller
 {
+    public function index()
+    {
+        return Game::with(['playerOne', 'playerTwo'])->latest()->get();
+    }
+
     /**
      * Store a newly created resource in storage.
      *
