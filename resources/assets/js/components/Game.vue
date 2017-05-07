@@ -76,6 +76,8 @@
 
                 // Submit request to server to save result
                 let time = this.timeSeconds
+                //TODO: switch round and display gameScore and Countdown
+                //this.nextRound()
             },
 
             joinChannel() {
