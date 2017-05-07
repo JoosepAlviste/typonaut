@@ -5,7 +5,7 @@
     @component('layouts.components.center-card')
 
         @slot('header')
-            History
+            Latest games
         @endslot
 
         @slot('content')

@@ -1,15 +1,16 @@
 <template>
 
     <div class="history-container">
-        <ul class="list-group list-group-flush">
-            <li class="list-group-item" v-for="game in games">
-                <span>{{ game.player_one.name }}</span>
-                <span>{{ game.player_one_score }} - {{ game.player_two_score }}</span>
-                <span>{{ game.player_two.name }}</span>
-            </li>
-            
-            <li class="empty list-group-item" v-show="games.length === 0">No games have been played yet!</li>
-        </ul>
+        <table class="table">
+            <tbody>
+                <tr v-for="game in games">
+                    <td>{{ game.player_one.name }}</td>
+                    <td>{{ game.player_one_score }} - {{ game.player_two_score }}</td>
+                    <td>{{ game.player_two.name }}</td>
+                </tr>
+                <tr class="empty" v-show="games.length === 0">No games have been played yet!</tr>
+            </tbody>
+        </table>
     </div>
 
 </template>
@@ -34,11 +35,13 @@
 
 <style lang="scss" scoped>
 
-    .list-group-item {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-around;
-        align-items: center;
+    td {
+        text-align: center;
+        border-top: 1px solid #0a0a0a;
+    }
+
+    .history-container table tr:first-child td {
+        border-top: none;
     }
 
 </style>
