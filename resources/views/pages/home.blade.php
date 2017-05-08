@@ -13,6 +13,6 @@
         @endslot
 
     @endcomponent
-    <countdown></countdown>
+    {{--<countdown :show="false"></countdown>--}}
 
 @endsection

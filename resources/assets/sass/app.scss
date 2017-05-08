@@ -126,3 +126,19 @@
 .btn-link {
   color: #fdfcfc;
 }
+
+
+
+#confetti{
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  pointer-events:none;
+}
+
+img {
+  width: 100%;
+  margin: 20px 0;
+}

@@ -22,10 +22,27 @@
                             <td class="word">{{ round.word }}</td>
                             <td class="player-time">{{ round.player_one_time }}</td>
                             <td class="player-time">{{ round.player_two_time }}</td>
-                            <td class="winner">{{ winner }}</td>
+                            <td class="winner">{{ calculateWinnerText(round.player_one_time, round.player_two_time) }}</td>
                         </tr>
                     </tbody>
                 </table>
+            </div>
+
+            <div class="card-footer" v-if="!game_over">
+                <div class="d-flex">
+
+                    <span class="flex">
+                        <button class="btn btn-secondary" @click="nextRoundClicked">{{ playerText }}</button>
+                    </span>
+
+                    <span>
+                        {{ opponentText }}
+                    </span>
+
+                </div>
+            </div>
+            <div class="card-footer" v-else>
+                <button class="btn btn-secondary" @click="$emit('dismissed')">Game over!</button>
             </div>
         </div>
     </div>
@@ -38,11 +55,13 @@
         props: {
             completed_rounds: { required: true },
             game: { required: true },
+            game_over: { required: true },
         },
 
         data() {
             return {
-
+                opponentAccepted: false,
+                playerAccepted: false,
             }
         },
 
@@ -63,13 +82,51 @@
 
             winner() {
                 let lastRound = this.completed_rounds[this.completed_rounds.length - 1]
-                let playerOne = this.game.player_one_id
-                let playerTwo = this.game.player_two_id
-                let winner = lastRound.player_one_time < lastRound.player_two_time ? playerOne : playerTwo
+
+                return this.calculateWinnerText(lastRound.player_one_time, lastRound.player_two_time)
+            },
+
+            opponentText() {
+                return this.opponentAccepted ? 'Opponent accepted' : 'Waiting for opponent...'
+            },
+
+            playerText() {
+                return this.playerAccepted ? 'Ready...' : 'Next round'
+            }
+        },
+
+        methods: {
+            nextRoundClicked() {
+                this.playerAccepted = true
+                Echo.join('game.' + this.game.id)
+                    .whisper('next-clicked', {})
+                this.checkBothAccepted()
+            },
+
+            checkBothAccepted() {
+                if (this.opponentAccepted && this.playerAccepted) {
+                    this.$emit('dismissed')
+                }
+            },
+
+            calculateWinnerText(player_one_time, player_two_time) {
+                let playerOne = this.game.player_one.id
+                let playerTwo = this.game.player_two.id
+                let winner = parseFloat(player_one_time) < parseFloat(player_two_time) ? playerOne : playerTwo
+
                 return window.Laravel.user.id == winner ? 'You won!' : 'You lost!'
             }
+        },
+
+        mounted() {
+            Echo.join('game.' + this.game.id)
+                .listenForWhisper('next-clicked', (e) => {
+                    this.opponentAccepted = true
+                    this.checkBothAccepted()
+                })
         }
     }
+
 </script>
 
 <style lang="scss" scoped>
@@ -125,5 +182,9 @@
             padding: 0px 10px;
             text-align: center;
         }
+    }
+
+    .flex {
+        flex: 1;
     }
 </style>

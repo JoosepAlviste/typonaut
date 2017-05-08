@@ -13,6 +13,10 @@
     </div>
 
     <ul>
+        @if (! \Auth::guest())
+            <li><a href="{{ route('lobby') }}">Lobby</a></li>
+        @endif
+
         <li><a href="{{ route('history') }}">History</a></li>
 
         @if (\Auth::guest())
@@ -21,8 +25,6 @@
             <li><a href="{{ route('register') }}">Register</a></li>
 
         @else
-
-            <li><a href="{{ route('lobby') }}">Lobby</a></li>
 
             <nested-nav-item>
                 <template slot="title">{{ Auth::user()->name }}</template>

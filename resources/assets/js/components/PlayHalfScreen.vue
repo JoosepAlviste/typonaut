@@ -5,10 +5,12 @@
 
         <input type="text"
                class="form-control form-control-lg word-input animated"
+               :class="{ shake: wrongWord, 'form-control-success': done }"
+               :id="side === 'player' ? 'player-input' : ''"
                name="word-input"
                v-model="typed"
-               :disabled="side === 'opponent'"
-               :class="{ shake: wrongWord }"
+               :disabled="side === 'opponent' || done"
+               :ref="side === 'player' ? 'player-input' : ''"
                @keyup="handleTyped"
                @keydown.enter="onEnterPressed">
 
@@ -28,13 +30,14 @@
             return {
                 typed: '',
                 wrongWord: false,
+                done: false,
             }
         },
 
         watch: {
             typed_word() {
                 this.typed = this.typed_word
-            }
+            },
         },
 
         methods: {
@@ -49,6 +52,7 @@
                 }
 
                 this.$emit('answer-was-submitted', this.typed)
+                this.done = true
             },
 
             handleTyped(e) {
@@ -60,6 +64,19 @@
             if (this.typed_word.length > 0) {
                 this.typed = this.typed_word
             }
+
+            window.Events.$on('new-round', () => {
+                this.typed = ''
+                this.done = true
+            })
+            window.Events.$on('new-round-start-typing', () => {
+                this.done = false
+                if (this.side === 'player') {
+                    setTimeout(() => {
+                        this.$refs['player-input'].focus()
+                    }, 100)
+                }
+            })
         },
     }
 </script>
@@ -126,6 +143,10 @@
 
     .word-input.shake:focus {
         border-color: #d9534f;
+    }
+
+    .form-control-success {
+        border-color: #5cb85c;
     }
 
 </style>

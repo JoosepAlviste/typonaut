@@ -6,7 +6,16 @@
                           @answer-was-submitted="handleAnswerSubmitted"
                           @typed="handleTyped">
         </play-full-screen>
-        <game-score v-if="showResults" :completed_rounds="completed_rounds" :game="game"></game-score>
+
+        <game-score v-if="showResults"
+                    :completed_rounds="completed_rounds"
+                    :game="game"
+                    :game_over="gameOver"
+                    @dismissed="handleScoreDismissed">
+        </game-score>
+
+        <countdown :show="showCountdown" @countdown-was-finished="handleCountdownFinish">
+        </countdown>
     </div>
 
 </template>
@@ -15,6 +24,7 @@
 
     import PlayFullScreen from './PlayFullScreen.vue'
     import GameScore from './GameScore.vue'
+    import Countdown from './Countdown.vue'
 
     export default {
 
@@ -31,14 +41,21 @@
                 opponent_typed: '',
                 completed_rounds: [],
                 showResults: false, //change this somewhere
+                showCountdown: false,
 
                 playerFinished: false,
                 opponentFinished: false,
+
+                gameOver: false,
             }
         },
 
         computed: {
             currentRound() {
+                if (this.currentRoundNr >= this.game.rounds.length) {
+                    return this.game.rounds[this.game.rounds.length - 1]
+                }
+
                 return this.game.rounds[this.currentRoundNr]
             }
         },
@@ -65,21 +82,18 @@
             },
 
             nextRound() {
-                if (this.currentRoundNr + 1 === this.game.rounds.length) {
+                if (this.currentRoundNr === this.game.rounds.length) {
                     return false
                 }
 
                 this.opponentFinished = false
                 this.playerFinished = false
 
-                this.completed_rounds.push(this.game.rounds[this.currentRoundNr])
-                this.currentRoundNr++
-
                 return true
             },
 
             handleAnswerSubmitted(word) {
-                if (word !== this.currentRound.word) {
+                if (word !== this.currentRound.word || this.showCountdown) {
                     // Wrong!
                     return
                 }
@@ -93,14 +107,27 @@
                     time: time,
                     word: word,
                 })
-                    .then(() => {
+                    .then((data) => {
+                        let round = data.data
+
+                        if (round.player_one_time !== null && round.player_two_time !== null) {
+                            this.completed_rounds.push(round)
+                            this.currentRoundNr++
+                        }
+
                         Echo.join('game.' + this.game.id)
-                            .whisper('finished', {})
+                            .whisper('finished', {
+                                round: round,
+                            })
                         this.playerFinished = true
                         this.checkRoundEnd()
                     })
                     .catch(error => {
                         // Do something with error?
+                        Echo.join('game.' + this.game.id)
+                            .whisper('finished', {})
+                        this.playerFinished = true
+                        this.checkRoundEnd()
                     })
             },
 
@@ -118,8 +145,13 @@
                     .listenForWhisper('typed', message => {
                         this.opponent_typed = message.typed
                     })
-                    .listenForWhisper('finished', () => {
+                    .listenForWhisper('finished', (data) => {
                         this.opponentFinished = true
+
+                        if (typeof data.round !== 'undefined' && data.round.player_one_time !== null && data.round.player_two_time !== null) {
+                            this.completed_rounds.push(data.round)
+                            this.currentRoundNr++
+                        }
 
                         this.checkRoundEnd()
                     })
@@ -137,27 +169,58 @@
                     return
                 }
 
-                // Next round, show results n stuff
-                // TODO: switch round and display gameScore and Countdown
-                if (this.nextRound()) {
-                    this.startRound()
-                } else {
-                    // Game over! Show final game report or something
-                    console.log('Game over!')
+                if (this.currentRoundNr === this.game.rounds.length) {
+                    this.gameOver = true
                 }
+
+                this.showResults = true
             },
 
             startRound() {
                 this.stopTimer()
                 this.resetTimer()
+                this.emptyFields()
                 // Show countdown
                 // Don't allow submitting answer here
+                this.showCountdown = true
+                this.opponent_typed = ''
+                window.Events.$emit('new-round')
 
                 setTimeout(() => {
                     this.startTimer()
                     // Allow submitting answers again..
+
+                    window.Events.$emit('new-round-start-typing')
                 }, 4000)
             },
+
+            emptyFields() {
+                this.opponent_typed = ''
+            },
+
+            handleCountdownFinish(e) {
+                this.showCountdown = false
+            },
+
+            handleScoreDismissed(e) {
+                this.showResults = false
+
+                if (this.gameOver) {
+                    this.redirectAfterGameOver()
+                }
+
+                if (this.nextRound()) {
+                    this.startRound()
+                } else {
+                    // Game over! Show final game report or something
+                    this.redirectAfterGameOver()
+                }
+            },
+
+            redirectAfterGameOver() {
+                console.log('REDIRECTING')
+                window.location = '/history'
+            }
         },
 
         mounted() {
@@ -166,7 +229,7 @@
             this.startRound()
         },
 
-        components: { PlayFullScreen, GameScore }
+        components: { PlayFullScreen, GameScore, Countdown }
     }
 </script>
 

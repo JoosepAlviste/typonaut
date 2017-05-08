@@ -29,9 +29,10 @@ class RoundsController extends Controller
         }
 
         if ($round->player_one_time !== null && $round->player_two_time !== null) {
-            if ($round->player_one_time > $round->player_two_time) {
+
+            if (floatval($round->player_one_time) < floatval($round->player_two_time)) {
                 $game->player_one_score += 1;
-            } else if ($round->player_two_time > $round->player_one_time) {
+            } else if (floatval($round->player_two_time) < floatval($round->player_one_time)) {
                 $game->player_two_score += 1;
             }
         }

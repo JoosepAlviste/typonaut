@@ -1133,6 +1133,8 @@ window.Vue = __webpack_require__(103);
 
 window.Events = new Vue();
 
+__webpack_require__(108);
+
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -2093,6 +2095,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 
 /* harmony default export */ __webpack_exports__["default"] = ({
+
+    props: ['show'],
+
     data: function data() {
         return {
             timer: null,
@@ -2102,8 +2107,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
 
 
+    watch: {
+        show: function show(val) {
+            if (val) {
+                this.startTimer();
+            }
+        }
+    },
+
     methods: {
         startTimer: function startTimer() {
+            this.resetTimer();
             this.timerOn = true;
             this.advanceTimer();
         },
@@ -2116,6 +2130,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     _this.timeSeconds = 'GO';
                     setTimeout(function () {
                         _this.stopTimer();
+                        _this.$emit('countdown-was-finished');
                     }, 1000);
                 } else {
                     _this.advanceTimer();
@@ -2133,7 +2148,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
 
     mounted: function mounted() {
-        this.startTimer();
+        //            this.startTimer()
     }
 });
 
@@ -2172,6 +2187,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__PlayFullScreen_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__PlayFullScreen_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__GameScore_vue__ = __webpack_require__(66);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__GameScore_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__GameScore_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Countdown_vue__ = __webpack_require__(63);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Countdown_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__Countdown_vue__);
 //
 //
 //
@@ -2185,6 +2202,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 
 
 
@@ -2205,15 +2232,22 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             opponent_typed: '',
             completed_rounds: [],
             showResults: false, //change this somewhere
+            showCountdown: false,
 
             playerFinished: false,
-            opponentFinished: false
+            opponentFinished: false,
+
+            gameOver: false
         };
     },
 
 
     computed: {
         currentRound: function currentRound() {
+            if (this.currentRoundNr >= this.game.rounds.length) {
+                return this.game.rounds[this.game.rounds.length - 1];
+            }
+
             return this.game.rounds[this.currentRoundNr];
         }
     },
@@ -2238,22 +2272,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.timeSeconds = 0.0;
         },
         nextRound: function nextRound() {
-            if (this.currentRoundNr + 1 === this.game.rounds.length) {
+            if (this.currentRoundNr === this.game.rounds.length) {
                 return false;
             }
 
             this.opponentFinished = false;
             this.playerFinished = false;
 
-            this.completed_rounds.push(this.game.rounds[this.currentRoundNr]);
-            this.currentRoundNr++;
-
             return true;
         },
         handleAnswerSubmitted: function handleAnswerSubmitted(word) {
             var _this2 = this;
 
-            if (word !== this.currentRound.word) {
+            if (word !== this.currentRound.word || this.showCountdown) {
                 // Wrong!
                 return;
             }
@@ -2266,12 +2297,24 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 user_id: window.Laravel.user.id,
                 time: time,
                 word: word
-            }).then(function () {
-                Echo.join('game.' + _this2.game.id).whisper('finished', {});
+            }).then(function (data) {
+                var round = data.data;
+
+                if (round.player_one_time !== null && round.player_two_time !== null) {
+                    _this2.completed_rounds.push(round);
+                    _this2.currentRoundNr++;
+                }
+
+                Echo.join('game.' + _this2.game.id).whisper('finished', {
+                    round: round
+                });
                 _this2.playerFinished = true;
                 _this2.checkRoundEnd();
             }).catch(function (error) {
                 // Do something with error?
+                Echo.join('game.' + _this2.game.id).whisper('finished', {});
+                _this2.playerFinished = true;
+                _this2.checkRoundEnd();
             });
         },
         joinChannel: function joinChannel() {
@@ -2285,8 +2328,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 // Notify of opponent leaving
             }).listenForWhisper('typed', function (message) {
                 _this3.opponent_typed = message.typed;
-            }).listenForWhisper('finished', function () {
+            }).listenForWhisper('finished', function (data) {
                 _this3.opponentFinished = true;
+
+                if (typeof data.round !== 'undefined' && data.round.player_one_time !== null && data.round.player_two_time !== null) {
+                    _this3.completed_rounds.push(data.round);
+                    _this3.currentRoundNr++;
+                }
 
                 _this3.checkRoundEnd();
             });
@@ -2301,27 +2349,54 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 return;
             }
 
-            // Next round, show results n stuff
-            // TODO: switch round and display gameScore and Countdown
-            if (this.nextRound()) {
-                this.startRound();
-            } else {
-                // Game over! Show final game report or something
-                console.log('Game over!');
+            if (this.currentRoundNr === this.game.rounds.length) {
+                this.gameOver = true;
             }
+
+            this.showResults = true;
         },
         startRound: function startRound() {
             var _this4 = this;
 
             this.stopTimer();
             this.resetTimer();
+            this.emptyFields();
             // Show countdown
             // Don't allow submitting answer here
+            this.showCountdown = true;
+            this.opponent_typed = '';
+            window.Events.$emit('new-round');
 
             setTimeout(function () {
                 _this4.startTimer();
                 // Allow submitting answers again..
+
+                window.Events.$emit('new-round-start-typing');
             }, 4000);
+        },
+        emptyFields: function emptyFields() {
+            this.opponent_typed = '';
+        },
+        handleCountdownFinish: function handleCountdownFinish(e) {
+            this.showCountdown = false;
+        },
+        handleScoreDismissed: function handleScoreDismissed(e) {
+            this.showResults = false;
+
+            if (this.gameOver) {
+                this.redirectAfterGameOver();
+            }
+
+            if (this.nextRound()) {
+                this.startRound();
+            } else {
+                // Game over! Show final game report or something
+                this.redirectAfterGameOver();
+            }
+        },
+        redirectAfterGameOver: function redirectAfterGameOver() {
+            console.log('REDIRECTING');
+            window.location = '/history';
         }
     },
 
@@ -2332,7 +2407,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
 
 
-    components: { PlayFullScreen: __WEBPACK_IMPORTED_MODULE_0__PlayFullScreen_vue___default.a, GameScore: __WEBPACK_IMPORTED_MODULE_1__GameScore_vue___default.a }
+    components: { PlayFullScreen: __WEBPACK_IMPORTED_MODULE_0__PlayFullScreen_vue___default.a, GameScore: __WEBPACK_IMPORTED_MODULE_1__GameScore_vue___default.a, Countdown: __WEBPACK_IMPORTED_MODULE_2__Countdown_vue___default.a }
 });
 
 /***/ }),
@@ -2375,16 +2450,37 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: {
         completed_rounds: { required: true },
-        game: { required: true }
+        game: { required: true },
+        game_over: { required: true }
     },
 
     data: function data() {
-        return {};
+        return {
+            opponentAccepted: false,
+            playerAccepted: false
+        };
     },
 
 
@@ -2403,11 +2499,44 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         winner: function winner() {
             var lastRound = this.completed_rounds[this.completed_rounds.length - 1];
-            var playerOne = this.game.player_one_id;
-            var playerTwo = this.game.player_two_id;
-            var winner = lastRound.player_one_time < lastRound.player_two_time ? playerOne : playerTwo;
+
+            return this.calculateWinnerText(lastRound.player_one_time, lastRound.player_two_time);
+        },
+        opponentText: function opponentText() {
+            return this.opponentAccepted ? 'Opponent accepted' : 'Waiting for opponent...';
+        },
+        playerText: function playerText() {
+            return this.playerAccepted ? 'Ready...' : 'Next round';
+        }
+    },
+
+    methods: {
+        nextRoundClicked: function nextRoundClicked() {
+            this.playerAccepted = true;
+            Echo.join('game.' + this.game.id).whisper('next-clicked', {});
+            this.checkBothAccepted();
+        },
+        checkBothAccepted: function checkBothAccepted() {
+            if (this.opponentAccepted && this.playerAccepted) {
+                this.$emit('dismissed');
+            }
+        },
+        calculateWinnerText: function calculateWinnerText(player_one_time, player_two_time) {
+            var playerOne = this.game.player_one.id;
+            var playerTwo = this.game.player_two.id;
+            var winner = parseFloat(player_one_time) < parseFloat(player_two_time) ? playerOne : playerTwo;
+
             return window.Laravel.user.id == winner ? 'You won!' : 'You lost!';
         }
+    },
+
+    mounted: function mounted() {
+        var _this = this;
+
+        Echo.join('game.' + this.game.id).listenForWhisper('next-clicked', function (e) {
+            _this.opponentAccepted = true;
+            _this.checkBothAccepted();
+        });
     }
 });
 
@@ -2798,6 +2927,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
 
@@ -2810,7 +2941,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     data: function data() {
         return {
             typed: '',
-            wrongWord: false
+            wrongWord: false,
+            done: false
         };
     },
 
@@ -2835,6 +2967,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }
 
             this.$emit('answer-was-submitted', this.typed);
+            this.done = true;
         },
         handleTyped: function handleTyped(e) {
             this.$emit('typed', this.typed);
@@ -2842,9 +2975,24 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
 
     mounted: function mounted() {
+        var _this2 = this;
+
         if (this.typed_word.length > 0) {
             this.typed = this.typed_word;
         }
+
+        window.Events.$on('new-round', function () {
+            _this2.typed = '';
+            _this2.done = true;
+        });
+        window.Events.$on('new-round-start-typing', function () {
+            _this2.done = false;
+            if (_this2.side === 'player') {
+                setTimeout(function () {
+                    _this2.$refs['player-input'].focus();
+                }, 100);
+            }
+        });
     }
 });
 
@@ -6551,7 +6699,7 @@ exports.push([module.i, "\n.fade.show[data-v-2144fb1a] {\n  background-color: rg
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(2)();
-exports.push([module.i, "\n.half-screen[data-v-267edc06] {\n  height: 100vh;\n  width: 100%;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: column;\n          flex-direction: column;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n  -webkit-box-pack: center;\n      -ms-flex-pack: center;\n          justify-content: center;\n}\n.half-screen.player[data-v-267edc06] {\n    background-color: #0a0a0a;\n    color: #fdfcfc;\n}\n.half-screen.opponent[data-v-267edc06] {\n    background-color: #fdfcfc;\n    color: #0a0a0a;\n}\n.half-screen h1[data-v-267edc06] {\n    -webkit-box-flex: 0.35;\n        -ms-flex: 0.35;\n            flex: 0.35;\n}\n.word-input[data-v-267edc06] {\n  width: 75%;\n}\n.word-input[data-v-267edc06]:focus {\n    border-color: #48d1cc;\n}\n.time-container[data-v-267edc06] {\n  text-align: center;\n}\n.animated[data-v-267edc06] {\n  -webkit-animation-duration: 1s;\n          animation-duration: 1s;\n  -webkit-animation-fill-mode: both;\n          animation-fill-mode: both;\n}\n@-webkit-keyframes shake {\nfrom, to {\n    -webkit-transform: translate3d(0, 0, 0);\n            transform: translate3d(0, 0, 0);\n}\n10%, 30%, 50%, 70%, 90% {\n    -webkit-transform: translate3d(-7px, 0, 0);\n            transform: translate3d(-7px, 0, 0);\n}\n20%, 40%, 60%, 80% {\n    -webkit-transform: translate3d(7px, 0, 0);\n            transform: translate3d(7px, 0, 0);\n}\n}\n@keyframes shake {\nfrom, to {\n    -webkit-transform: translate3d(0, 0, 0);\n            transform: translate3d(0, 0, 0);\n}\n10%, 30%, 50%, 70%, 90% {\n    -webkit-transform: translate3d(-7px, 0, 0);\n            transform: translate3d(-7px, 0, 0);\n}\n20%, 40%, 60%, 80% {\n    -webkit-transform: translate3d(7px, 0, 0);\n            transform: translate3d(7px, 0, 0);\n}\n}\n.shake[data-v-267edc06] {\n  -webkit-animation-name: shake;\n          animation-name: shake;\n}\n.word-input.shake[data-v-267edc06]:focus {\n  border-color: #d9534f;\n}\n", ""]);
+exports.push([module.i, "\n.half-screen[data-v-267edc06] {\n  height: 100vh;\n  width: 100%;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: column;\n          flex-direction: column;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n  -webkit-box-pack: center;\n      -ms-flex-pack: center;\n          justify-content: center;\n}\n.half-screen.player[data-v-267edc06] {\n    background-color: #0a0a0a;\n    color: #fdfcfc;\n}\n.half-screen.opponent[data-v-267edc06] {\n    background-color: #fdfcfc;\n    color: #0a0a0a;\n}\n.half-screen h1[data-v-267edc06] {\n    -webkit-box-flex: 0.35;\n        -ms-flex: 0.35;\n            flex: 0.35;\n}\n.word-input[data-v-267edc06] {\n  width: 75%;\n}\n.word-input[data-v-267edc06]:focus {\n    border-color: #48d1cc;\n}\n.time-container[data-v-267edc06] {\n  text-align: center;\n}\n.animated[data-v-267edc06] {\n  -webkit-animation-duration: 1s;\n          animation-duration: 1s;\n  -webkit-animation-fill-mode: both;\n          animation-fill-mode: both;\n}\n@-webkit-keyframes shake {\nfrom, to {\n    -webkit-transform: translate3d(0, 0, 0);\n            transform: translate3d(0, 0, 0);\n}\n10%, 30%, 50%, 70%, 90% {\n    -webkit-transform: translate3d(-7px, 0, 0);\n            transform: translate3d(-7px, 0, 0);\n}\n20%, 40%, 60%, 80% {\n    -webkit-transform: translate3d(7px, 0, 0);\n            transform: translate3d(7px, 0, 0);\n}\n}\n@keyframes shake {\nfrom, to {\n    -webkit-transform: translate3d(0, 0, 0);\n            transform: translate3d(0, 0, 0);\n}\n10%, 30%, 50%, 70%, 90% {\n    -webkit-transform: translate3d(-7px, 0, 0);\n            transform: translate3d(-7px, 0, 0);\n}\n20%, 40%, 60%, 80% {\n    -webkit-transform: translate3d(7px, 0, 0);\n            transform: translate3d(7px, 0, 0);\n}\n}\n.shake[data-v-267edc06] {\n  -webkit-animation-name: shake;\n          animation-name: shake;\n}\n.word-input.shake[data-v-267edc06]:focus {\n  border-color: #d9534f;\n}\n.form-control-success[data-v-267edc06] {\n  border-color: #5cb85c;\n}\n", ""]);
 
 /***/ }),
 /* 51 */
@@ -6565,7 +6713,7 @@ exports.push([module.i, "", ""]);
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(2)();
-exports.push([module.i, "\n.countdown-container[data-v-3e43f4f7] {\n  position: fixed;\n  top: 0;\n  bottom: 0;\n  right: 0;\n  left: 0;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: horizontal;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: row;\n          flex-direction: row;\n  -webkit-box-pack: center;\n      -ms-flex-pack: center;\n          justify-content: center;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n}\n.countdown-container h1[data-v-3e43f4f7] {\n    font-size: 250px;\n    color: rgba(255, 255, 255, 0.4);\n}\n.pulsate[data-v-3e43f4f7] {\n  -webkit-animation: pulsate 1s ease-out;\n  -webkit-animation-iteration-count: infinite;\n  opacity: 0;\n}\n@-webkit-keyframes pulsate {\n0% {\n    opacity: 0;\n}\n50% {\n    opacity: 1.0;\n}\n100% {\n    opacity: 0;\n}\n}\n", ""]);
+exports.push([module.i, "\n.countdown-container[data-v-3e43f4f7] {\n  position: fixed;\n  top: 0;\n  bottom: 0;\n  right: 0;\n  left: 0;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: horizontal;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: row;\n          flex-direction: row;\n  -webkit-box-pack: center;\n      -ms-flex-pack: center;\n          justify-content: center;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n  background-color: rgba(0, 0, 0, 0.8);\n}\n.countdown-container h1[data-v-3e43f4f7] {\n    font-size: 250px;\n    color: rgba(255, 255, 255, 0.6);\n}\n.pulsate[data-v-3e43f4f7] {\n  -webkit-animation: pulsate 1s ease-out;\n  -webkit-animation-iteration-count: infinite;\n  opacity: 0;\n}\n@-webkit-keyframes pulsate {\n0% {\n    opacity: 0;\n}\n50% {\n    opacity: 1.0;\n}\n100% {\n    opacity: 0;\n}\n}\n", ""]);
 
 /***/ }),
 /* 53 */
@@ -6593,7 +6741,7 @@ exports.push([module.i, "\ntd[data-v-6455ed5a] {\n  text-align: center;\n  borde
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(2)();
-exports.push([module.i, "\n.game-score-container[data-v-7db82df4] {\n  position: fixed;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  left: 0;\n  z-index: 1050;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n  -webkit-box-pack: center;\n      -ms-flex-pack: center;\n          justify-content: center;\n  background-color: rgba(0, 0, 0, 0.7);\n}\n.game-score-container hr[data-v-7db82df4] {\n    border-top: 1px solid #fdfcfc;\n}\n.overview-container[data-v-7db82df4] {\n  text-align: center;\n}\n.overview-container .scores[data-v-7db82df4] {\n    font-size: 60px;\n}\n.overview-container .winner-text[data-v-7db82df4] {\n    font-size: 50px;\n}\n.game-score-container .dark-card[data-v-7db82df4] {\n  border: 2px solid #fdfcfc;\n  font-family: 'Noto Serif', serif;\n}\n.game-score-container .dark-card .card-block[data-v-7db82df4] {\n    padding: 1.5rem;\n}\n.rounds-table[data-v-7db82df4] {\n  padding: 0;\n  font-size: 1.1rem;\n}\n.rounds-table .header td[data-v-7db82df4] {\n    padding-bottom: 10px;\n}\n.rounds-table td[data-v-7db82df4] {\n    padding: 0px 10px;\n    text-align: center;\n}\n", ""]);
+exports.push([module.i, "\n.game-score-container[data-v-7db82df4] {\n  position: fixed;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  left: 0;\n  z-index: 1050;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n  -webkit-box-pack: center;\n      -ms-flex-pack: center;\n          justify-content: center;\n  background-color: rgba(0, 0, 0, 0.7);\n}\n.game-score-container hr[data-v-7db82df4] {\n    border-top: 1px solid #fdfcfc;\n}\n.overview-container[data-v-7db82df4] {\n  text-align: center;\n}\n.overview-container .scores[data-v-7db82df4] {\n    font-size: 60px;\n}\n.overview-container .winner-text[data-v-7db82df4] {\n    font-size: 50px;\n}\n.game-score-container .dark-card[data-v-7db82df4] {\n  border: 2px solid #fdfcfc;\n  font-family: 'Noto Serif', serif;\n}\n.game-score-container .dark-card .card-block[data-v-7db82df4] {\n    padding: 1.5rem;\n}\n.rounds-table[data-v-7db82df4] {\n  padding: 0;\n  font-size: 1.1rem;\n}\n.rounds-table .header td[data-v-7db82df4] {\n    padding-bottom: 10px;\n}\n.rounds-table td[data-v-7db82df4] {\n    padding: 0px 10px;\n    text-align: center;\n}\n.flex[data-v-7db82df4] {\n  -webkit-box-flex: 1;\n      -ms-flex: 1;\n          flex: 1;\n}\n", ""]);
 
 /***/ }),
 /* 57 */
@@ -39784,14 +39932,16 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       value: (_vm.typed),
       expression: "typed"
     }],
+    ref: _vm.side === 'player' ? 'player-input' : '',
     staticClass: "form-control form-control-lg word-input animated",
     class: {
-      shake: _vm.wrongWord
+      shake: _vm.wrongWord, 'form-control-success': _vm.done
     },
     attrs: {
       "type": "text",
+      "id": _vm.side === 'player' ? 'player-input' : '',
       "name": "word-input",
-      "disabled": _vm.side === 'opponent'
+      "disabled": _vm.side === 'opponent' || _vm.done
     },
     domProps: {
       "value": (_vm.typed)
@@ -39835,9 +39985,20 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }), _vm._v(" "), (_vm.showResults) ? _c('game-score', {
     attrs: {
       "completed_rounds": _vm.completed_rounds,
-      "game": _vm.game
+      "game": _vm.game,
+      "game_over": _vm.gameOver
+    },
+    on: {
+      "dismissed": _vm.handleScoreDismissed
     }
-  }) : _vm._e()], 1)
+  }) : _vm._e(), _vm._v(" "), _c('countdown', {
+    attrs: {
+      "show": _vm.showCountdown
+    },
+    on: {
+      "countdown-was-finished": _vm.handleCountdownFinish
+    }
+  })], 1)
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
@@ -40011,8 +40172,28 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       staticClass: "player-time"
     }, [_vm._v(_vm._s(round.player_two_time))]), _vm._v(" "), _c('td', {
       staticClass: "winner"
-    }, [_vm._v(_vm._s(_vm.winner))])])
-  }))])])])])
+    }, [_vm._v(_vm._s(_vm.calculateWinnerText(round.player_one_time, round.player_two_time)))])])
+  }))])]), _vm._v(" "), (!_vm.game_over) ? _c('div', {
+    staticClass: "card-footer"
+  }, [_c('div', {
+    staticClass: "d-flex"
+  }, [_c('span', {
+    staticClass: "flex"
+  }, [_c('button', {
+    staticClass: "btn btn-secondary",
+    on: {
+      "click": _vm.nextRoundClicked
+    }
+  }, [_vm._v(_vm._s(_vm.playerText))])]), _vm._v(" "), _c('span', [_vm._v("\n                    " + _vm._s(_vm.opponentText) + "\n                ")])])]) : _c('div', {
+    staticClass: "card-footer"
+  }, [_c('button', {
+    staticClass: "btn btn-secondary",
+    on: {
+      "click": function($event) {
+        _vm.$emit('dismissed')
+      }
+    }
+  }, [_vm._v("Game over!")])])])])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('thead', [_c('tr', {
     staticClass: "header"
@@ -50087,6 +50268,412 @@ module.exports = function(module) {
 __webpack_require__(11);
 module.exports = __webpack_require__(12);
 
+
+/***/ }),
+/* 106 */,
+/* 107 */,
+/* 108 */
+/***/ (function(module, exports) {
+
+
+var retina = window.devicePixelRatio,
+
+
+// Math shorthands
+PI = Math.PI,
+    sqrt = Math.sqrt,
+    round = Math.round,
+    random = Math.random,
+    cos = Math.cos,
+    sin = Math.sin,
+
+
+// Local WindowAnimationTiming interface
+rAF = window.requestAnimationFrame,
+    cAF = window.cancelAnimationFrame || window.cancelRequestAnimationFrame,
+    _now = Date.now || function () {
+    return new Date().getTime();
+};
+
+// Local WindowAnimationTiming interface polyfill
+(function (w) {
+    /**
+     * Fallback implementation.
+     */
+    var prev = _now();
+
+    function fallback(fn) {
+        var curr = _now();
+        var ms = Math.max(0, 16 - (curr - prev));
+        var req = setTimeout(fn, ms);
+        prev = curr;
+        return req;
+    }
+
+    /**
+     * Cancel.
+     */
+    var cancel = w.cancelAnimationFrame || w.webkitCancelAnimationFrame || w.clearTimeout;
+
+    rAF = w.requestAnimationFrame || w.webkitRequestAnimationFrame || fallback;
+
+    cAF = function cAF(id) {
+        cancel.call(w, id);
+    };
+})(window);
+
+document.addEventListener("DOMContentLoaded", function () {
+    var speed = 50,
+        duration = 1.0 / speed,
+        confettiRibbonCount = 11,
+        ribbonPaperCount = 1,
+        ribbonPaperDist = 8.0,
+        ribbonPaperThick = 8.0,
+        confettiPaperCount = 95,
+        DEG_TO_RAD = PI / 180,
+        RAD_TO_DEG = 180 / PI,
+        colors = [["#000", "#FAE164"], ["#000", "#FF4621"], ["#000", "#0066FF"], ["#000", "#64E178"]];
+
+    function Vector2(_x, _y) {
+        this.x = _x, this.y = _y;
+        this.Length = function () {
+            return sqrt(this.SqrLength());
+        };
+        this.SqrLength = function () {
+            return this.x * this.x + this.y * this.y;
+        };
+        this.Add = function (_vec) {
+            this.x += _vec.x;
+            this.y += _vec.y;
+        };
+        this.Sub = function (_vec) {
+            this.x -= _vec.x;
+            this.y -= _vec.y;
+        };
+        this.Div = function (_f) {
+            this.x /= _f;
+            this.y /= _f;
+        };
+        this.Mul = function (_f) {
+            this.x *= _f;
+            this.y *= _f;
+        };
+        this.Normalize = function () {
+            var sqrLen = this.SqrLength();
+            if (sqrLen != 0) {
+                var factor = 1.0 / sqrt(sqrLen);
+                this.x *= factor;
+                this.y *= factor;
+            }
+        };
+        this.Normalized = function () {
+            var sqrLen = this.SqrLength();
+            if (sqrLen != 0) {
+                var factor = 1.0 / sqrt(sqrLen);
+                return new Vector2(this.x * factor, this.y * factor);
+            }
+            return new Vector2(0, 0);
+        };
+    }
+    Vector2.Lerp = function (_vec0, _vec1, _t) {
+        return new Vector2((_vec1.x - _vec0.x) * _t + _vec0.x, (_vec1.y - _vec0.y) * _t + _vec0.y);
+    };
+    Vector2.Distance = function (_vec0, _vec1) {
+        return sqrt(Vector2.SqrDistance(_vec0, _vec1));
+    };
+    Vector2.SqrDistance = function (_vec0, _vec1) {
+        var x = _vec0.x - _vec1.x;
+        var y = _vec0.y - _vec1.y;
+        return x * x + y * y + z * z;
+    };
+    Vector2.Scale = function (_vec0, _vec1) {
+        return new Vector2(_vec0.x * _vec1.x, _vec0.y * _vec1.y);
+    };
+    Vector2.Min = function (_vec0, _vec1) {
+        return new Vector2(Math.min(_vec0.x, _vec1.x), Math.min(_vec0.y, _vec1.y));
+    };
+    Vector2.Max = function (_vec0, _vec1) {
+        return new Vector2(Math.max(_vec0.x, _vec1.x), Math.max(_vec0.y, _vec1.y));
+    };
+    Vector2.ClampMagnitude = function (_vec0, _len) {
+        var vecNorm = _vec0.Normalized;
+        return new Vector2(vecNorm.x * _len, vecNorm.y * _len);
+    };
+    Vector2.Sub = function (_vec0, _vec1) {
+        return new Vector2(_vec0.x - _vec1.x, _vec0.y - _vec1.y, _vec0.z - _vec1.z);
+    };
+
+    function EulerMass(_x, _y, _mass, _drag) {
+        this.position = new Vector2(_x, _y);
+        this.mass = _mass;
+        this.drag = _drag;
+        this.force = new Vector2(0, 0);
+        this.velocity = new Vector2(0, 0);
+        this.AddForce = function (_f) {
+            this.force.Add(_f);
+        };
+        this.Integrate = function (_dt) {
+            var acc = this.CurrentForce(this.position);
+            acc.Div(this.mass);
+            var posDelta = new Vector2(this.velocity.x, this.velocity.y);
+            posDelta.Mul(_dt);
+            this.position.Add(posDelta);
+            acc.Mul(_dt);
+            this.velocity.Add(acc);
+            this.force = new Vector2(0, 0);
+        };
+        this.CurrentForce = function (_pos, _vel) {
+            var totalForce = new Vector2(this.force.x, this.force.y);
+            var speed = this.velocity.Length();
+            var dragVel = new Vector2(this.velocity.x, this.velocity.y);
+            dragVel.Mul(this.drag * this.mass * speed);
+            totalForce.Sub(dragVel);
+            return totalForce;
+        };
+    }
+
+    function ConfettiPaper(_x, _y) {
+        this.pos = new Vector2(_x, _y);
+        this.rotationSpeed = random() * 600 + 800;
+        this.angle = DEG_TO_RAD * random() * 360;
+        this.rotation = DEG_TO_RAD * random() * 360;
+        this.cosA = 1.0;
+        this.size = 5.0;
+        this.oscillationSpeed = random() * 1.5 + 0.5;
+        this.xSpeed = 40.0;
+        this.ySpeed = random() * 60 + 50.0;
+        this.corners = new Array();
+        this.time = random();
+        var ci = round(random() * (colors.length - 1));
+        this.frontColor = colors[ci][0];
+        this.backColor = colors[ci][1];
+        for (var i = 0; i < 4; i++) {
+            var dx = cos(this.angle + DEG_TO_RAD * (i * 90 + 45));
+            var dy = sin(this.angle + DEG_TO_RAD * (i * 90 + 45));
+            this.corners[i] = new Vector2(dx, dy);
+        }
+        this.Update = function (_dt) {
+            this.time += _dt;
+            this.rotation += this.rotationSpeed * _dt;
+            this.cosA = cos(DEG_TO_RAD * this.rotation);
+            this.pos.x += cos(this.time * this.oscillationSpeed) * this.xSpeed * _dt;
+            this.pos.y += this.ySpeed * _dt;
+            if (this.pos.y > ConfettiPaper.bounds.y) {
+                this.pos.x = random() * ConfettiPaper.bounds.x;
+                this.pos.y = 0;
+            }
+        };
+        this.Draw = function (_g) {
+            if (this.cosA > 0) {
+                _g.fillStyle = this.frontColor;
+            } else {
+                _g.fillStyle = this.backColor;
+            }
+            _g.beginPath();
+            _g.moveTo((this.pos.x + this.corners[0].x * this.size) * retina, (this.pos.y + this.corners[0].y * this.size * this.cosA) * retina);
+            for (var i = 1; i < 4; i++) {
+                _g.lineTo((this.pos.x + this.corners[i].x * this.size) * retina, (this.pos.y + this.corners[i].y * this.size * this.cosA) * retina);
+            }
+            _g.closePath();
+            _g.fill();
+        };
+    }
+    ConfettiPaper.bounds = new Vector2(0, 0);
+
+    function ConfettiRibbon(_x, _y, _count, _dist, _thickness, _angle, _mass, _drag) {
+        this.particleDist = _dist;
+        this.particleCount = _count;
+        this.particleMass = _mass;
+        this.particleDrag = _drag;
+        this.particles = new Array();
+        var ci = round(random() * (colors.length - 1));
+        this.frontColor = colors[ci][0];
+        this.backColor = colors[ci][1];
+        this.xOff = cos(DEG_TO_RAD * _angle) * _thickness;
+        this.yOff = sin(DEG_TO_RAD * _angle) * _thickness;
+        this.position = new Vector2(_x, _y);
+        this.prevPosition = new Vector2(_x, _y);
+        this.velocityInherit = random() * 2 + 4;
+        this.time = random() * 100;
+        this.oscillationSpeed = random() * 2 + 2;
+        this.oscillationDistance = random() * 40 + 40;
+        this.ySpeed = random() * 40 + 80;
+        for (var i = 0; i < this.particleCount; i++) {
+            this.particles[i] = new EulerMass(_x, _y - i * this.particleDist, this.particleMass, this.particleDrag);
+        }
+        this.Update = function (_dt) {
+            var i = 0;
+            this.time += _dt * this.oscillationSpeed;
+            this.position.y += this.ySpeed * _dt;
+            this.position.x += cos(this.time) * this.oscillationDistance * _dt;
+            this.particles[0].position = this.position;
+            var dX = this.prevPosition.x - this.position.x;
+            var dY = this.prevPosition.y - this.position.y;
+            var delta = sqrt(dX * dX + dY * dY);
+            this.prevPosition = new Vector2(this.position.x, this.position.y);
+            for (i = 1; i < this.particleCount; i++) {
+                var dirP = Vector2.Sub(this.particles[i - 1].position, this.particles[i].position);
+                dirP.Normalize();
+                dirP.Mul(delta / _dt * this.velocityInherit);
+                this.particles[i].AddForce(dirP);
+            }
+            for (i = 1; i < this.particleCount; i++) {
+                this.particles[i].Integrate(_dt);
+            }
+            for (i = 1; i < this.particleCount; i++) {
+                var rp2 = new Vector2(this.particles[i].position.x, this.particles[i].position.y);
+                rp2.Sub(this.particles[i - 1].position);
+                rp2.Normalize();
+                rp2.Mul(this.particleDist);
+                rp2.Add(this.particles[i - 1].position);
+                this.particles[i].position = rp2;
+            }
+            if (this.position.y > ConfettiRibbon.bounds.y + this.particleDist * this.particleCount) {
+                this.Reset();
+            }
+        };
+        this.Reset = function () {
+            this.position.y = -random() * ConfettiRibbon.bounds.y;
+            this.position.x = random() * ConfettiRibbon.bounds.x;
+            this.prevPosition = new Vector2(this.position.x, this.position.y);
+            this.velocityInherit = random() * 2 + 4;
+            this.time = random() * 100;
+            this.oscillationSpeed = random() * 2.0 + 1.5;
+            this.oscillationDistance = random() * 40 + 40;
+            this.ySpeed = random() * 40 + 80;
+            var ci = round(random() * (colors.length - 1));
+            this.frontColor = colors[ci][0];
+            this.backColor = colors[ci][1];
+            this.particles = new Array();
+            for (var i = 0; i < this.particleCount; i++) {
+                this.particles[i] = new EulerMass(this.position.x, this.position.y - i * this.particleDist, this.particleMass, this.particleDrag);
+            }
+        };
+        this.Draw = function (_g) {
+            for (var i = 0; i < this.particleCount - 1; i++) {
+                var p0 = new Vector2(this.particles[i].position.x + this.xOff, this.particles[i].position.y + this.yOff);
+                var p1 = new Vector2(this.particles[i + 1].position.x + this.xOff, this.particles[i + 1].position.y + this.yOff);
+                if (this.Side(this.particles[i].position.x, this.particles[i].position.y, this.particles[i + 1].position.x, this.particles[i + 1].position.y, p1.x, p1.y) < 0) {
+                    _g.fillStyle = this.frontColor;
+                    _g.strokeStyle = this.frontColor;
+                } else {
+                    _g.fillStyle = this.backColor;
+                    _g.strokeStyle = this.backColor;
+                }
+                if (i == 0) {
+                    _g.beginPath();
+                    _g.moveTo(this.particles[i].position.x * retina, this.particles[i].position.y * retina);
+                    _g.lineTo(this.particles[i + 1].position.x * retina, this.particles[i + 1].position.y * retina);
+                    _g.lineTo((this.particles[i + 1].position.x + p1.x) * 0.5 * retina, (this.particles[i + 1].position.y + p1.y) * 0.5 * retina);
+                    _g.closePath();
+                    _g.stroke();
+                    _g.fill();
+                    _g.beginPath();
+                    _g.moveTo(p1.x * retina, p1.y * retina);
+                    _g.lineTo(p0.x * retina, p0.y * retina);
+                    _g.lineTo((this.particles[i + 1].position.x + p1.x) * 0.5 * retina, (this.particles[i + 1].position.y + p1.y) * 0.5 * retina);
+                    _g.closePath();
+                    _g.stroke();
+                    _g.fill();
+                } else if (i == this.particleCount - 2) {
+                    _g.beginPath();
+                    _g.moveTo(this.particles[i].position.x * retina, this.particles[i].position.y * retina);
+                    _g.lineTo(this.particles[i + 1].position.x * retina, this.particles[i + 1].position.y * retina);
+                    _g.lineTo((this.particles[i].position.x + p0.x) * 0.5 * retina, (this.particles[i].position.y + p0.y) * 0.5 * retina);
+                    _g.closePath();
+                    _g.stroke();
+                    _g.fill();
+                    _g.beginPath();
+                    _g.moveTo(p1.x * retina, p1.y * retina);
+                    _g.lineTo(p0.x * retina, p0.y * retina);
+                    _g.lineTo((this.particles[i].position.x + p0.x) * 0.5 * retina, (this.particles[i].position.y + p0.y) * 0.5 * retina);
+                    _g.closePath();
+                    _g.stroke();
+                    _g.fill();
+                } else {
+                    _g.beginPath();
+                    _g.moveTo(this.particles[i].position.x * retina, this.particles[i].position.y * retina);
+                    _g.lineTo(this.particles[i + 1].position.x * retina, this.particles[i + 1].position.y * retina);
+                    _g.lineTo(p1.x * retina, p1.y * retina);
+                    _g.lineTo(p0.x * retina, p0.y * retina);
+                    _g.closePath();
+                    _g.stroke();
+                    _g.fill();
+                }
+            }
+        };
+        this.Side = function (x1, y1, x2, y2, x3, y3) {
+            return (x1 - x2) * (y3 - y2) - (y1 - y2) * (x3 - x2);
+        };
+    }
+    ConfettiRibbon.bounds = new Vector2(0, 0);
+    confetti = {};
+    confetti.Context = function (id) {
+        var i = 0;
+
+        var canvas = document.getElementById(id);
+        if (canvas === null) {
+            return null;
+        }
+
+        var canvasParent = canvas.parentNode;
+        var canvasWidth = canvasParent.offsetWidth;
+        var canvasHeight = canvasParent.offsetHeight;
+        canvas.width = canvasWidth * retina;
+        canvas.height = canvasHeight * retina;
+        var context = canvas.getContext('2d');
+        var interval = null;
+        var confettiRibbons = new Array();
+        ConfettiRibbon.bounds = new Vector2(canvasWidth, canvasHeight);
+        for (i = 0; i < confettiRibbonCount; i++) {
+            confettiRibbons[i] = new ConfettiRibbon(random() * canvasWidth, -random() * canvasHeight * 2, ribbonPaperCount, ribbonPaperDist, ribbonPaperThick, 45, 1, 0.05);
+        }
+        var confettiPapers = new Array();
+        ConfettiPaper.bounds = new Vector2(canvasWidth, canvasHeight);
+        for (i = 0; i < confettiPaperCount; i++) {
+            confettiPapers[i] = new ConfettiPaper(random() * canvasWidth, random() * canvasHeight);
+        }
+        this.resize = function () {
+            canvasWidth = canvasParent.offsetWidth;
+            canvasHeight = canvasParent.offsetHeight;
+            canvas.width = canvasWidth * retina;
+            canvas.height = canvasHeight * retina;
+            ConfettiPaper.bounds = new Vector2(canvasWidth, canvasHeight);
+            ConfettiRibbon.bounds = new Vector2(canvasWidth, canvasHeight);
+        };
+        this.start = function () {
+            this.stop();
+            var context = this;
+            this.update();
+        };
+        this.stop = function () {
+            cAF(this.interval);
+        };
+        this.update = function () {
+            var i = 0;
+            context.clearRect(0, 0, canvas.width, canvas.height);
+            for (i = 0; i < confettiPaperCount; i++) {
+                confettiPapers[i].Update(duration);
+                confettiPapers[i].Draw(context);
+            }
+            for (i = 0; i < confettiRibbonCount; i++) {
+                confettiRibbons[i].Update(duration);
+                confettiRibbons[i].Draw(context);
+            }
+            this.interval = rAF(function () {
+                confetti.update();
+            });
+        };
+    };
+    var confetti = new confetti.Context('confetti');
+    if (typeof confetti.start === 'undefined') {
+        return;
+    }
+    confetti.start();
+    window.addEventListener('resize', function (event) {
+        confetti.resize();
+    });
+});
 
 /***/ })
 /******/ ]);

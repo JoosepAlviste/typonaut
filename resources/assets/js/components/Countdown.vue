@@ -9,16 +9,27 @@
 <script>
     export default {
 
+        props: [ 'show' ],
+
         data() {
             return {
                 timer: null,
                 timeSeconds: 3,
-                timerOn: false
+                timerOn: false,
+            }
+        },
+
+        watch: {
+            show(val) {
+                if (val) {
+                    this.startTimer()
+                }
             }
         },
 
         methods: {
             startTimer() {
+                this.resetTimer()
                 this.timerOn = true
                 this.advanceTimer()
             },
@@ -30,6 +41,7 @@
                         this.timeSeconds = 'GO'
                         setTimeout( () => {
                             this.stopTimer()
+                            this.$emit('countdown-was-finished')
                         }, 1000)
                     } else {
                         this.advanceTimer()
@@ -49,7 +61,7 @@
         },
 
         mounted() {
-            this.startTimer()
+//            this.startTimer()
         }
     }
 </script>
@@ -65,10 +77,11 @@
         flex-direction: row;
         justify-content: center;
         align-items: center;
+        background-color: rgba(0, 0, 0, .8);
 
         h1 {
             font-size: 250px;
-            color: rgba(255, 255, 255, 0.4);
+            color: rgba(255, 255, 255, 0.6);
         }
     }
 
