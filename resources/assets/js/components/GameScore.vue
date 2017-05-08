@@ -78,7 +78,7 @@
                         scoreTwo++
                     }
                 })
-                
+
                 return window.Laravel.user.id == this.game.player_one.id ? scoreOne + " - " + scoreTwo : scoreTwo + " - " + scoreOne
             },
 
