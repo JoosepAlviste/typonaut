@@ -12,16 +12,16 @@
                     <thead>
                         <tr class="header">
                             <td class="word">Word</td>
-                            <td class="player-time">Player 1 time</td>
-                            <td class="player-time">Player 2 time</td>
+                            <td class="player-time">{{ game.player_one.name }}'s time</td>
+                            <td class="player-time">{{ game.player_two.name }}'s time</td>
                             <td class="winner">Result</td>
                         </tr>
                     </thead>
                     <tbody>
                         <tr v-for="round in completed_rounds">
                             <td class="word">{{ round.word }}</td>
-                            <td class="player-time">{{ round.player_one_time }}</td>
-                            <td class="player-time">{{ round.player_two_time }}</td>
+                            <td class="player-time">{{ round.player_one_time | formatTime }}</td>
+                            <td class="player-time">{{ round.player_two_time | formatTime}}</td>
                             <td class="winner">{{ calculateWinnerText(round.player_one_time, round.player_two_time) }}</td>
                         </tr>
                     </tbody>
@@ -32,7 +32,7 @@
                 <div class="d-flex">
 
                     <span class="flex">
-                        <button class="btn btn-secondary" @click="nextRoundClicked">{{ playerText }}</button>
+                        <button class="btn btn-secondary" :disabled="buttonDisabled" @click="nextRoundClicked">{{ playerText }}</button>
                     </span>
 
                     <span>
@@ -62,6 +62,7 @@
             return {
                 opponentAccepted: false,
                 playerAccepted: false,
+                buttonDisabled: false,
             }
         },
 
@@ -77,7 +78,8 @@
                         scoreTwo++
                     }
                 })
-                return scoreOne + " - " + scoreTwo
+                
+                return window.Laravel.user.id == this.game.player_one.id ? scoreOne + " - " + scoreTwo : scoreTwo + " - " + scoreOne
             },
 
             winner() {
@@ -95,9 +97,17 @@
             }
         },
 
+        filters: {
+            formatTime(time) {
+                return Math.round(time*10)/10
+            }
+        },
+
+
         methods: {
             nextRoundClicked() {
                 this.playerAccepted = true
+                this.buttonDisabled = true
                 Echo.join('game.' + this.game.id)
                     .whisper('next-clicked', {})
                 this.checkBothAccepted()
@@ -119,6 +129,7 @@
         },
 
         mounted() {
+            this.buttonDisabled = false
             Echo.join('game.' + this.game.id)
                 .listenForWhisper('next-clicked', (e) => {
                     this.opponentAccepted = true
@@ -151,6 +162,7 @@
 
     .overview-container {
         text-align: center;
+        font-family: 'Noto Serif', serif;
 
         .scores {
             font-size: 60px;
@@ -163,7 +175,8 @@
 
     .game-score-container .dark-card {
         border: 2px solid #fdfcfc;
-        font-family: 'Noto Serif', serif;
+        background-color: rgba(0, 0, 0, 0.8);
+        border-radius: 2px;
 
         .card-block {
             padding: 1.5rem;

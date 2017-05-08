@@ -48,7 +48,7 @@
                  :text="spinner.text">
         </spinner>
 
-        <canvas height='1' id='confetti' width='1'> </canvas>
+        {{--<canvas height='1' id='confetti' width='1'> </canvas>--}}
     </div>
 
     <!-- Scripts -->
