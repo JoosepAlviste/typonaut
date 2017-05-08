@@ -54,10 +54,11 @@ document.addEventListener("DOMContentLoaded", function() {
         DEG_TO_RAD = PI / 180,
         RAD_TO_DEG = 180 / PI,
         colors = [
-            ["#000", "#FAE164"],
-            ["#000", "#FF4621"],
+            ["#000", "#EAC435"],
+            ["#000", "#E40066"],
             ["#000", "#0066FF"],
-            ["#000", "#64E178"],
+            ["#000", "#03CEA4"],
+            ["#000", "#FB4D3D"],
         ];
 
     function Vector2(_x, _y) {

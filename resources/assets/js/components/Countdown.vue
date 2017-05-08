@@ -82,6 +82,9 @@
         h1 {
             font-size: 250px;
             color: rgba(255, 255, 255, 0.6);
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            user-select: none;
         }
     }
 

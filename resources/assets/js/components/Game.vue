@@ -16,6 +16,7 @@
 
         <countdown :show="showCountdown" @countdown-was-finished="handleCountdownFinish">
         </countdown>
+        <confetti :game_over="gameOver"></confetti>
     </div>
 
 </template>
@@ -25,6 +26,7 @@
     import PlayFullScreen from './PlayFullScreen.vue'
     import GameScore from './GameScore.vue'
     import Countdown from './Countdown.vue'
+    import Confetti from './Confetti.vue'
 
     export default {
 
@@ -229,7 +231,7 @@
             this.startRound()
         },
 
-        components: { PlayFullScreen, GameScore, Countdown }
+        components: { PlayFullScreen, GameScore, Countdown, Confetti }
     }
 </script>
 
