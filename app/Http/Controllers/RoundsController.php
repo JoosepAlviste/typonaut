@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\GameFinished;
 use App\Game;
 use App\Round;
 use Illuminate\Http\Request;
@@ -39,6 +40,18 @@ class RoundsController extends Controller
 
         $game->save();
         $round->save();
+
+        $gameOver = true;
+        foreach ($game->rounds as $loopround) {
+            if ($loopround->player_one_time === null || $loopround->player_two_time === null) {
+                $gameOver = false;
+                break;
+            }
+        }
+
+        if ($gameOver) {
+            event(new GameFinished($game->fresh()));
+        }
 
         return $round;
     }

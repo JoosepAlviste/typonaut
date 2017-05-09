@@ -200,4 +200,8 @@
     .flex {
         flex: 1;
     }
+
+    .btn {
+        cursor: pointer;
+    }
 </style>

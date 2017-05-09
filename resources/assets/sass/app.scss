@@ -1,11 +1,8 @@
-
 // Fonts
 @import url('https://fonts.googleapis.com/css?family=Noto+Sans:400,700');
 @import url('https://fonts.googleapis.com/css?family=Noto+Serif:400');
-
 // Variables
 @import "variables";
-
 // Bootstrap
 @import "node_modules/bootstrap/scss/bootstrap.scss";
 
@@ -108,7 +105,6 @@
   margin-top: 7rem;
 }
 
-
 .modal-content {
   background-color: #181818;
   border: 2px solid #0a0a0a;
@@ -130,20 +126,4 @@
 
 .btn-link {
   color: #fdfcfc;
-}
-
-
-
-#confetti{
-  position: fixed;
-  left: 0;
-  top: 0;
-  height: 100%;
-  width: 100%;
-  pointer-events:none;
-}
-
-img {
-  width: 100%;
-  margin: 20px 0;
 }

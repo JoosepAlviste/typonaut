@@ -1089,7 +1089,7 @@ var Component = __webpack_require__(0)(
   /* cssModules */
   null
 )
-Component.options.__file = "/Users/brenda/Sites/typonaut/resources/assets/js/components/Countdown.vue"
+Component.options.__file = "/Users/joosep/Code/typonaut/resources/assets/js/components/Countdown.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Countdown.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -2129,409 +2129,131 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['game_over'],
+    props: ['show'],
+
+    methods: {
+        start: function start() {
+            var COLORS, Confetti, NUM_CONFETTI, PI_2, canvas, confetti, context, drawCircle, i, range, resizeWindow, xpos;
+
+            NUM_CONFETTI = 350;
+
+            //                COLORS = [ [ 85, 71, 106 ], [ 174, 61, 99 ], [ 219, 56, 83 ], [ 244, 92, 68 ], [ 248, 182, 70 ] ];
+            COLORS = [[234, 196, 53], [228, 0, 102], [0, 102, 255], [3, 206, 164], [251, 77, 61]];
+
+            PI_2 = 2 * Math.PI;
+
+            canvas = document.getElementById("confetti");
+
+            context = canvas.getContext("2d");
+
+            window.w = 0;
+
+            window.h = 0;
+
+            resizeWindow = function resizeWindow() {
+                window.w = canvas.width = window.innerWidth;
+                return window.h = canvas.height = window.innerHeight;
+            };
+
+            window.addEventListener('resize', resizeWindow, false);
+
+            window.onload = function () {
+                return setTimeout(resizeWindow, 0);
+            };
+
+            range = function range(a, b) {
+                return (b - a) * Math.random() + a;
+            };
+
+            drawCircle = function drawCircle(x, y, r, style) {
+                context.beginPath();
+                context.arc(x, y, r, 0, PI_2, false);
+                context.fillStyle = style;
+                return context.fill();
+            };
+
+            xpos = 0.5;
+
+            document.onmousemove = function (e) {
+                return xpos = e.pageX / w;
+            };
+
+            window.requestAnimationFrame = function () {
+                return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame || function (callback) {
+                    return window.setTimeout(callback, 1000 / 60);
+                };
+            }();
+
+            Confetti = function () {
+                function Confetti() {
+                    this.style = COLORS[~~range(0, COLORS.length)];
+                    this.rgb = "rgba(" + this.style[0] + "," + this.style[1] + "," + this.style[2];
+                    this.r = ~~range(2, 6);
+                    this.r2 = 2 * this.r;
+                    this.replace();
+                }
+
+                Confetti.prototype.replace = function () {
+                    this.opacity = 0;
+                    this.dop = 0.03 * range(1, 4);
+                    this.x = range(-this.r2, w - this.r2);
+                    this.y = range(-20, h - this.r2);
+                    this.xmax = w - this.r;
+                    this.ymax = h - this.r;
+                    this.vx = range(0, 2) + 8 * xpos - 5;
+                    return this.vy = 0.7 * this.r + range(-1, 1);
+                };
+
+                Confetti.prototype.draw = function () {
+                    var ref;
+                    this.x += this.vx;
+                    this.y += this.vy;
+                    this.opacity += this.dop;
+                    if (this.opacity > 1) {
+                        this.opacity = 1;
+                        this.dop *= -1;
+                    }
+                    if (this.opacity < 0 || this.y > this.ymax) {
+                        this.replace();
+                    }
+                    if (!(0 < (ref = this.x) && ref < this.xmax)) {
+                        this.x = (this.x + this.xmax) % this.xmax;
+                    }
+                    return drawCircle(~~this.x, ~~this.y, this.r, this.rgb + "," + this.opacity + ")");
+                };
+
+                return Confetti;
+            }();
+
+            confetti = function () {
+                var j, ref, results;
+                results = [];
+                for (i = j = 1, ref = NUM_CONFETTI; 1 <= ref ? j <= ref : j >= ref; i = 1 <= ref ? ++j : --j) {
+                    results.push(new Confetti());
+                }
+                return results;
+            }();
+
+            window.step = function () {
+                var c, j, len, results;
+                requestAnimationFrame(step);
+                context.clearRect(0, 0, w, h);
+                results = [];
+                for (j = 0, len = confetti.length; j < len; j++) {
+                    c = confetti[j];
+                    results.push(c.draw());
+                }
+                return results;
+            };
+
+            step();
+        }
+    },
 
     mounted: function mounted() {
-
-        var retina = window.devicePixelRatio,
-
-
-        // Math shorthands
-        PI = Math.PI,
-            sqrt = Math.sqrt,
-            round = Math.round,
-            random = Math.random,
-            cos = Math.cos,
-            sin = Math.sin,
-
-
-        // Local WindowAnimationTiming interface
-        rAF = window.requestAnimationFrame,
-            cAF = window.cancelAnimationFrame || window.cancelRequestAnimationFrame,
-            _now = Date.now || function () {
-            return new Date().getTime();
-        };
-        // Local WindowAnimationTiming interface polyfill
-        (function (w) {
-            /**
-             * Fallback implementation.
-             */
-            var prev = _now();
-
-            function fallback(fn) {
-                var curr = _now();
-                var ms = Math.max(0, 16 - (curr - prev));
-                var req = setTimeout(fn, ms);
-                prev = curr;
-                return req;
-            }
-
-            /**
-             * Cancel.
-             */
-            var cancel = w.cancelAnimationFrame || w.webkitCancelAnimationFrame || w.clearTimeout;
-
-            rAF = w.requestAnimationFrame || w.webkitRequestAnimationFrame || fallback;
-
-            cAF = function cAF(id) {
-                cancel.call(w, id);
-            };
-        })(window);
-
-        var speed = 50,
-            duration = 1.0 / speed,
-            confettiRibbonCount = 11,
-            ribbonPaperCount = 1,
-            ribbonPaperDist = 8.0,
-            ribbonPaperThick = 8.0,
-            confettiPaperCount = 95,
-            DEG_TO_RAD = PI / 180,
-            RAD_TO_DEG = 180 / PI,
-            colors = [["#000", "#EAC435"], ["#000", "#E40066"], ["#000", "#0066FF"], ["#000", "#03CEA4"], ["#000", "#FB4D3D"]];
-
-        function Vector2(_x, _y) {
-            this.x = _x, this.y = _y;
-            this.Length = function () {
-                return sqrt(this.SqrLength());
-            };
-            this.SqrLength = function () {
-                return this.x * this.x + this.y * this.y;
-            };
-            this.Add = function (_vec) {
-                this.x += _vec.x;
-                this.y += _vec.y;
-            };
-            this.Sub = function (_vec) {
-                this.x -= _vec.x;
-                this.y -= _vec.y;
-            };
-            this.Div = function (_f) {
-                this.x /= _f;
-                this.y /= _f;
-            };
-            this.Mul = function (_f) {
-                this.x *= _f;
-                this.y *= _f;
-            };
-            this.Normalize = function () {
-                var sqrLen = this.SqrLength();
-                if (sqrLen != 0) {
-                    var factor = 1.0 / sqrt(sqrLen);
-                    this.x *= factor;
-                    this.y *= factor;
-                }
-            };
-            this.Normalized = function () {
-                var sqrLen = this.SqrLength();
-                if (sqrLen != 0) {
-                    var factor = 1.0 / sqrt(sqrLen);
-                    return new Vector2(this.x * factor, this.y * factor);
-                }
-                return new Vector2(0, 0);
-            };
-        }
-        Vector2.Lerp = function (_vec0, _vec1, _t) {
-            return new Vector2((_vec1.x - _vec0.x) * _t + _vec0.x, (_vec1.y - _vec0.y) * _t + _vec0.y);
-        };
-        Vector2.Distance = function (_vec0, _vec1) {
-            return sqrt(Vector2.SqrDistance(_vec0, _vec1));
-        };
-        Vector2.SqrDistance = function (_vec0, _vec1) {
-            var x = _vec0.x - _vec1.x;
-            var y = _vec0.y - _vec1.y;
-            return x * x + y * y + z * z;
-        };
-        Vector2.Scale = function (_vec0, _vec1) {
-            return new Vector2(_vec0.x * _vec1.x, _vec0.y * _vec1.y);
-        };
-        Vector2.Min = function (_vec0, _vec1) {
-            return new Vector2(Math.min(_vec0.x, _vec1.x), Math.min(_vec0.y, _vec1.y));
-        };
-        Vector2.Max = function (_vec0, _vec1) {
-            return new Vector2(Math.max(_vec0.x, _vec1.x), Math.max(_vec0.y, _vec1.y));
-        };
-        Vector2.ClampMagnitude = function (_vec0, _len) {
-            var vecNorm = _vec0.Normalized;
-            return new Vector2(vecNorm.x * _len, vecNorm.y * _len);
-        };
-        Vector2.Sub = function (_vec0, _vec1) {
-            return new Vector2(_vec0.x - _vec1.x, _vec0.y - _vec1.y, _vec0.z - _vec1.z);
-        };
-
-        function EulerMass(_x, _y, _mass, _drag) {
-            this.position = new Vector2(_x, _y);
-            this.mass = _mass;
-            this.drag = _drag;
-            this.force = new Vector2(0, 0);
-            this.velocity = new Vector2(0, 0);
-            this.AddForce = function (_f) {
-                this.force.Add(_f);
-            };
-            this.Integrate = function (_dt) {
-                var acc = this.CurrentForce(this.position);
-                acc.Div(this.mass);
-                var posDelta = new Vector2(this.velocity.x, this.velocity.y);
-                posDelta.Mul(_dt);
-                this.position.Add(posDelta);
-                acc.Mul(_dt);
-                this.velocity.Add(acc);
-                this.force = new Vector2(0, 0);
-            };
-            this.CurrentForce = function (_pos, _vel) {
-                var totalForce = new Vector2(this.force.x, this.force.y);
-                var speed = this.velocity.Length();
-                var dragVel = new Vector2(this.velocity.x, this.velocity.y);
-                dragVel.Mul(this.drag * this.mass * speed);
-                totalForce.Sub(dragVel);
-                return totalForce;
-            };
-        }
-
-        function ConfettiPaper(_x, _y) {
-            this.pos = new Vector2(_x, _y);
-            this.rotationSpeed = random() * 600 + 800;
-            this.angle = DEG_TO_RAD * random() * 360;
-            this.rotation = DEG_TO_RAD * random() * 360;
-            this.cosA = 1.0;
-            this.size = 5.0;
-            this.oscillationSpeed = random() * 1.5 + 0.5;
-            this.xSpeed = 40.0;
-            this.ySpeed = random() * 60 + 50.0;
-            this.corners = new Array();
-            this.time = random();
-            var ci = round(random() * (colors.length - 1));
-            this.frontColor = colors[ci][0];
-            this.backColor = colors[ci][1];
-            for (var i = 0; i < 4; i++) {
-                var dx = cos(this.angle + DEG_TO_RAD * (i * 90 + 45));
-                var dy = sin(this.angle + DEG_TO_RAD * (i * 90 + 45));
-                this.corners[i] = new Vector2(dx, dy);
-            }
-            this.Update = function (_dt) {
-                this.time += _dt;
-                this.rotation += this.rotationSpeed * _dt;
-                this.cosA = cos(DEG_TO_RAD * this.rotation);
-                this.pos.x += cos(this.time * this.oscillationSpeed) * this.xSpeed * _dt;
-                this.pos.y += this.ySpeed * _dt;
-                if (this.pos.y > ConfettiPaper.bounds.y) {
-                    this.pos.x = random() * ConfettiPaper.bounds.x;
-                    this.pos.y = 0;
-                }
-            };
-            this.Draw = function (_g) {
-                if (this.cosA > 0) {
-                    _g.fillStyle = this.frontColor;
-                } else {
-                    _g.fillStyle = this.backColor;
-                }
-                _g.beginPath();
-                _g.moveTo((this.pos.x + this.corners[0].x * this.size) * retina, (this.pos.y + this.corners[0].y * this.size * this.cosA) * retina);
-                for (var i = 1; i < 4; i++) {
-                    _g.lineTo((this.pos.x + this.corners[i].x * this.size) * retina, (this.pos.y + this.corners[i].y * this.size * this.cosA) * retina);
-                }
-                _g.closePath();
-                _g.fill();
-            };
-        }
-        ConfettiPaper.bounds = new Vector2(0, 0);
-
-        function ConfettiRibbon(_x, _y, _count, _dist, _thickness, _angle, _mass, _drag) {
-            this.particleDist = _dist;
-            this.particleCount = _count;
-            this.particleMass = _mass;
-            this.particleDrag = _drag;
-            this.particles = new Array();
-            var ci = round(random() * (colors.length - 1));
-            this.frontColor = colors[ci][0];
-            this.backColor = colors[ci][1];
-            this.xOff = cos(DEG_TO_RAD * _angle) * _thickness;
-            this.yOff = sin(DEG_TO_RAD * _angle) * _thickness;
-            this.position = new Vector2(_x, _y);
-            this.prevPosition = new Vector2(_x, _y);
-            this.velocityInherit = random() * 2 + 4;
-            this.time = random() * 100;
-            this.oscillationSpeed = random() * 2 + 2;
-            this.oscillationDistance = random() * 40 + 40;
-            this.ySpeed = random() * 40 + 80;
-            for (var i = 0; i < this.particleCount; i++) {
-                this.particles[i] = new EulerMass(_x, _y - i * this.particleDist, this.particleMass, this.particleDrag);
-            }
-            this.Update = function (_dt) {
-                var i = 0;
-                this.time += _dt * this.oscillationSpeed;
-                this.position.y += this.ySpeed * _dt;
-                this.position.x += cos(this.time) * this.oscillationDistance * _dt;
-                this.particles[0].position = this.position;
-                var dX = this.prevPosition.x - this.position.x;
-                var dY = this.prevPosition.y - this.position.y;
-                var delta = sqrt(dX * dX + dY * dY);
-                this.prevPosition = new Vector2(this.position.x, this.position.y);
-                for (i = 1; i < this.particleCount; i++) {
-                    var dirP = Vector2.Sub(this.particles[i - 1].position, this.particles[i].position);
-                    dirP.Normalize();
-                    dirP.Mul(delta / _dt * this.velocityInherit);
-                    this.particles[i].AddForce(dirP);
-                }
-                for (i = 1; i < this.particleCount; i++) {
-                    this.particles[i].Integrate(_dt);
-                }
-                for (i = 1; i < this.particleCount; i++) {
-                    var rp2 = new Vector2(this.particles[i].position.x, this.particles[i].position.y);
-                    rp2.Sub(this.particles[i - 1].position);
-                    rp2.Normalize();
-                    rp2.Mul(this.particleDist);
-                    rp2.Add(this.particles[i - 1].position);
-                    this.particles[i].position = rp2;
-                }
-                if (this.position.y > ConfettiRibbon.bounds.y + this.particleDist * this.particleCount) {
-                    this.Reset();
-                }
-            };
-            this.Reset = function () {
-                this.position.y = -random() * ConfettiRibbon.bounds.y;
-                this.position.x = random() * ConfettiRibbon.bounds.x;
-                this.prevPosition = new Vector2(this.position.x, this.position.y);
-                this.velocityInherit = random() * 2 + 4;
-                this.time = random() * 100;
-                this.oscillationSpeed = random() * 2.0 + 1.5;
-                this.oscillationDistance = random() * 40 + 40;
-                this.ySpeed = random() * 40 + 80;
-                var ci = round(random() * (colors.length - 1));
-                this.frontColor = colors[ci][0];
-                this.backColor = colors[ci][1];
-                this.particles = new Array();
-                for (var i = 0; i < this.particleCount; i++) {
-                    this.particles[i] = new EulerMass(this.position.x, this.position.y - i * this.particleDist, this.particleMass, this.particleDrag);
-                }
-            };
-            this.Draw = function (_g) {
-                for (var i = 0; i < this.particleCount - 1; i++) {
-                    var p0 = new Vector2(this.particles[i].position.x + this.xOff, this.particles[i].position.y + this.yOff);
-                    var p1 = new Vector2(this.particles[i + 1].position.x + this.xOff, this.particles[i + 1].position.y + this.yOff);
-                    if (this.Side(this.particles[i].position.x, this.particles[i].position.y, this.particles[i + 1].position.x, this.particles[i + 1].position.y, p1.x, p1.y) < 0) {
-                        _g.fillStyle = this.frontColor;
-                        _g.strokeStyle = this.frontColor;
-                    } else {
-                        _g.fillStyle = this.backColor;
-                        _g.strokeStyle = this.backColor;
-                    }
-                    if (i == 0) {
-                        _g.beginPath();
-                        _g.moveTo(this.particles[i].position.x * retina, this.particles[i].position.y * retina);
-                        _g.lineTo(this.particles[i + 1].position.x * retina, this.particles[i + 1].position.y * retina);
-                        _g.lineTo((this.particles[i + 1].position.x + p1.x) * 0.5 * retina, (this.particles[i + 1].position.y + p1.y) * 0.5 * retina);
-                        _g.closePath();
-                        _g.stroke();
-                        _g.fill();
-                        _g.beginPath();
-                        _g.moveTo(p1.x * retina, p1.y * retina);
-                        _g.lineTo(p0.x * retina, p0.y * retina);
-                        _g.lineTo((this.particles[i + 1].position.x + p1.x) * 0.5 * retina, (this.particles[i + 1].position.y + p1.y) * 0.5 * retina);
-                        _g.closePath();
-                        _g.stroke();
-                        _g.fill();
-                    } else if (i == this.particleCount - 2) {
-                        _g.beginPath();
-                        _g.moveTo(this.particles[i].position.x * retina, this.particles[i].position.y * retina);
-                        _g.lineTo(this.particles[i + 1].position.x * retina, this.particles[i + 1].position.y * retina);
-                        _g.lineTo((this.particles[i].position.x + p0.x) * 0.5 * retina, (this.particles[i].position.y + p0.y) * 0.5 * retina);
-                        _g.closePath();
-                        _g.stroke();
-                        _g.fill();
-                        _g.beginPath();
-                        _g.moveTo(p1.x * retina, p1.y * retina);
-                        _g.lineTo(p0.x * retina, p0.y * retina);
-                        _g.lineTo((this.particles[i].position.x + p0.x) * 0.5 * retina, (this.particles[i].position.y + p0.y) * 0.5 * retina);
-                        _g.closePath();
-                        _g.stroke();
-                        _g.fill();
-                    } else {
-                        _g.beginPath();
-                        _g.moveTo(this.particles[i].position.x * retina, this.particles[i].position.y * retina);
-                        _g.lineTo(this.particles[i + 1].position.x * retina, this.particles[i + 1].position.y * retina);
-                        _g.lineTo(p1.x * retina, p1.y * retina);
-                        _g.lineTo(p0.x * retina, p0.y * retina);
-                        _g.closePath();
-                        _g.stroke();
-                        _g.fill();
-                    }
-                }
-            };
-            this.Side = function (x1, y1, x2, y2, x3, y3) {
-                return (x1 - x2) * (y3 - y2) - (y1 - y2) * (x3 - x2);
-            };
-        }
-        ConfettiRibbon.bounds = new Vector2(0, 0);
-        confetti = {};
-        confetti.Context = function (id) {
-            var i = 0;
-
-            var canvas = document.getElementById(id);
-            if (canvas === null) {
-                return null;
-            }
-
-            var canvasParent = canvas.parentNode;
-            var canvasWidth = canvasParent.offsetWidth;
-            var canvasHeight = canvasParent.offsetHeight;
-            canvas.width = canvasWidth * retina;
-            canvas.height = canvasHeight * retina;
-            var context = canvas.getContext('2d');
-            var interval = null;
-            var confettiRibbons = new Array();
-            ConfettiRibbon.bounds = new Vector2(canvasWidth, canvasHeight);
-            for (i = 0; i < confettiRibbonCount; i++) {
-                confettiRibbons[i] = new ConfettiRibbon(random() * canvasWidth, -random() * canvasHeight * 2, ribbonPaperCount, ribbonPaperDist, ribbonPaperThick, 45, 1, 0.05);
-            }
-            var confettiPapers = new Array();
-            ConfettiPaper.bounds = new Vector2(canvasWidth, canvasHeight);
-            for (i = 0; i < confettiPaperCount; i++) {
-                confettiPapers[i] = new ConfettiPaper(random() * canvasWidth, random() * canvasHeight);
-            }
-            this.resize = function () {
-                canvasWidth = canvasParent.offsetWidth;
-                canvasHeight = canvasParent.offsetHeight;
-                canvas.width = canvasWidth * retina;
-                canvas.height = canvasHeight * retina;
-                ConfettiPaper.bounds = new Vector2(canvasWidth, canvasHeight);
-                ConfettiRibbon.bounds = new Vector2(canvasWidth, canvasHeight);
-            };
-            this.start = function () {
-                this.stop();
-                var context = this;
-                this.update();
-            };
-            this.stop = function () {
-                cAF(this.interval);
-            };
-            this.update = function () {
-                var i = 0;
-                context.clearRect(0, 0, canvas.width, canvas.height);
-                for (i = 0; i < confettiPaperCount; i++) {
-                    confettiPapers[i].Update(duration);
-                    confettiPapers[i].Draw(context);
-                }
-                for (i = 0; i < confettiRibbonCount; i++) {
-                    confettiRibbons[i].Update(duration);
-                    confettiRibbons[i].Draw(context);
-                }
-                this.interval = rAF(function () {
-                    confetti.update();
-                });
-            };
-        };
-        var confetti = new confetti.Context('confetti');
-        if (typeof confetti.start === 'undefined') {
-            return;
-        }
-        confetti.start();
-        window.addEventListener('resize', function (event) {
-            confetti.resize();
-        });
+        this.start();
     }
 });
 
@@ -2697,7 +2419,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             playerFinished: false,
             opponentFinished: false,
 
-            gameOver: false
+            gameOver: false,
+            playerWon: false
         };
     },
 
@@ -2786,6 +2509,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 // Check if opponent here too
             }).leaving(function (user) {
                 // Notify of opponent leaving
+            }).listen('GameFinished', function (e) {
+                if (window.Laravel.user.id == e.game.player_one_id && e.game.player_one_score > e.game.player_two_score) {
+                    _this3.playerWon = true;
+                }
+                if (window.Laravel.user.id == e.game.player_two_id && e.game.player_two_score > e.game.player_one_score) {
+                    _this3.playerWon = true;
+                }
             }).listenForWhisper('typed', function (message) {
                 _this3.opponent_typed = message.typed;
             }).listenForWhisper('finished', function (data) {
@@ -2855,7 +2585,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }
         },
         redirectAfterGameOver: function redirectAfterGameOver() {
-            console.log('REDIRECTING');
             window.location = '/history';
         }
     },
@@ -3607,404 +3336,6 @@ window.Echo = new __WEBPACK_IMPORTED_MODULE_0_laravel_echo___default.a({
 /***/ (function(module, exports) {
 
 
-var retina = window.devicePixelRatio,
-
-
-// Math shorthands
-PI = Math.PI,
-    sqrt = Math.sqrt,
-    round = Math.round,
-    random = Math.random,
-    cos = Math.cos,
-    sin = Math.sin,
-
-
-// Local WindowAnimationTiming interface
-rAF = window.requestAnimationFrame,
-    cAF = window.cancelAnimationFrame || window.cancelRequestAnimationFrame,
-    _now = Date.now || function () {
-    return new Date().getTime();
-};
-
-// Local WindowAnimationTiming interface polyfill
-(function (w) {
-    /**
-     * Fallback implementation.
-     */
-    var prev = _now();
-
-    function fallback(fn) {
-        var curr = _now();
-        var ms = Math.max(0, 16 - (curr - prev));
-        var req = setTimeout(fn, ms);
-        prev = curr;
-        return req;
-    }
-
-    /**
-     * Cancel.
-     */
-    var cancel = w.cancelAnimationFrame || w.webkitCancelAnimationFrame || w.clearTimeout;
-
-    rAF = w.requestAnimationFrame || w.webkitRequestAnimationFrame || fallback;
-
-    cAF = function cAF(id) {
-        cancel.call(w, id);
-    };
-})(window);
-
-document.addEventListener("DOMContentLoaded", function () {
-    var speed = 50,
-        duration = 1.0 / speed,
-        confettiRibbonCount = 11,
-        ribbonPaperCount = 1,
-        ribbonPaperDist = 8.0,
-        ribbonPaperThick = 8.0,
-        confettiPaperCount = 95,
-        DEG_TO_RAD = PI / 180,
-        RAD_TO_DEG = 180 / PI,
-        colors = [["#000", "#EAC435"], ["#000", "#E40066"], ["#000", "#0066FF"], ["#000", "#03CEA4"], ["#000", "#FB4D3D"]];
-
-    function Vector2(_x, _y) {
-        this.x = _x, this.y = _y;
-        this.Length = function () {
-            return sqrt(this.SqrLength());
-        };
-        this.SqrLength = function () {
-            return this.x * this.x + this.y * this.y;
-        };
-        this.Add = function (_vec) {
-            this.x += _vec.x;
-            this.y += _vec.y;
-        };
-        this.Sub = function (_vec) {
-            this.x -= _vec.x;
-            this.y -= _vec.y;
-        };
-        this.Div = function (_f) {
-            this.x /= _f;
-            this.y /= _f;
-        };
-        this.Mul = function (_f) {
-            this.x *= _f;
-            this.y *= _f;
-        };
-        this.Normalize = function () {
-            var sqrLen = this.SqrLength();
-            if (sqrLen != 0) {
-                var factor = 1.0 / sqrt(sqrLen);
-                this.x *= factor;
-                this.y *= factor;
-            }
-        };
-        this.Normalized = function () {
-            var sqrLen = this.SqrLength();
-            if (sqrLen != 0) {
-                var factor = 1.0 / sqrt(sqrLen);
-                return new Vector2(this.x * factor, this.y * factor);
-            }
-            return new Vector2(0, 0);
-        };
-    }
-    Vector2.Lerp = function (_vec0, _vec1, _t) {
-        return new Vector2((_vec1.x - _vec0.x) * _t + _vec0.x, (_vec1.y - _vec0.y) * _t + _vec0.y);
-    };
-    Vector2.Distance = function (_vec0, _vec1) {
-        return sqrt(Vector2.SqrDistance(_vec0, _vec1));
-    };
-    Vector2.SqrDistance = function (_vec0, _vec1) {
-        var x = _vec0.x - _vec1.x;
-        var y = _vec0.y - _vec1.y;
-        return x * x + y * y + z * z;
-    };
-    Vector2.Scale = function (_vec0, _vec1) {
-        return new Vector2(_vec0.x * _vec1.x, _vec0.y * _vec1.y);
-    };
-    Vector2.Min = function (_vec0, _vec1) {
-        return new Vector2(Math.min(_vec0.x, _vec1.x), Math.min(_vec0.y, _vec1.y));
-    };
-    Vector2.Max = function (_vec0, _vec1) {
-        return new Vector2(Math.max(_vec0.x, _vec1.x), Math.max(_vec0.y, _vec1.y));
-    };
-    Vector2.ClampMagnitude = function (_vec0, _len) {
-        var vecNorm = _vec0.Normalized;
-        return new Vector2(vecNorm.x * _len, vecNorm.y * _len);
-    };
-    Vector2.Sub = function (_vec0, _vec1) {
-        return new Vector2(_vec0.x - _vec1.x, _vec0.y - _vec1.y, _vec0.z - _vec1.z);
-    };
-
-    function EulerMass(_x, _y, _mass, _drag) {
-        this.position = new Vector2(_x, _y);
-        this.mass = _mass;
-        this.drag = _drag;
-        this.force = new Vector2(0, 0);
-        this.velocity = new Vector2(0, 0);
-        this.AddForce = function (_f) {
-            this.force.Add(_f);
-        };
-        this.Integrate = function (_dt) {
-            var acc = this.CurrentForce(this.position);
-            acc.Div(this.mass);
-            var posDelta = new Vector2(this.velocity.x, this.velocity.y);
-            posDelta.Mul(_dt);
-            this.position.Add(posDelta);
-            acc.Mul(_dt);
-            this.velocity.Add(acc);
-            this.force = new Vector2(0, 0);
-        };
-        this.CurrentForce = function (_pos, _vel) {
-            var totalForce = new Vector2(this.force.x, this.force.y);
-            var speed = this.velocity.Length();
-            var dragVel = new Vector2(this.velocity.x, this.velocity.y);
-            dragVel.Mul(this.drag * this.mass * speed);
-            totalForce.Sub(dragVel);
-            return totalForce;
-        };
-    }
-
-    function ConfettiPaper(_x, _y) {
-        this.pos = new Vector2(_x, _y);
-        this.rotationSpeed = random() * 600 + 800;
-        this.angle = DEG_TO_RAD * random() * 360;
-        this.rotation = DEG_TO_RAD * random() * 360;
-        this.cosA = 1.0;
-        this.size = 5.0;
-        this.oscillationSpeed = random() * 1.5 + 0.5;
-        this.xSpeed = 40.0;
-        this.ySpeed = random() * 60 + 50.0;
-        this.corners = new Array();
-        this.time = random();
-        var ci = round(random() * (colors.length - 1));
-        this.frontColor = colors[ci][0];
-        this.backColor = colors[ci][1];
-        for (var i = 0; i < 4; i++) {
-            var dx = cos(this.angle + DEG_TO_RAD * (i * 90 + 45));
-            var dy = sin(this.angle + DEG_TO_RAD * (i * 90 + 45));
-            this.corners[i] = new Vector2(dx, dy);
-        }
-        this.Update = function (_dt) {
-            this.time += _dt;
-            this.rotation += this.rotationSpeed * _dt;
-            this.cosA = cos(DEG_TO_RAD * this.rotation);
-            this.pos.x += cos(this.time * this.oscillationSpeed) * this.xSpeed * _dt;
-            this.pos.y += this.ySpeed * _dt;
-            if (this.pos.y > ConfettiPaper.bounds.y) {
-                this.pos.x = random() * ConfettiPaper.bounds.x;
-                this.pos.y = 0;
-            }
-        };
-        this.Draw = function (_g) {
-            if (this.cosA > 0) {
-                _g.fillStyle = this.frontColor;
-            } else {
-                _g.fillStyle = this.backColor;
-            }
-            _g.beginPath();
-            _g.moveTo((this.pos.x + this.corners[0].x * this.size) * retina, (this.pos.y + this.corners[0].y * this.size * this.cosA) * retina);
-            for (var i = 1; i < 4; i++) {
-                _g.lineTo((this.pos.x + this.corners[i].x * this.size) * retina, (this.pos.y + this.corners[i].y * this.size * this.cosA) * retina);
-            }
-            _g.closePath();
-            _g.fill();
-        };
-    }
-    ConfettiPaper.bounds = new Vector2(0, 0);
-
-    function ConfettiRibbon(_x, _y, _count, _dist, _thickness, _angle, _mass, _drag) {
-        this.particleDist = _dist;
-        this.particleCount = _count;
-        this.particleMass = _mass;
-        this.particleDrag = _drag;
-        this.particles = new Array();
-        var ci = round(random() * (colors.length - 1));
-        this.frontColor = colors[ci][0];
-        this.backColor = colors[ci][1];
-        this.xOff = cos(DEG_TO_RAD * _angle) * _thickness;
-        this.yOff = sin(DEG_TO_RAD * _angle) * _thickness;
-        this.position = new Vector2(_x, _y);
-        this.prevPosition = new Vector2(_x, _y);
-        this.velocityInherit = random() * 2 + 4;
-        this.time = random() * 100;
-        this.oscillationSpeed = random() * 2 + 2;
-        this.oscillationDistance = random() * 40 + 40;
-        this.ySpeed = random() * 40 + 80;
-        for (var i = 0; i < this.particleCount; i++) {
-            this.particles[i] = new EulerMass(_x, _y - i * this.particleDist, this.particleMass, this.particleDrag);
-        }
-        this.Update = function (_dt) {
-            var i = 0;
-            this.time += _dt * this.oscillationSpeed;
-            this.position.y += this.ySpeed * _dt;
-            this.position.x += cos(this.time) * this.oscillationDistance * _dt;
-            this.particles[0].position = this.position;
-            var dX = this.prevPosition.x - this.position.x;
-            var dY = this.prevPosition.y - this.position.y;
-            var delta = sqrt(dX * dX + dY * dY);
-            this.prevPosition = new Vector2(this.position.x, this.position.y);
-            for (i = 1; i < this.particleCount; i++) {
-                var dirP = Vector2.Sub(this.particles[i - 1].position, this.particles[i].position);
-                dirP.Normalize();
-                dirP.Mul(delta / _dt * this.velocityInherit);
-                this.particles[i].AddForce(dirP);
-            }
-            for (i = 1; i < this.particleCount; i++) {
-                this.particles[i].Integrate(_dt);
-            }
-            for (i = 1; i < this.particleCount; i++) {
-                var rp2 = new Vector2(this.particles[i].position.x, this.particles[i].position.y);
-                rp2.Sub(this.particles[i - 1].position);
-                rp2.Normalize();
-                rp2.Mul(this.particleDist);
-                rp2.Add(this.particles[i - 1].position);
-                this.particles[i].position = rp2;
-            }
-            if (this.position.y > ConfettiRibbon.bounds.y + this.particleDist * this.particleCount) {
-                this.Reset();
-            }
-        };
-        this.Reset = function () {
-            this.position.y = -random() * ConfettiRibbon.bounds.y;
-            this.position.x = random() * ConfettiRibbon.bounds.x;
-            this.prevPosition = new Vector2(this.position.x, this.position.y);
-            this.velocityInherit = random() * 2 + 4;
-            this.time = random() * 100;
-            this.oscillationSpeed = random() * 2.0 + 1.5;
-            this.oscillationDistance = random() * 40 + 40;
-            this.ySpeed = random() * 40 + 80;
-            var ci = round(random() * (colors.length - 1));
-            this.frontColor = colors[ci][0];
-            this.backColor = colors[ci][1];
-            this.particles = new Array();
-            for (var i = 0; i < this.particleCount; i++) {
-                this.particles[i] = new EulerMass(this.position.x, this.position.y - i * this.particleDist, this.particleMass, this.particleDrag);
-            }
-        };
-        this.Draw = function (_g) {
-            for (var i = 0; i < this.particleCount - 1; i++) {
-                var p0 = new Vector2(this.particles[i].position.x + this.xOff, this.particles[i].position.y + this.yOff);
-                var p1 = new Vector2(this.particles[i + 1].position.x + this.xOff, this.particles[i + 1].position.y + this.yOff);
-                if (this.Side(this.particles[i].position.x, this.particles[i].position.y, this.particles[i + 1].position.x, this.particles[i + 1].position.y, p1.x, p1.y) < 0) {
-                    _g.fillStyle = this.frontColor;
-                    _g.strokeStyle = this.frontColor;
-                } else {
-                    _g.fillStyle = this.backColor;
-                    _g.strokeStyle = this.backColor;
-                }
-                if (i == 0) {
-                    _g.beginPath();
-                    _g.moveTo(this.particles[i].position.x * retina, this.particles[i].position.y * retina);
-                    _g.lineTo(this.particles[i + 1].position.x * retina, this.particles[i + 1].position.y * retina);
-                    _g.lineTo((this.particles[i + 1].position.x + p1.x) * 0.5 * retina, (this.particles[i + 1].position.y + p1.y) * 0.5 * retina);
-                    _g.closePath();
-                    _g.stroke();
-                    _g.fill();
-                    _g.beginPath();
-                    _g.moveTo(p1.x * retina, p1.y * retina);
-                    _g.lineTo(p0.x * retina, p0.y * retina);
-                    _g.lineTo((this.particles[i + 1].position.x + p1.x) * 0.5 * retina, (this.particles[i + 1].position.y + p1.y) * 0.5 * retina);
-                    _g.closePath();
-                    _g.stroke();
-                    _g.fill();
-                } else if (i == this.particleCount - 2) {
-                    _g.beginPath();
-                    _g.moveTo(this.particles[i].position.x * retina, this.particles[i].position.y * retina);
-                    _g.lineTo(this.particles[i + 1].position.x * retina, this.particles[i + 1].position.y * retina);
-                    _g.lineTo((this.particles[i].position.x + p0.x) * 0.5 * retina, (this.particles[i].position.y + p0.y) * 0.5 * retina);
-                    _g.closePath();
-                    _g.stroke();
-                    _g.fill();
-                    _g.beginPath();
-                    _g.moveTo(p1.x * retina, p1.y * retina);
-                    _g.lineTo(p0.x * retina, p0.y * retina);
-                    _g.lineTo((this.particles[i].position.x + p0.x) * 0.5 * retina, (this.particles[i].position.y + p0.y) * 0.5 * retina);
-                    _g.closePath();
-                    _g.stroke();
-                    _g.fill();
-                } else {
-                    _g.beginPath();
-                    _g.moveTo(this.particles[i].position.x * retina, this.particles[i].position.y * retina);
-                    _g.lineTo(this.particles[i + 1].position.x * retina, this.particles[i + 1].position.y * retina);
-                    _g.lineTo(p1.x * retina, p1.y * retina);
-                    _g.lineTo(p0.x * retina, p0.y * retina);
-                    _g.closePath();
-                    _g.stroke();
-                    _g.fill();
-                }
-            }
-        };
-        this.Side = function (x1, y1, x2, y2, x3, y3) {
-            return (x1 - x2) * (y3 - y2) - (y1 - y2) * (x3 - x2);
-        };
-    }
-    ConfettiRibbon.bounds = new Vector2(0, 0);
-    confetti = {};
-    confetti.Context = function (id) {
-        var i = 0;
-
-        var canvas = document.getElementById(id);
-        if (canvas === null) {
-            return null;
-        }
-
-        var canvasParent = canvas.parentNode;
-        var canvasWidth = canvasParent.offsetWidth;
-        var canvasHeight = canvasParent.offsetHeight;
-        canvas.width = canvasWidth * retina;
-        canvas.height = canvasHeight * retina;
-        var context = canvas.getContext('2d');
-        var interval = null;
-        var confettiRibbons = new Array();
-        ConfettiRibbon.bounds = new Vector2(canvasWidth, canvasHeight);
-        for (i = 0; i < confettiRibbonCount; i++) {
-            confettiRibbons[i] = new ConfettiRibbon(random() * canvasWidth, -random() * canvasHeight * 2, ribbonPaperCount, ribbonPaperDist, ribbonPaperThick, 45, 1, 0.05);
-        }
-        var confettiPapers = new Array();
-        ConfettiPaper.bounds = new Vector2(canvasWidth, canvasHeight);
-        for (i = 0; i < confettiPaperCount; i++) {
-            confettiPapers[i] = new ConfettiPaper(random() * canvasWidth, random() * canvasHeight);
-        }
-        this.resize = function () {
-            canvasWidth = canvasParent.offsetWidth;
-            canvasHeight = canvasParent.offsetHeight;
-            canvas.width = canvasWidth * retina;
-            canvas.height = canvasHeight * retina;
-            ConfettiPaper.bounds = new Vector2(canvasWidth, canvasHeight);
-            ConfettiRibbon.bounds = new Vector2(canvasWidth, canvasHeight);
-        };
-        this.start = function () {
-            this.stop();
-            var context = this;
-            this.update();
-        };
-        this.stop = function () {
-            cAF(this.interval);
-        };
-        this.update = function () {
-            var i = 0;
-            context.clearRect(0, 0, canvas.width, canvas.height);
-            for (i = 0; i < confettiPaperCount; i++) {
-                confettiPapers[i].Update(duration);
-                confettiPapers[i].Draw(context);
-            }
-            for (i = 0; i < confettiRibbonCount; i++) {
-                confettiRibbons[i].Update(duration);
-                confettiRibbons[i].Draw(context);
-            }
-            this.interval = rAF(function () {
-                confetti.update();
-            });
-        };
-    };
-    var confetti = new confetti.Context('confetti');
-    if (typeof confetti.start === 'undefined') {
-        return;
-    }
-    confetti.start();
-    window.addEventListener('resize', function (event) {
-        confetti.resize();
-    });
-});
 
 /***/ }),
 /* 49 */
@@ -7562,13 +6893,7 @@ exports = module.exports = __webpack_require__(2)();
 exports.push([module.i, "\n.spinner-container[data-v-1a7f1f42] {\n  position: fixed;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  left: 0;\n  z-index: 1050;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n  -webkit-box-pack: center;\n      -ms-flex-pack: center;\n          justify-content: center;\n  background-color: rgba(0, 0, 0, 0.7);\n}\n.spinner-text[data-v-1a7f1f42] {\n  font-size: 1.5rem;\n}\n.spinner-content[data-v-1a7f1f42] {\n  color: #fdfcfc;\n}\n.spinner[data-v-1a7f1f42] {\n  margin: 0 auto 10%;\n  width: 70px;\n  text-align: center;\n}\n.spinner > div[data-v-1a7f1f42] {\n  width: 18px;\n  height: 18px;\n  background-color: #fdfcfc;\n  border-radius: 100%;\n  display: inline-block;\n  -webkit-animation: sk-bouncedelay 1.4s infinite ease-in-out both;\n  animation: sk-bouncedelay 1.4s infinite ease-in-out both;\n}\n.spinner .bounce1[data-v-1a7f1f42] {\n  -webkit-animation-delay: -0.32s;\n  animation-delay: -0.32s;\n}\n.spinner .bounce2[data-v-1a7f1f42] {\n  -webkit-animation-delay: -0.16s;\n  animation-delay: -0.16s;\n}\n@-webkit-keyframes sk-bouncedelay {\n0%, 80%, 100% {\n    -webkit-transform: scale(0);\n}\n40% {\n    -webkit-transform: scale(1);\n}\n}\n@keyframes sk-bouncedelay {\n0%, 80%, 100% {\n    -webkit-transform: scale(0);\n    transform: scale(0);\n}\n40% {\n    -webkit-transform: scale(1);\n    transform: scale(1);\n}\n}\n", ""]);
 
 /***/ }),
-/* 52 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(2)();
-exports.push([module.i, "\n.hidden[data-v-1c94c69c] {\n  display: none;\n}\n", ""]);
-
-/***/ }),
+/* 52 */,
 /* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -7622,7 +6947,7 @@ exports.push([module.i, "\ntd[data-v-6455ed5a] {\n  text-align: center;\n  borde
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(2)();
-exports.push([module.i, "\n.game-score-container[data-v-7db82df4] {\n  position: fixed;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  left: 0;\n  z-index: 1050;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n  -webkit-box-pack: center;\n      -ms-flex-pack: center;\n          justify-content: center;\n  background-color: rgba(0, 0, 0, 0.7);\n}\n.game-score-container hr[data-v-7db82df4] {\n    border-top: 1px solid #fdfcfc;\n}\n.overview-container[data-v-7db82df4] {\n  text-align: center;\n  font-family: 'Noto Serif', serif;\n}\n.overview-container .scores[data-v-7db82df4] {\n    font-size: 60px;\n}\n.overview-container .winner-text[data-v-7db82df4] {\n    font-size: 50px;\n}\n.game-score-container .dark-card[data-v-7db82df4] {\n  border: 2px solid #fdfcfc;\n  background-color: rgba(0, 0, 0, 0.8);\n  border-radius: 2px;\n}\n.game-score-container .dark-card .card-block[data-v-7db82df4] {\n    padding: 1.5rem;\n}\n.rounds-table[data-v-7db82df4] {\n  padding: 0;\n  font-size: 1.1rem;\n}\n.rounds-table .header td[data-v-7db82df4] {\n    padding-bottom: 10px;\n}\n.rounds-table td[data-v-7db82df4] {\n    padding: 0px 10px;\n    text-align: center;\n}\n.flex[data-v-7db82df4] {\n  -webkit-box-flex: 1;\n      -ms-flex: 1;\n          flex: 1;\n}\n", ""]);
+exports.push([module.i, "\n.game-score-container[data-v-7db82df4] {\n  position: fixed;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  left: 0;\n  z-index: 1050;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n  -webkit-box-pack: center;\n      -ms-flex-pack: center;\n          justify-content: center;\n  background-color: rgba(0, 0, 0, 0.7);\n}\n.game-score-container hr[data-v-7db82df4] {\n    border-top: 1px solid #fdfcfc;\n}\n.overview-container[data-v-7db82df4] {\n  text-align: center;\n  font-family: 'Noto Serif', serif;\n}\n.overview-container .scores[data-v-7db82df4] {\n    font-size: 60px;\n}\n.overview-container .winner-text[data-v-7db82df4] {\n    font-size: 50px;\n}\n.game-score-container .dark-card[data-v-7db82df4] {\n  border: 2px solid #fdfcfc;\n  background-color: rgba(0, 0, 0, 0.8);\n  border-radius: 2px;\n}\n.game-score-container .dark-card .card-block[data-v-7db82df4] {\n    padding: 1.5rem;\n}\n.rounds-table[data-v-7db82df4] {\n  padding: 0;\n  font-size: 1.1rem;\n}\n.rounds-table .header td[data-v-7db82df4] {\n    padding-bottom: 10px;\n}\n.rounds-table td[data-v-7db82df4] {\n    padding: 0px 10px;\n    text-align: center;\n}\n.flex[data-v-7db82df4] {\n  -webkit-box-flex: 1;\n      -ms-flex: 1;\n          flex: 1;\n}\n.btn[data-v-7db82df4] {\n  cursor: pointer;\n}\n", ""]);
 
 /***/ }),
 /* 61 */
@@ -40090,7 +39415,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /* styles */
-__webpack_require__(98)
+__webpack_require__(115)
 
 var Component = __webpack_require__(0)(
   /* script */
@@ -40098,11 +39423,11 @@ var Component = __webpack_require__(0)(
   /* template */
   __webpack_require__(84),
   /* scopeId */
-  "data-v-1c94c69c",
+  null,
   /* cssModules */
   null
 )
-Component.options.__file = "/Users/brenda/Sites/typonaut/resources/assets/js/components/Confetti.vue"
+Component.options.__file = "/Users/joosep/Code/typonaut/resources/assets/js/components/Confetti.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Confetti.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -40140,7 +39465,7 @@ var Component = __webpack_require__(0)(
   /* cssModules */
   null
 )
-Component.options.__file = "/Users/brenda/Sites/typonaut/resources/assets/js/components/Example.vue"
+Component.options.__file = "/Users/joosep/Code/typonaut/resources/assets/js/components/Example.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Example.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -40178,7 +39503,7 @@ var Component = __webpack_require__(0)(
   /* cssModules */
   null
 )
-Component.options.__file = "/Users/brenda/Sites/typonaut/resources/assets/js/components/Game.vue"
+Component.options.__file = "/Users/joosep/Code/typonaut/resources/assets/js/components/Game.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Game.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -40216,7 +39541,7 @@ var Component = __webpack_require__(0)(
   /* cssModules */
   null
 )
-Component.options.__file = "/Users/brenda/Sites/typonaut/resources/assets/js/components/GameScore.vue"
+Component.options.__file = "/Users/joosep/Code/typonaut/resources/assets/js/components/GameScore.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] GameScore.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -40254,7 +39579,7 @@ var Component = __webpack_require__(0)(
   /* cssModules */
   null
 )
-Component.options.__file = "/Users/brenda/Sites/typonaut/resources/assets/js/components/History.vue"
+Component.options.__file = "/Users/joosep/Code/typonaut/resources/assets/js/components/History.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] History.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -40288,7 +39613,7 @@ var Component = __webpack_require__(0)(
   /* cssModules */
   null
 )
-Component.options.__file = "/Users/brenda/Sites/typonaut/resources/assets/js/components/Lobby.vue"
+Component.options.__file = "/Users/joosep/Code/typonaut/resources/assets/js/components/Lobby.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Lobby.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -40326,7 +39651,7 @@ var Component = __webpack_require__(0)(
   /* cssModules */
   null
 )
-Component.options.__file = "/Users/brenda/Sites/typonaut/resources/assets/js/components/Modal.vue"
+Component.options.__file = "/Users/joosep/Code/typonaut/resources/assets/js/components/Modal.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Modal.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -40364,7 +39689,7 @@ var Component = __webpack_require__(0)(
   /* cssModules */
   null
 )
-Component.options.__file = "/Users/brenda/Sites/typonaut/resources/assets/js/components/NestedNavItem.vue"
+Component.options.__file = "/Users/joosep/Code/typonaut/resources/assets/js/components/NestedNavItem.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] NestedNavItem.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -40402,7 +39727,7 @@ var Component = __webpack_require__(0)(
   /* cssModules */
   null
 )
-Component.options.__file = "/Users/brenda/Sites/typonaut/resources/assets/js/components/Page.vue"
+Component.options.__file = "/Users/joosep/Code/typonaut/resources/assets/js/components/Page.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Page.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -40440,7 +39765,7 @@ var Component = __webpack_require__(0)(
   /* cssModules */
   null
 )
-Component.options.__file = "/Users/brenda/Sites/typonaut/resources/assets/js/components/PlayFullScreen.vue"
+Component.options.__file = "/Users/joosep/Code/typonaut/resources/assets/js/components/PlayFullScreen.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] PlayFullScreen.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -40478,7 +39803,7 @@ var Component = __webpack_require__(0)(
   /* cssModules */
   null
 )
-Component.options.__file = "/Users/brenda/Sites/typonaut/resources/assets/js/components/PlayHalfScreen.vue"
+Component.options.__file = "/Users/joosep/Code/typonaut/resources/assets/js/components/PlayHalfScreen.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] PlayHalfScreen.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -40516,7 +39841,7 @@ var Component = __webpack_require__(0)(
   /* cssModules */
   null
 )
-Component.options.__file = "/Users/brenda/Sites/typonaut/resources/assets/js/components/Spinner.vue"
+Component.options.__file = "/Users/joosep/Code/typonaut/resources/assets/js/components/Spinner.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Spinner.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -40550,7 +39875,7 @@ var Component = __webpack_require__(0)(
   /* cssModules */
   null
 )
-Component.options.__file = "/Users/brenda/Sites/typonaut/resources/assets/js/components/UserEntry.vue"
+Component.options.__file = "/Users/joosep/Code/typonaut/resources/assets/js/components/UserEntry.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] UserEntry.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -40584,7 +39909,7 @@ var Component = __webpack_require__(0)(
   /* cssModules */
   null
 )
-Component.options.__file = "/Users/brenda/Sites/typonaut/resources/assets/js/components/UserList.vue"
+Component.options.__file = "/Users/joosep/Code/typonaut/resources/assets/js/components/UserList.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] UserList.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -40723,9 +40048,12 @@ if (false) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', [_c('canvas', {
-    class: {
-      hidden: !_vm.game_over
-    },
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.show),
+      expression: "show"
+    }],
     attrs: {
       "height": "1",
       "id": "confetti",
@@ -40905,7 +40233,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }), _vm._v(" "), _c('confetti', {
     attrs: {
-      "game_over": _vm.gameOver
+      "show": _vm.gameOver && _vm.playerWon
     }
   })], 1)
 },staticRenderFns: []}
@@ -41239,32 +40567,7 @@ if(false) {
 }
 
 /***/ }),
-/* 98 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(52);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(3)("24b5bcb4", content, false);
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"id\":\"data-v-1c94c69c\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/sass-loader/lib/loader.js!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Confetti.vue", function() {
-     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"id\":\"data-v-1c94c69c\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/sass-loader/lib/loader.js!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Confetti.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
+/* 98 */,
 /* 99 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -41537,7 +40840,7 @@ module.exports = function listToStyles (parentId, list) {
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(global) {/*!
- * Vue.js v2.3.0
+ * Vue.js v2.3.2
  * (c) 2014-2017 Evan You
  * Released under the MIT License.
  */
@@ -41575,24 +40878,24 @@ function isObject (obj) {
   return obj !== null && typeof obj === 'object'
 }
 
-var toString = Object.prototype.toString;
+var _toString = Object.prototype.toString;
 
 /**
  * Strict object type check. Only returns true
  * for plain JavaScript objects.
  */
 function isPlainObject (obj) {
-  return toString.call(obj) === '[object Object]'
+  return _toString.call(obj) === '[object Object]'
 }
 
 function isRegExp (v) {
-  return toString.call(v) === '[object RegExp]'
+  return _toString.call(v) === '[object RegExp]'
 }
 
 /**
  * Convert a value to a string that is actually rendered.
  */
-function _toString (val) {
+function toString (val) {
   return val == null
     ? ''
     : typeof val === 'object'
@@ -41953,9 +41256,11 @@ function parsePath (path) {
   }
 }
 
+/*  */
+
 var warn = noop;
 var tip = noop;
-var formatComponentName;
+var formatComponentName = (null); // work around flow check
 
 if (true) {
   var hasConsole = typeof console !== 'undefined';
@@ -42043,6 +41348,8 @@ if (true) {
     }
   };
 }
+
+/*  */
 
 function handleError (err, vm, info) {
   if (config.errorHandler) {
@@ -43056,6 +42363,8 @@ function isType (type, fn) {
   return false
 }
 
+/*  */
+
 var mark;
 var measure;
 
@@ -43452,7 +42761,7 @@ function normalizeArrayChildren (children, nestedIndex) {
       res.push.apply(res, normalizeArrayChildren(c, ((nestedIndex || '') + "_" + i)));
     } else if (isPrimitive(c)) {
       if (isDef(last) && isDef(last.text)) {
-        (last).text += String(c);
+        last.text += String(c);
       } else if (c !== '') {
         // convert primitive to vnode
         res.push(createTextVNode(c));
@@ -43463,7 +42772,7 @@ function normalizeArrayChildren (children, nestedIndex) {
       } else {
         // default key for nested array children (likely generated by v-for)
         if (isDef(c.tag) && isUndef(c.key) && isDef(nestedIndex)) {
-          c.key = "__vlist" + ((nestedIndex)) + "_" + i + "__";
+          c.key = "__vlist" + nestedIndex + "_" + i + "__";
         }
         res.push(c);
       }
@@ -44813,7 +44122,7 @@ function createFunctionalComponent (
   var propOptions = Ctor.options.props;
   if (isDef(propOptions)) {
     for (var key in propOptions) {
-      props[key] = validateProp(key, propOptions, propsData);
+      props[key] = validateProp(key, propOptions, propsData || {});
     }
   } else {
     if (isDef(data.attrs)) { mergeProps(props, data.attrs); }
@@ -44834,6 +44143,7 @@ function createFunctionalComponent (
   });
   if (vnode instanceof VNode) {
     vnode.functionalContext = context;
+    vnode.functionalOptions = Ctor.options;
     if (data.slot) {
       (vnode.data || (vnode.data = {})).slot = data.slot;
     }
@@ -45142,7 +44452,7 @@ function _createElement (
     // direct component options / constructor
     vnode = createComponent(tag, data, context, children);
   }
-  if (vnode !== undefined) {
+  if (isDef(vnode)) {
     if (ns) { applyNS(vnode, ns); }
     return vnode
   } else {
@@ -45156,7 +44466,7 @@ function applyNS (vnode, ns) {
     // use default namespace inside foreignObject
     return
   }
-  if (Array.isArray(vnode.children)) {
+  if (isDef(vnode.children)) {
     for (var i = 0, l = vnode.children.length; i < l; i++) {
       var child = vnode.children[i];
       if (isDef(child.tag) && isUndef(child.ns)) {
@@ -45440,7 +44750,7 @@ function renderMixin (Vue) {
   // code size.
   Vue.prototype._o = markOnce;
   Vue.prototype._n = toNumber;
-  Vue.prototype._s = _toString;
+  Vue.prototype._s = toString;
   Vue.prototype._l = renderList;
   Vue.prototype._t = renderSlot;
   Vue.prototype._q = looseEqual;
@@ -45922,7 +45232,13 @@ Object.defineProperty(Vue$3.prototype, '$isServer', {
   get: isServerRendering
 });
 
-Vue$3.version = '2.3.0';
+Object.defineProperty(Vue$3.prototype, '$ssrContext', {
+  get: function get () {
+    return this.$vnode.ssrContext
+  }
+});
+
+Vue$3.version = '2.3.2';
 
 /*  */
 
@@ -47725,7 +47041,7 @@ function updateDOMProps (oldVnode, vnode) {
       // non-string values will be stringified
       elm._value = cur;
       // avoid resetting cursor position when value is the same
-      var strCur = cur == null ? '' : String(cur);
+      var strCur = isUndef(cur) ? '' : String(cur);
       if (shouldUpdateValue(elm, vnode, strCur)) {
         elm.value = strCur;
       }
@@ -48177,24 +47493,23 @@ function enter (vnode, toggleDisplay) {
     return
   }
 
-  var ref = (data);
-  var css = ref.css;
-  var type = ref.type;
-  var enterClass = ref.enterClass;
-  var enterToClass = ref.enterToClass;
-  var enterActiveClass = ref.enterActiveClass;
-  var appearClass = ref.appearClass;
-  var appearToClass = ref.appearToClass;
-  var appearActiveClass = ref.appearActiveClass;
-  var beforeEnter = ref.beforeEnter;
-  var enter = ref.enter;
-  var afterEnter = ref.afterEnter;
-  var enterCancelled = ref.enterCancelled;
-  var beforeAppear = ref.beforeAppear;
-  var appear = ref.appear;
-  var afterAppear = ref.afterAppear;
-  var appearCancelled = ref.appearCancelled;
-  var duration = ref.duration;
+  var css = data.css;
+  var type = data.type;
+  var enterClass = data.enterClass;
+  var enterToClass = data.enterToClass;
+  var enterActiveClass = data.enterActiveClass;
+  var appearClass = data.appearClass;
+  var appearToClass = data.appearToClass;
+  var appearActiveClass = data.appearActiveClass;
+  var beforeEnter = data.beforeEnter;
+  var enter = data.enter;
+  var afterEnter = data.afterEnter;
+  var enterCancelled = data.enterCancelled;
+  var beforeAppear = data.beforeAppear;
+  var appear = data.appear;
+  var afterAppear = data.afterAppear;
+  var appearCancelled = data.appearCancelled;
+  var duration = data.duration;
 
   // activeInstance will always be the <transition> component managing this
   // transition. One edge case to check is when the <transition> is placed
@@ -48326,18 +47641,17 @@ function leave (vnode, rm) {
     return
   }
 
-  var ref = (data);
-  var css = ref.css;
-  var type = ref.type;
-  var leaveClass = ref.leaveClass;
-  var leaveToClass = ref.leaveToClass;
-  var leaveActiveClass = ref.leaveActiveClass;
-  var beforeLeave = ref.beforeLeave;
-  var leave = ref.leave;
-  var afterLeave = ref.afterLeave;
-  var leaveCancelled = ref.leaveCancelled;
-  var delayLeave = ref.delayLeave;
-  var duration = ref.duration;
+  var css = data.css;
+  var type = data.type;
+  var leaveClass = data.leaveClass;
+  var leaveToClass = data.leaveToClass;
+  var leaveActiveClass = data.leaveActiveClass;
+  var beforeLeave = data.beforeLeave;
+  var leave = data.leave;
+  var afterLeave = data.afterLeave;
+  var leaveCancelled = data.leaveCancelled;
+  var delayLeave = data.delayLeave;
+  var duration = data.duration;
 
   var expectsCSS = css !== false && !isIE9;
   var userWantsControl = getHookArgumentsLength(leave);
@@ -48348,7 +47662,7 @@ function leave (vnode, rm) {
       : duration
   );
 
-  if ("development" !== 'production' && explicitLeaveDuration != null) {
+  if ("development" !== 'production' && isDef(explicitLeaveDuration)) {
     checkDuration(explicitLeaveDuration, 'leave', vnode);
   }
 
@@ -48385,7 +47699,7 @@ function leave (vnode, rm) {
     }
     // record leaving element
     if (!vnode.data.show) {
-      (el.parentNode._pending || (el.parentNode._pending = {}))[vnode.key] = vnode;
+      (el.parentNode._pending || (el.parentNode._pending = {}))[(vnode.key)] = vnode;
     }
     beforeLeave && beforeLeave(el);
     if (expectsCSS) {
@@ -51193,6 +50507,41 @@ module.exports = function(module) {
 __webpack_require__(12);
 module.exports = __webpack_require__(13);
 
+
+/***/ }),
+/* 112 */,
+/* 113 */,
+/* 114 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(2)();
+exports.push([module.i, "\n.hidden {\n    display: none;\n}\n#confetti {\n    z-index: 1051;\n    top: 0;\n    position: fixed;\n    left: 0;\n    right: 0;\n    bottom: 0;\n    pointer-events: none;\n}\n\n", ""]);
+
+/***/ }),
+/* 115 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(114);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(3)("33cf72f0", content, false);
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"id\":\"data-v-1c94c69c\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Confetti.vue", function() {
+     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"id\":\"data-v-1c94c69c\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Confetti.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
 
 /***/ })
 /******/ ]);

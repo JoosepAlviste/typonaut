@@ -16,7 +16,7 @@
 
         <countdown :show="showCountdown" @countdown-was-finished="handleCountdownFinish">
         </countdown>
-        <confetti :game_over="gameOver"></confetti>
+        <confetti :show="gameOver && playerWon"></confetti>
     </div>
 
 </template>
@@ -49,6 +49,7 @@
                 opponentFinished: false,
 
                 gameOver: false,
+                playerWon: false,
             }
         },
 
@@ -59,7 +60,7 @@
                 }
 
                 return this.game.rounds[this.currentRoundNr]
-            }
+            },
         },
 
         methods: {
@@ -144,6 +145,14 @@
                     .leaving( (user) => {
                         // Notify of opponent leaving
                     })
+                    .listen('GameFinished', (e) => {
+                        if (window.Laravel.user.id == e.game.player_one_id && e.game.player_one_score > e.game.player_two_score) {
+                            this.playerWon = true
+                        }
+                        if (window.Laravel.user.id == e.game.player_two_id && e.game.player_two_score > e.game.player_one_score) {
+                            this.playerWon = true
+                        }
+                    })
                     .listenForWhisper('typed', message => {
                         this.opponent_typed = message.typed
                     })
@@ -220,7 +229,6 @@
             },
 
             redirectAfterGameOver() {
-                console.log('REDIRECTING')
                 window.location = '/history'
             }
         },
