@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Events\GameFinished;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 
@@ -36,5 +37,18 @@ class Game extends Model
     public function playerTwo()
     {
         return $this->belongsTo(User::class, 'player_two_id', 'id');
+    }
+
+    public function isCompleted()
+    {
+        $gameOver = true;
+        foreach ($this->rounds as $loopround) {
+            if ($loopround->player_one_time === null || $loopround->player_two_time === null) {
+                $gameOver = false;
+                break;
+            }
+        }
+
+        return $gameOver;
     }
 }

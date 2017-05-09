@@ -3,6 +3,7 @@
         <play-full-screen :time="timeSeconds"
                           :round="currentRound"
                           :opponent_typed="opponent_typed"
+                          :show="!showCountdown"
                           @answer-was-submitted="handleAnswerSubmitted"
                           @typed="handleTyped">
         </play-full-screen>
@@ -143,7 +144,19 @@
                         // Check if opponent here too
                     })
                     .leaving( (user) => {
-                        // Notify of opponent leaving
+                        if (this.gameOver) {
+                            return
+                        }
+
+                        window.warn('Opponent left!')
+
+                        axios.post('/api/games/' + this.game.id + '/left', {
+                            user_id: window.Laravel.user.id,
+                        })
+
+                        setTimeout(() => {
+                            this.redirectAfterGameOver()
+                        }, 4000)
                     })
                     .listen('GameFinished', (e) => {
                         if (window.Laravel.user.id == e.game.player_one_id && e.game.player_one_score > e.game.player_two_score) {

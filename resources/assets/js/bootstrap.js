@@ -39,3 +39,10 @@ window.Echo = new Echo({
     key: 'f924c8395b47738f2f2d',
     cluster: 'eu',
 });
+
+window.notify = function (message, type) {
+    window.Events.$emit('show-notification', message, type)
+}
+window.warn = function (message) {
+    window.Events.$emit('show-notification', message, 'danger')
+}

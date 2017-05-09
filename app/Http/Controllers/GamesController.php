@@ -80,4 +80,23 @@ class GamesController extends Controller
             ]);
         });
     }
+
+    public function left(Game $game)
+    {
+        if ($game->isCompleted()) {
+            return $game;
+        }
+
+        if (request()->user_id == $game->player_one_id) {
+            $game->player_one_score = $game->rounds()->count();
+            $game->player_two_score = 0;
+        } else if (request()->user_id == $game->player_two_id) {
+            $game->player_two_score = $game->rounds()->count();
+            $game->player_one_score = 0;
+        }
+
+        $game->save();
+
+        return $game;
+    }
 }

@@ -29,6 +29,7 @@ import Page from './components/Page.vue'
 import NestedNavItem from './components/NestedNavItem.vue'
 import Countdown from './components/Countdown.vue'
 import History from './components/History.vue'
+import Notification from './components/Notification.vue'
 
 const app = new Vue({
     el: '#app',
@@ -44,6 +45,11 @@ const app = new Vue({
             bodyText: '',
             primaryBtnText: '',
             secondaryBtnText: '',
+        },
+        notification: {
+            show: false,
+            message: '',
+            type: 'success',
         },
         games: []
     },
@@ -105,7 +111,23 @@ const app = new Vue({
                 text: '',
             }
         })
+
+        window.Events.$on('show-notification', (message, type) => {
+            this.notification = {
+                show: true,
+                message: message,
+                type: typeof type === 'undefined' ? 'success' : type
+            }
+
+            setTimeout(() => {
+                this.notification.show = false
+            }, 2000)
+        })
+
+        window.Events.$on('close-notification', () => {
+            this.notification.show = false
+        })
     },
 
-    components: { Lobby, Modal, Spinner, Game, Page, NestedNavItem, Countdown, History },
+    components: { Lobby, Modal, Spinner, Game, Page, NestedNavItem, Countdown, History, Notification },
 });

@@ -24,7 +24,7 @@
                 if (val) {
                     this.startTimer()
                 }
-            }
+            },
         },
 
         methods: {
@@ -35,10 +35,19 @@
             },
 
             advanceTimer() {
+
+                let bell = new Audio('/files/bell.mp3')
+                bell.play()
+
                 this.timer = setTimeout( () => {
                     this.timeSeconds -= 1
                     if (this.timeSeconds === 0) {
                         this.timeSeconds = 'GO'
+
+                        // Play GO music
+                        let bell = new Audio('/files/bell.mp3')
+                        bell.play()
+
                         setTimeout( () => {
                             this.stopTimer()
                             this.$emit('countdown-was-finished')

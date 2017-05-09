@@ -48,6 +48,8 @@
                  :text="spinner.text">
         </spinner>
 
+        <notification :show="notification.show" :text="notification.message" :type="notification.type"></notification>
+
     </div>
 
     <!-- Scripts -->

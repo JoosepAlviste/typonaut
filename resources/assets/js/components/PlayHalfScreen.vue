@@ -1,7 +1,7 @@
 <template>
     <div class="half-screen pt-5" :class="[ side ]">
 
-        <h1>{{ round.word }}</h1>
+        <h1>{{ word }}</h1>
 
         <input type="text"
                class="form-control form-control-lg word-input animated"
@@ -24,6 +24,7 @@
             side: { required: true },
             round: { required: true },
             typed_word: { required: false, default: '' },
+            show_word: { required: true },
         },
 
         data() {
@@ -38,6 +39,12 @@
             typed_word() {
                 this.typed = this.typed_word
             },
+        },
+
+        computed: {
+            word() {
+                return this.show_word ? this.round.word : ''
+            }
         },
 
         methods: {

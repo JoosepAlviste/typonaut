@@ -4,6 +4,7 @@
         <play-half-screen side="player"
                           :time="time"
                           :round="round"
+                          :show_word="show"
                           @answer-was-submitted="onAnswerSubmitted"
                           @typed="handleTyped">
         </play-half-screen>
@@ -15,6 +16,7 @@
         <play-half-screen side="opponent"
                           :time="time"
                           :round="round"
+                          :show_word="show"
                           :typed_word="opponent_typed">
         </play-half-screen>
 
@@ -30,6 +32,7 @@
             time: { required: true },
             round: { required: true },
             opponent_typed: { required: true },
+            show: { required: true },
         },
 
         filters: {

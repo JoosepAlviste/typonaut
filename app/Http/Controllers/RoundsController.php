@@ -41,15 +41,7 @@ class RoundsController extends Controller
         $game->save();
         $round->save();
 
-        $gameOver = true;
-        foreach ($game->rounds as $loopround) {
-            if ($loopround->player_one_time === null || $loopround->player_two_time === null) {
-                $gameOver = false;
-                break;
-            }
-        }
-
-        if ($gameOver) {
+        if ($game->isCompleted()) {
             event(new GameFinished($game->fresh()));
         }
 

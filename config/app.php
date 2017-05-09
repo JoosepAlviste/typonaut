@@ -2,7 +2,7 @@
 
 return [
 
-    'rounds_per_game' => 3,
+    'rounds_per_game' => 5,
     'min_word_length' => 5,
 
     /*
